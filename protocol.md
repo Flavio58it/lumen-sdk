@@ -9,12 +9,12 @@ permalink: /protocol/
 1. [STOMP 1.2](https://stomp.github.io/stomp-specification-1.2.html) and [Stomp.js](https://github.com/jmesnil/stomp-websocket)
 2. HTTP (TODO)
 
-# Goals
+## Goals
 
 1. Easy to implement in popular programming languages (C#, Java, JavaScript)
 2. Flexible (relatively future-proof)
 
-# Overview
+## Overview
 
 The broker uses [RabbitMQ](http://www.rabbitmq.com/), which supports all of [STOMP](https://www.rabbitmq.com/stomp.html),
 [Web-Stomp](http://www.rabbitmq.com/web-stomp.html), [AMQP](http://www.amqp.org/), and [MQTT](https://www.rabbitmq.com/mqtt.html) protocols.
@@ -31,15 +31,16 @@ The protocol is implemented by corresponding SDKs in the following languages:
 
 A [Mobile App](/app/) is also provided to control Lumen robot using web browser or Android mobile device.
 
-Each Lumen robot "instance" is assigned an ID which is used as the topic's routing key prefix,
-e.g. for `lumen1`, the available topics are:
+Each Lumen robot "instance" is assigned an ID which is used as the topic/queue's routing key prefix,
+e.g. for `lumen1`, the available topics and queues are:
 
 1. `/topic/lumen1.motion`
 2. `/topic/lumen1.camera`
 3. `/topic/lumen1.sonar`
-4. etc.
+4. `/queue/lumen1.social.expression`
+5. etc.
 
-## .motion
+## /topic/ROBOT_ID.motion
 
 Wake up
 
@@ -210,7 +211,7 @@ Stop move:
 }
 {% endhighlight %}
 
-## .posture
+## /topic/ROBOT_ID.posture
 
 Go to posture:
 
@@ -230,7 +231,7 @@ Stop move:
 }
 {% endhighlight %}
 
-## .camera
+## /topic/ROBOT_ID.camera
 
 Get image remote: (one-off)
 
@@ -259,7 +260,7 @@ Reply: (see [Data URI](http://en.wikipedia.org/wiki/Data_URI_scheme))
 }
 {% endhighlight %}
 
-## .speech.synthesis
+## /topic/ROBOT_ID.speech.synthesis
 
 Say text:
 
@@ -279,11 +280,11 @@ Set language:
 }
 {% endhighlight %}
 
-## .speech.recognition
+## /topic/ROBOT_ID.speech.recognition
 
 TODO
 
-## .battery
+## /topic/ROBOT_ID.battery
 
 Get battery percentage:
 
@@ -336,7 +337,7 @@ Reply:
 }
 {% endhighlight %}
 
-## .sensors
+## /topic/ROBOT_ID.sensors
 
 Get tactile:
 
@@ -392,7 +393,7 @@ Reply:
 }
 {% endhighlight %}
 
-## .sonar
+## /topic/ROBOT_ID.sonar
 
 Get distance:
 
@@ -409,5 +410,149 @@ Reply:
 {
   "@type": "SonarDistance",
   "distance": <float>
+}
+{% endhighlight %}
+
+## /topic/ROBOT_ID.social.perception
+
+Observed a social post ([schema:CreativeWork](http://schema.org/CreativeWork)), e.g. Facebook friend's status post, Facebook Group post, news feed, etc.
+
+{% highlight json %}
+{
+  "@type": "StatusUpdate",
+  "from": {
+    "@type": "Person",
+    "name": "Ahmad Syarif"
+  },
+  "message": "I love this weather",
+  "channel": {
+    "@type": "SocialChannel",
+    "network": "Facebook"
+  },
+}
+{% endhighlight %}
+
+Receive a group mention, e.g. Facebook wall post, mentioned in a post, or mentioned in a comment.
+
+Facebook wall post or mentioned in a post:
+
+{% highlight json %}
+{
+  "@type": "Mention",
+  "from": {
+    "@type": "Person",
+    "name": "Ahmad Syarif"
+  },
+  "message": "Hi arkan",
+  "channel": {
+    "@type": "SocialChannel",
+    "network": "Facebook"
+  },
+  "post": {
+    "@type": "StatusUpdate",
+    "id": "105394384_3953824"
+  }
+}
+{% endhighlight %}
+
+Mentioned in a Facebook comment:
+
+{% highlight json %}
+{
+  "@type": "Mention",
+  "from": {
+    "@type": "Person",
+    "name": "Ahmad Syarif"
+  },
+  "message": "Where are you",
+  "channel": {
+    "@type": "SocialChannel",
+    "network": "Facebook"
+  },
+  "post": {
+    "@type": "StatusUpdate",
+    "id": "105394384_3953824"
+  },
+  "comment": {
+    "@type": "Comment",
+    "id": "549283_927392"
+  }
+}
+{% endhighlight %}
+
+## /queue/ROBOT_ID.social.expression
+
+Publishes a status update to Facebook:
+
+{% highlight json %}
+{
+  "@type": "StatusUpdate",
+  "message": "I am so happy today",
+  "channel": {
+    "@type": "SocialChannel",
+    "network": "Facebook"
+  }
+}
+{% endhighlight %}
+
+Comments on a post:
+
+{% highlight json %}
+{
+  "@type": "Comment",
+  "message": "What are you doing?",
+  "channel": {
+    "@type": "SocialChannel",
+    "network": "Facebook"
+  },
+  "post": {
+    "@type": "StatusUpdate",
+    "id": "105394384_3953824"
+  }
+}
+{% endhighlight %}
+
+Comments on a post with mention:
+
+{% highlight json %}
+{
+  "@type": "Comment",
+  "message": "Let's eat",
+  "channel": {
+    "@type": "SocialChannel",
+    "network": "Facebook"
+  },
+  "post": {
+    "@type": "StatusUpdate",
+    "id": "105394384_3953824"
+  },
+  "mentionedPerson": [
+    {
+      "@type": "Person",
+      "name": "Ahmad Syarif"
+    },  
+    {
+      "@type": "Person",
+      "name": "Marzuki"
+    }
+  ]
+}
+{% endhighlight %}
+
+Publishes a post to Facebook Group:
+
+{% highlight json %}
+{
+  "@type": "BlogPosting",
+  "message": "What are you guys planning today?",
+  "channel": {
+    "@type": "SocialChannel",
+    "network": "Facebook"
+  },
+  "group": {
+    "@type": "SocialGroup",
+    "name": "OpenCog/Lumen ITB",
+    "id": "329799720504531"
+  }
 }
 {% endhighlight %}
