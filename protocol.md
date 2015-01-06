@@ -9,6 +9,13 @@ permalink: /protocol/
 1. [STOMP 1.2](https://stomp.github.io/stomp-specification-1.2.html) and [Stomp.js](https://github.com/jmesnil/stomp-websocket)
 2. HTTP (TODO)
 
+# Goals
+
+1. Easy to implement in popular programming languages (C#, Java, JavaScript)
+2. Flexible (relatively future-proof)
+
+# Overview
+
 The broker uses [RabbitMQ](http://www.rabbitmq.com/), which supports all of [STOMP](https://www.rabbitmq.com/stomp.html),
 [Web-Stomp](http://www.rabbitmq.com/web-stomp.html), [AMQP](http://www.amqp.org/), and [MQTT](https://www.rabbitmq.com/mqtt.html) protocols.
 So a node is flexible to choose.
