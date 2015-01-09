@@ -1,14 +1,13 @@
 {
   "name": "AngularStomp",
   "homepage": "https://github.com/ceefour/AngularStomp",
-  "_release": "2a63b96a80",
+  "_release": "c2adbdf656",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "2a63b96a80116fd51460f13555e5c64cbfeb9b78"
+    "commit": "c2adbdf65659bfb0fe30333b0a9afb449a31fd15"
   },
   "_source": "https://github.com/ceefour/AngularStomp.git",
   "_target": "*",
-  "_originalSource": "https://github.com/ceefour/AngularStomp.git",
-  "_direct": true
+  "_originalSource": "https://github.com/ceefour/AngularStomp.git"
 }

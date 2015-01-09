@@ -11,6 +11,9 @@ angular.module('AngularStomp', []).
             //this.stompClient = Stomp.client(url);
             // use SockJS
             this.stompClient = Stomp.over( new SockJS(url) );
+            // STOMP heartbeats won't work with SockJS.
+            this.stompClient.heartbeat.outgoing = 0;
+            this.stompClient.heartbeat.incoming = 0;
         }
 
         NGStomp.prototype.subscribe = function(queue, callback) {
