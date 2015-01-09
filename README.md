@@ -5,7 +5,8 @@ Lumen Social Robot API, AngularJS SDK, and Client
 
 ## Setup
 
-1. Install [NodeJS](http://nodejs.org/download/)
+1. Install [NodeJS](http://nodejs.org/download/).
+   If needed, set [NPM proxy settings](http://jjasonclark.com/how-to-setup-node-behind-web-proxy).
 2. Install [Ionic](http://ionicframework.com/) and [Bower](http://bower.io/): (you'll need to run command prompt as Administrator)
 
         npm -g install ionic bower
