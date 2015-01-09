@@ -591,6 +591,14 @@ A human face is recognized:
         "x": 310.0,
         "y": 89.0,
         "z": 0.0
+    },
+    "truthValue": {
+        "@type": "SimpleTruthValue",
+        "strength": 1.0,
+        "confidence": 1.0
     }
 }
 {% endhighlight %}
+
+The recognition [truth value](http://en.wikipedia.org/wiki/Truth_value) intentionally mimics [OpenCog's TruthValue](http://wiki.opencog.org/w/TruthValue)
+to improve interoperability.
