@@ -32,15 +32,15 @@ The protocol is implemented by corresponding SDKs in the following languages:
 A [Mobile App](/app/) is also provided to control Lumen robot using web browser or Android mobile device.
 
 Each Lumen robot "instance" is assigned an ID which is used as the topic/queue's routing key prefix,
-e.g. for `lumen1`, the available topics and queues are:
+e.g. for `arkan`, the available topics and queues are:
 
-1. `/topic/lumen1.motion`
-2. `/topic/lumen1.camera`
-3. `/topic/lumen1.sonar`
-4. `/queue/lumen1.social.expression`
+1. `/topic/arkan.motion`
+2. `/topic/arkan.camera`
+3. `/topic/arkan.sonar`
+4. `/queue/arkan.social.expression`
 5. etc.
 
-## /topic/ROBOT_ID.motion
+## /topic/lumen.ROBOT_ID.motion
 
 Wake up
 
@@ -211,7 +211,7 @@ Stop move:
 }
 {% endhighlight %}
 
-## /topic/ROBOT_ID.posture
+## /topic/lumen.ROBOT_ID.posture
 
 Go to posture:
 
@@ -231,7 +231,7 @@ Stop move:
 }
 {% endhighlight %}
 
-## /topic/ROBOT_ID.camera
+## /topic/lumen.ROBOT_ID.camera
 
 Get image remote: (one-off)
 
@@ -260,7 +260,22 @@ Reply: (see [Data URI](http://en.wikipedia.org/wiki/Data_URI_scheme))
 }
 {% endhighlight %}
 
-## /topic/ROBOT_ID.speech.synthesis
+## /topic/lumen.ROBOT_ID.camera.stream
+
+Image streamed from camera:
+
+{% highlight json %}
+{
+    "@type": "ImageObject",
+    "name": "wajah1_240p.jpg",
+    "contentType": "image/jpeg",
+    "contentSize": 4880,
+    "dateModified": "2015-01-09T08:05:37.000Z",
+    "contentUrl": "data:image/jpeg;base64,/9j/4AAQ..."
+}
+{% endhighlight %}
+
+## /topic/lumen.ROBOT_ID.speech.synthesis
 
 Say text:
 
@@ -280,11 +295,11 @@ Set language:
 }
 {% endhighlight %}
 
-## /topic/ROBOT_ID.speech.recognition
+## /topic/lumen.ROBOT_ID.speech.recognition
 
 TODO
 
-## /topic/ROBOT_ID.battery
+## /topic/lumen.ROBOT_ID.battery
 
 Get battery percentage:
 
@@ -337,7 +352,7 @@ Reply:
 }
 {% endhighlight %}
 
-## /topic/ROBOT_ID.sensors
+## /topic/lumen.ROBOT_ID.sensors
 
 Get tactile:
 
@@ -393,7 +408,7 @@ Reply:
 }
 {% endhighlight %}
 
-## /topic/ROBOT_ID.sonar
+## /topic/lumen.ROBOT_ID.sonar
 
 Get distance:
 
@@ -413,7 +428,7 @@ Reply:
 }
 {% endhighlight %}
 
-## /topic/ROBOT_ID.social.perception
+## /topic/lumen.ROBOT_ID.social.perception
 
 Observed a social post ([schema:CreativeWork](http://schema.org/CreativeWork)), e.g. Facebook friend's status post, Facebook Group post, news feed, etc.
 
@@ -480,7 +495,7 @@ Mentioned in a Facebook comment:
 }
 {% endhighlight %}
 
-## /queue/ROBOT_ID.social.expression
+## /queue/lumen.ROBOT_ID.social.expression
 
 Publishes a status update to Facebook:
 
@@ -554,5 +569,28 @@ Publishes a post to Facebook Group:
     "name": "OpenCog/Lumen ITB",
     "id": "329799720504531"
   }
+}
+{% endhighlight %}
+
+## /topic/lumen.ROBOT_ID.human.recognition
+
+A human face is recognized:
+
+{% highlight json %}
+{
+    "@type": "HumanFaceRecognized",
+    "name": "Marzuki",
+    "minPoint": {
+        "@type": "Vector3",
+        "x": 178.0,
+        "y": 53.0,
+        "z": 0.0
+    },
+    "maxPoint": {
+        "@type": "Vector3",
+        "x": 310.0,
+        "y": 89.0,
+        "z": 0.0
+    }
 }
 {% endhighlight %}
