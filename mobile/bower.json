@@ -3,5 +3,10 @@
   "private": "true",
   "devDependencies": {
     "ionic": "driftyco/ionic-bower#1.0.0-beta.14"
+  },
+  "dependencies": {
+    "stomp-websocket": "~2.3.4",
+    "sockjs": "~0.3.4",
+    "AngularStomp": "https://github.com/ceefour/AngularStomp.git"
   }
 }

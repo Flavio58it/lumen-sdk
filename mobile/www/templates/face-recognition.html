@@ -3,13 +3,17 @@
     <h1>Face Recognition</h1>
       <ion-list>
         <ion-item>
-            <input id="imageFile" type="file" id="choose" multiple="multiple" accept="image/*"/>
-            <button ng-click="loadImage()">Load</button>
+            <input id="imageFile" type="file" id="choose" accept="image/*"/>
+            <button class="button button-small button-positive" ng-click="loadImage()"><i class="ion-refresh"></i> Load</button>
+            <button class="button button-small button-stable" ng-click="testStomp()">Test Stomp</button>
         </ion-item>
+          <ion-item>
+            <button class="button button-small button-energized" ng-click="recognize()" ng-show="imageObject.contentUrl">
+                <i class="ion-person"></i> Recognize</button>
+            <div id="uploadPreview">
+                <img style="max-height: 20em" ng-src="{{imageObject.contentUrl}}" ng-show="imageObject.contentUrl"/>
+          </div>
+          </ion-item>
       </ion-list>
-        <br>
-        <div id="uploadPreview">
-            <img ng-src="{{imageObject.contentUrl}}" ng-show="imageObject.contentUrl"/>
-      </div>
   </ion-content>
 </ion-view>
