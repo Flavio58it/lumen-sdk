@@ -14,7 +14,7 @@ permalink: /protocol/
 1. Easy to implement in popular programming languages (C#, Java, JavaScript)
 2. Flexible (relatively future-proof)
 
-## Overview
+## Lumen Protocol in General
 
 The broker uses [RabbitMQ](http://www.rabbitmq.com/), which supports all of [STOMP](https://www.rabbitmq.com/stomp.html),
 [Web-Stomp](http://www.rabbitmq.com/web-stomp.html), [AMQP](http://www.amqp.org/), and [MQTT](https://www.rabbitmq.com/mqtt.html) protocols.
@@ -25,11 +25,13 @@ Following [Linked Data](http://linkeddata.org/) approach, each message structure
 
 The protocol is implemented by corresponding SDKs in the following languages:
 
-* [C# (.NET)](/dotnet/)
-* [AngularJS/JavaScript](/javascript/)
-* [Java (JVM)](/java/)
+* [C# (.NET)](/lumen-sdk/dotnet/)
+* [AngularJS/JavaScript](/lumen-sdk/javascript/)
+* [Java (JVM)](/lumen-sdk/java/)
 
-A [Mobile App](/app/) is also provided to control Lumen robot using web browser or Android mobile device.
+A [Mobile App](/lumen-sdk/app/) is also provided to control Lumen robot using web browser or Android mobile device.
+
+## Messaging Topics and Structures
 
 Each Lumen robot "instance" is assigned an ID which is used as the topic/queue's routing key prefix,
 e.g. for `arkan`, the available topics and queues are:
@@ -40,9 +42,9 @@ e.g. for `arkan`, the available topics and queues are:
 4. `/queue/arkan.social.expression`
 5. etc.
 
-## /topic/lumen.ROBOT_ID.motion
+### /topic/lumen.ROBOT_ID.motion
 
-Wake up
+#### Wake up
 
 {% highlight json %}
 {
@@ -50,7 +52,7 @@ Wake up
 }
 {% endhighlight %}
 
-Rest
+#### Rest
 
 {% highlight json %}
 {
@@ -58,7 +60,7 @@ Rest
 }
 {% endhighlight %}
 
-Joints:
+#### Joints
 
 Can get or set stiffness, angle.
 
@@ -152,6 +154,8 @@ If reply requested:
 }
 {% endhighlight %}
 
+#### Hand
+
 Close and open hand: (TODO: should we use e.g. `SetHandState` instead?)
 
 {% highlight json %}
@@ -174,7 +178,7 @@ Close and open hand: (TODO: should we use e.g. `SetHandState` instead?)
 }
 {% endhighlight %}
 
-Move init (TODO: ???)
+### Move init (TODO: ???)
 
 {% highlight json %}
 {
@@ -182,7 +186,7 @@ Move init (TODO: ???)
 }
 {% endhighlight %}
 
-Move to:
+### Move to
 
 {% highlight json %}
 {
@@ -193,7 +197,7 @@ Move to:
 }
 {% endhighlight %}
 
-Set walk arms enabled:
+### Set walk arms enabled
 
 {% highlight json %}
 {
@@ -203,7 +207,7 @@ Set walk arms enabled:
 }
 {% endhighlight %}
 
-Stop move:
+#### Stop move
 
 {% highlight json %}
 {
@@ -211,9 +215,9 @@ Stop move:
 }
 {% endhighlight %}
 
-## /topic/lumen.ROBOT_ID.posture
+### /topic/lumen.ROBOT_ID.posture
 
-Go to posture:
+#### Go to posture:
 
 {% highlight json %}
 {
@@ -223,7 +227,7 @@ Go to posture:
 }
 {% endhighlight %}
 
-Stop move:
+#### Stop move:
 
 {% highlight json %}
 {
@@ -231,7 +235,7 @@ Stop move:
 }
 {% endhighlight %}
 
-## /topic/lumen.ROBOT_ID.camera
+### /topic/lumen.ROBOT_ID.camera
 
 Get image remote: (one-off)
 
@@ -260,7 +264,7 @@ Reply: (see [Data URI](http://en.wikipedia.org/wiki/Data_URI_scheme))
 }
 {% endhighlight %}
 
-## /topic/lumen.ROBOT_ID.camera.stream
+### /topic/lumen.ROBOT_ID.camera.stream
 
 Image streamed from camera:
 
@@ -275,7 +279,7 @@ Image streamed from camera:
 }
 {% endhighlight %}
 
-## /topic/lumen.ROBOT_ID.speech.synthesis
+### /topic/lumen.ROBOT_ID.speech.synthesis
 
 Say text:
 
@@ -295,11 +299,11 @@ Set language:
 }
 {% endhighlight %}
 
-## /topic/lumen.ROBOT_ID.speech.recognition
+### /topic/lumen.ROBOT_ID.speech.recognition
 
 TODO
 
-## /topic/lumen.ROBOT_ID.battery
+### /topic/lumen.ROBOT_ID.battery
 
 Get battery percentage:
 
@@ -352,7 +356,7 @@ Reply:
 }
 {% endhighlight %}
 
-## /topic/lumen.ROBOT_ID.sensors
+### /topic/lumen.ROBOT_ID.sensors
 
 Get tactile:
 
@@ -408,7 +412,7 @@ Reply:
 }
 {% endhighlight %}
 
-## /topic/lumen.ROBOT_ID.sonar
+### /topic/lumen.ROBOT_ID.sonar
 
 Get distance:
 
@@ -428,7 +432,7 @@ Reply:
 }
 {% endhighlight %}
 
-## /topic/lumen.ROBOT_ID.social.perception
+### /topic/lumen.ROBOT_ID.social.perception
 
 Observed a social post ([schema:CreativeWork](http://schema.org/CreativeWork)), e.g. Facebook friend's status post, Facebook Group post, news feed, etc.
 
@@ -495,7 +499,7 @@ Mentioned in a Facebook comment:
 }
 {% endhighlight %}
 
-## /queue/lumen.ROBOT_ID.social.expression
+### /queue/lumen.ROBOT_ID.social.expression
 
 Publishes a status update to Facebook:
 
@@ -572,7 +576,7 @@ Publishes a post to Facebook Group:
 }
 {% endhighlight %}
 
-## /topic/lumen.ROBOT_ID.human.recognition
+### /topic/lumen.ROBOT_ID.human.recognition
 
 A human face is recognized:
 
