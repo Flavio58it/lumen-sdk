@@ -8,13 +8,11 @@ Computers Laboratory)](http://lskk.ee.itb.ac.id/) of [STEI (School of Electrical
 This SDK (Software Development Kit) comprises the shared technical documentation and tools for Lumen researchers (and
 any interested party). The SDK consists of two main parts:
 
-1. [**Lumen Protocol**](doc/protocol/), which specifies how Lumen modules coordinate with each other
-2. [**Programs and libraries**] to interact with Lumen modules that adheres to Lumen Protocol
+1. [**Lumen Protocol**](doc/protocol.md), which specifies how Lumen modules coordinate with each other
+2. libraries which implement the Lumen Protocol for a specific platform.
+3. Sample applications and programs which use the libraries.
 
-Important: The SDK does currently *not* include all of the implementation modules themselves. These are individual
-research projects which may opt to adhere to Lumen Protocol. Once available, they will be included to the SDK.
-
-If you want to provide an implementation (java, C#, AngularJS/JavaScript) or anything of your choice, please contact a
-project member.
+Important: The SDK is work in progress. If you want to provide an implementation (java, C#, AngularJS/JavaScript) or
+anything of your choice (e.g. a research project of yours), please contact a project member.
 
 Contributions from non-academic people are welcome, too.
