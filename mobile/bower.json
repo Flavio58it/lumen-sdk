@@ -9,5 +9,8 @@
     "sockjs": "~0.3.4",
     "AngularStomp": "https://github.com/ceefour/AngularStomp.git",
     "webcam-directive": "~2.0.0"
+  },
+  "resolutions": {
+    "angular": "~1.3.7"
   }
 }

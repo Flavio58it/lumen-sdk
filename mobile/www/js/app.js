@@ -39,12 +39,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'AngularStomp', 'webc
     }
   })
 
-  .state('app.face-recognition-file', {
-    url: "/face-recognition-file",
+  .state('app.face-recognition-img', {
+    url: "/face-recognition-img",
     views: {
       'menuContent': {
-        templateUrl: "templates/face-recognition-file.html",
-        controller: 'FaceRecognitionFileCtrl'
+        templateUrl: "templates/face-recognition-img.html",
+        controller: 'FaceRecognitionImgCtrl'
       }
     }
   })

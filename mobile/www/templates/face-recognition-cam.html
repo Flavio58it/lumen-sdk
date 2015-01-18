@@ -8,9 +8,16 @@
             <button class="button button-small button-stable" ng-click="testStomp()">Test Stomp</button>
         </ion-item>
         <ion-item>
-            <webcam>
-
+            <webcam on-stream="onStream(stream)" on-access-denied="onAccessDenied(err)"
+                    on-streaming="onStreaming()" video="myVideo">
             </webcam>
+            <button class="button button-small btn-energized" ng-click="makeSnapshot()"><i class="ion-camera"></i> Snap!</button>
+        </ion-item>
+          <ion-item>
+            <canvas id="snapshot"></canvas>
+            <button ng-click="downloadSnapshot(snapshotData)" ng-disabled="!snapshotData" class="button button-small">Download</button>
+            <button class="btn btn-small" ng-click="showBase64 = !showBase64">Show as base64 encoded URL</button>
+            <textarea class="snapshot-data" ng-model="snapshotData" ng-show="showBase64"></textarea>
         </ion-item>
           <ion-item ng-repeat="recognized in recognizeds">
               <i class="ion-person"></i> {{recognized.name}} ({{recognized.minPoint.x}},{{recognized.minPoint.y}})..({{recognized.maxPoint.x}},{{recognized.maxPoint.y}})
