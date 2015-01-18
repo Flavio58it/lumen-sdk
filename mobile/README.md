@@ -1,10 +1,18 @@
 ## Setup
 
 1. Install [NodeJS](http://nodejs.org/download/).
-   If needed, set [NPM proxy settings](http://jjasonclark.com/how-to-setup-node-behind-web-proxy).
+   Post-installation: if needed, set [NPM proxy settings](http://jjasonclark.com/how-to-setup-node-behind-web-proxy), e.g.:
+
+        # just to create user's npm config directory (it'll fail, press Ctrl+C) so commands below will succeed
+        npm -g install ionic
+
+        npm config set proxy http://username:password@cache.itb.ac.id:8080
+        npm config set https-proxy http://username:password@cache.itb.ac.id:8080
+
 2. Install [Ionic](http://ionicframework.com/) and [Bower](http://bower.io/): (you'll need to run command prompt as Administrator)
 
-       npm -g install ionic bower
+        # For Linux, prefix with "sudo"
+        npm -g install ionic bower
 
    Note: If you don't install NodeJS modules globally (i.e. user-specific), you'll need to add `~/node_modules/.bin` to `PATH`.
 3. (If you want to deploy to Android) Install Cordova: `npm -g install cordova`
@@ -12,10 +20,24 @@
    Windows: Install [Erlang OTP](http://www.erlang.org/download.html) and [RabbitMQ for Windows](https://www.rabbitmq.com/install-windows.html)
 5. Install [RabbitMQ Web-Stomp Plugin](http://www.rabbitmq.com/web-stomp.html):
 
-       rabbitmq-plugins enable rabbitmq_web_stomp
+        # For Linux, prefix with "sudo"
+        rabbitmq-plugins enable rabbitmq_web_stomp
+        #for Linux : setelah instal restart rabbitmq dengan perintah dibawah
+        sudo service rabbitmq-server restart
+   ```
 
 ## Serve the App
 
-Use command prompt nad run:
+Use command prompt, to `mobile` directory, and run: `ionic serve`, e.g.
 
-   `ionic serve`
+Windows:
+
+    # go to directory git/lumen-sdk/mobile
+    cd git\lumen-sdk\mobile
+    ionic serve
+
+Linux:
+
+    # go to directory git/lumen-sdk/mobile
+    cd git/lumen-sdk/mobile
+    ionic serve
