@@ -1,11 +1,16 @@
-<ion-view view-title="Face Recognition">
+<ion-view view-title="Face Recognition: Camera">
   <ion-content>
-    <h1>Face Recognition</h1>
+    <h1>Face Recognition: Camera</h1>
       <ion-list>
         <ion-item>
-            <input id="imageFile" type="file" id="choose" accept="image/*"/>
+            <input id="imageFile" type="file" accept="image/*"/>
             <button class="button button-small button-positive" ng-click="loadImage()"><i class="ion-refresh"></i> Load</button>
             <button class="button button-small button-stable" ng-click="testStomp()">Test Stomp</button>
+        </ion-item>
+        <ion-item>
+            <webcam>
+
+            </webcam>
         </ion-item>
           <ion-item ng-repeat="recognized in recognizeds">
               <i class="ion-person"></i> {{recognized.name}} ({{recognized.minPoint.x}},{{recognized.minPoint.y}})..({{recognized.maxPoint.x}},{{recognized.maxPoint.y}})

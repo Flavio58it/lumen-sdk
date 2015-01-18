@@ -1,0 +1,26 @@
+<ion-view view-title="Face Recognition: File">
+  <ion-content>
+    <h1>Face Recognition: File</h1>
+      <ion-list>
+        <ion-item>
+            <input id="imageFile" type="file" accept="image/*"/>
+            <button class="button button-small button-positive" ng-click="loadImage()"><i class="ion-refresh"></i> Load</button>
+            <button class="button button-small button-stable" ng-click="testStomp()">Test Stomp</button>
+        </ion-item>
+          <ion-item ng-repeat="recognized in recognizeds">
+              <i class="ion-person"></i> {{recognized.name}} ({{recognized.minPoint.x}},{{recognized.minPoint.y}})..({{recognized.maxPoint.x}},{{recognized.maxPoint.y}})
+          </ion-item>
+          <ion-item>
+            <button class="button button-small button-energized" ng-click="recognize()" ng-show="imageObject.contentUrl">
+                <i class="ion-person"></i> Recognize</button>
+            <div id="uploadPreview" style="position: relative; height: 300px">
+                <div ng-repeat="recognized in recognizeds"
+                     style="position: absolute; font-size: 80%; color: yellow; background-color: rgba(0, 0, 0, 0.5);" ng-style="recognized.cssStyle">
+                    <strong>{{recognized.name}}</strong>
+                </div>
+                <img style="max-height: 240px" ng-src="{{imageObject.contentUrl}}" ng-show="imageObject.contentUrl"/>
+          </div>
+          </ion-item>
+      </ion-list>
+  </ion-content>
+</ion-view>
