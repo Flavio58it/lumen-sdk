@@ -37,7 +37,7 @@ angular.module('starter.controllers', [])
     $scope.imageObject = null;
     $scope.recognizeds = [];
 
-    var stompUri = 'http://localhost:15674/stomp';
+    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
     $log.info('Stomp connecting to', stompUri);
     $scope.client = ngstomp(stompUri);
     $scope.client.connect('guest', 'guest', function() {
@@ -98,8 +98,30 @@ angular.module('starter.controllers', [])
 .controller('FaceRecognitionCamCtrl', function($scope, $stateParams, $log, ngstomp) {
     'use strict';
 
+    $scope.imageObject = null;
+    $scope.recognizeds = [];
+
+    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
+    $log.info('Stomp connecting to', stompUri);
+    $scope.client = ngstomp(stompUri);
+    $scope.client.connect('guest', 'guest', function() {
+        $log.info('Stomp connected to', stompUri);
+        $scope.client.subscribe('/topic/lumen.arkan.human.recognition', function(msg) {
+            var recognized = JSON.parse(msg.body);
+            recognized.cssStyle = {
+                left: recognized.minPoint.x + 'px',
+                top: recognized.minPoint.y + 'px'
+            };
+            $scope.recognizeds.push(recognized);
+        });
+    }, function(err) {
+        $log.error('Stomp error:', err);
+        $scope.client = null;
+    }, '/');
+
     var _video = null,
-        patData = null;
+        patData = null,
+        dataUri = null;
     $scope.patOpts = {x: 0, y: 0, w: 320, h: 240};
 
     $scope.onStream = function(stream) {
@@ -114,18 +136,18 @@ angular.module('starter.controllers', [])
         _video = document.querySelector('.webcam-live');
         $log.debug('onStreaming', _video);
         // The video element contains the captured camera data
-        $scope.$apply(function() {
-            $scope.patOpts.w = _video.width;
-            $scope.patOpts.h = _video.height;
-        });
+//        $scope.$apply(function() {
+//            $scope.patOpts.w = _video.width;
+//            $scope.patOpts.h = _video.height;
+//        });
     };
 
     var getVideoData = function getVideoData(x, y, w, h) {
         var hiddenCanvas = document.createElement('canvas');
-        hiddenCanvas.width = _video.width;
-        hiddenCanvas.height = _video.height;
+        hiddenCanvas.width = $scope.patOpts.w;
+        hiddenCanvas.height = $scope.patOpts.h;
         var ctx = hiddenCanvas.getContext('2d');
-        ctx.drawImage(_video, 0, 0, _video.width, _video.height);
+        ctx.drawImage(_video, 0, 0, $scope.patOpts.w, $scope.patOpts.h);
         return ctx.getImageData(x, y, w, h);
     };
 
@@ -147,8 +169,8 @@ angular.module('starter.controllers', [])
             var patCanvas = document.querySelector('#snapshot');
             if (!patCanvas) return;
 
-            patCanvas.width = _video.width;
-            patCanvas.height = _video.height;
+            patCanvas.width = $scope.patOpts.w;
+            patCanvas.height = $scope.patOpts.h;
             var ctxPat = patCanvas.getContext('2d');
 
             var idata = getVideoData($scope.patOpts.x, $scope.patOpts.y, $scope.patOpts.w, $scope.patOpts.h);
@@ -158,6 +180,28 @@ angular.module('starter.controllers', [])
 
             patData = idata;
         }
+    };
+    $scope.recognize = function() {
+        if (!$scope.snapshotData) {
+            alert('No $scope.snapshotData!');
+            return;
+        }
+
+        $scope.imageObject = {
+            '@type': 'ImageObject',
+            name: 'camera.png',
+            contentType: 'image/png',
+            // TODO: contentSize: imageFile.size,
+            // TODO: dateModified: imageFile.lastModifiedDate,
+            contentUrl: $scope.snapshotData
+        };
+        $log.info('Recognizing...', $scope.imageObject, JSON.stringify($scope.imageObject));
+        $scope.client.send('/topic/lumen.arkan.camera.stream', {}, JSON.stringify($scope.imageObject));
+        window.alert('Sent: ' + JSON.stringify($scope.imageObject).substr(0, 300));
+    };
+    $scope.makeSnapshotAndRecognize = function() {
+        $scope.makeSnapshot();
+        $scope.recognize();
     };
 
     /**

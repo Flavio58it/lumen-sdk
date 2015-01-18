@@ -1,6 +1,5 @@
 <ion-view view-title="Face Recognition: Camera">
   <ion-content>
-    <h1>Face Recognition: Camera</h1>
       <ion-list>
         <ion-item>
             <input id="imageFile" type="file" accept="image/*"/>
@@ -11,7 +10,9 @@
             <webcam on-stream="onStream(stream)" on-access-denied="onAccessDenied(err)"
                     on-streaming="onStreaming()" video="myVideo">
             </webcam>
-            <button class="button button-small btn-energized" ng-click="makeSnapshot()"><i class="ion-camera"></i> Snap!</button>
+            <button class="button button-small" ng-click="makeSnapshot()"><i class="ion-camera"></i> Snap!</button>
+            <button class="button button-small button-energized" ng-click="makeSnapshotAndRecognize()"><i class="ion-camera"></i> Snap &amp; Recognize!</button>
+            <button class="button button-small" ng-click="recognize()" ng-show="snapshotData"><i class="ion-person"></i> Recognize</button>
         </ion-item>
           <ion-item>
             <canvas id="snapshot"></canvas>
@@ -23,8 +24,6 @@
               <i class="ion-person"></i> {{recognized.name}} ({{recognized.minPoint.x}},{{recognized.minPoint.y}})..({{recognized.maxPoint.x}},{{recognized.maxPoint.y}})
           </ion-item>
           <ion-item>
-            <button class="button button-small button-energized" ng-click="recognize()" ng-show="imageObject.contentUrl">
-                <i class="ion-person"></i> Recognize</button>
             <div id="uploadPreview" style="position: relative; height: 300px">
                 <div ng-repeat="recognized in recognizeds"
                      style="position: absolute; font-size: 80%; color: yellow; background-color: rgba(0, 0, 0, 0.5);" ng-style="recognized.cssStyle">
