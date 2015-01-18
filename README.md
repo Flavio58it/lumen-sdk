@@ -1,44 +1,18 @@
-Lumen SDK
-=========
+Lumen Social Robot SDK
+======================
 
-Lumen Social Robot API, AngularJS SDK, and Client
+The [Lumen Social Robot](http://lumen.lssk.ee.itb.ac.id/) is an ongoing research project of [LSKK](http://lskk.ee.itb.ac.id/)
+(Control System and Computers Laboratory) of [STEI](http://ee.itb.ac.id/) (School of Electrical and Informatics),
+[ITB ](http://www.itb.ac.id/) (Bandung Institute of Technology Bandung, located in Indonesia).
 
-## Setup
+This SDK (Software Development Kit) comprises the shared technical documentation and tools for Lumen researchers (and
+any interested party). The SDK consists of two main parts:
 
-1. Install [NodeJS](http://nodejs.org/download/).
-   Post-installation: if needed, set [NPM proxy settings](http://jjasonclark.com/how-to-setup-node-behind-web-proxy), e.g.:
-   
-        # just to create user's npm config directory (it'll fail, press Ctrl+C) so commands below will succeed
-        npm -g install ionic
-        
-        npm config set proxy http://username:password@cache.itb.ac.id:8080
-        npm config set https-proxy http://username:password@cache.itb.ac.id:8080
+1. [**Lumen Protocol**](http://lumenitb.github.io/lumen-sdk/protocol/), which specifies how Lumen modules coordinate with each other
+2. libraries which implement the Lumen Protocol for a specific platform.
+3. Sample applications and programs which use the libraries.
 
-2. Install [Ionic](http://ionicframework.com/) and [Bower](http://bower.io/): (you'll need to run command prompt as Administrator)
-        
-        # For Linux, prefix with "sudo"
-        npm -g install ionic bower
+Important: The SDK is a work in progress. If you want to provide an implementation (java, C#, AngularJS/JavaScript) or
+anything of your choice (e.g. a research project of yours), please contact a project member.
 
-   Note: If you don't install NodeJS modules globally (i.e. user-specific), you'll need to add `~/node_modules/.bin` to `PATH`.
-3. (If you want to deploy to Android) Install Cordova: `npm -g install cordova`
-4. Lumen mobile client needs RabbitMQ to communicate over Stomp-WebSockets.
-   Windows: Install [Erlang OTP](http://www.erlang.org/download.html) and [RabbitMQ for Windows](https://www.rabbitmq.com/install-windows.html)
-5. Install [RabbitMQ Web-Stomp Plugin](http://www.rabbitmq.com/web-stomp.html):
-
-        # For Linux, prefix with "sudo"
-        rabbitmq-plugins enable rabbitmq_web_stomp
-        #for Linux : setelah instal restart rabbitmq dengan perintah dibawah
-        sudo service rabbitmq-server restart
-   ```
-
-## Serve the App
-
-      #masuk ke direktory git/lumen-sdk/mobile
-
-Use command prompt on `mobile` directory, run: `ionic serve`
-
-  
-
-
-    
-
+Contributions from non-academic people are welcome, too.
