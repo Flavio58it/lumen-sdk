@@ -1,8 +1,10 @@
 package id.ac.itb.lumen.core
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import groovy.transform.CompileStatic
+import org.joda.time.DateTime
 
 /**
  * Used to either consume from someone's Facebook wall
@@ -15,10 +17,17 @@ import groovy.transform.CompileStatic
 class StatusUpdate {
 
     /**
+     * e.g. 10203536415231264_425825740901928
+     */
+    @JsonProperty('id')
+    String thingId
+    /**
      * When publishing to {@link Channel#SOCIAL_EXPRESSION}, this must be left empty.
      */
     Person from
     String message
     SocialChannel channel
-
+    DateTime dateCreated
+    DateTime datePublished
+    DateTime dateModified
 }

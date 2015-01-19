@@ -1,5 +1,6 @@
 package id.ac.itb.lumen.core
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import groovy.transform.CompileStatic
@@ -12,6 +13,11 @@ import groovy.transform.CompileStatic
 @JsonSubTypes(@JsonSubTypes.Type(name="Person", value=Person.class))
 class Person {
 
+    /**
+     * i.e. 10206034239078191
+     */
+    @JsonProperty('id')
+    String thingId
     /**
      * i.e. {@code Ahmad Syarif}
      */
