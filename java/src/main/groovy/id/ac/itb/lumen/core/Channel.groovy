@@ -53,7 +53,7 @@ enum Channel {
     }
 
     def key(String agentId) {
-        return "lumen." + agentId + "." + keySuffix;
+        "lumen." + agentId + "." + keySuffix
     }
 
     @Override
