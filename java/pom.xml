@@ -88,10 +88,10 @@
 
 	<build>
 		<plugins>
-			<plugin>
+			<!--<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+			</plugin>-->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
@@ -118,5 +118,16 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>soluvas-public-snapshots</id>
+			<url>http://nexus.bippo.co.id/nexus/content/repositories/soluvas-public-snapshots/</url>
+		</snapshotRepository>
+		<repository>
+			<id>soluvas-public-releases</id>
+			<url>http://nexus.bippo.co.id/nexus/content/repositories/soluvas-public-releases/</url>
+		</repository>
+	</distributionManagement>
 
 </project>
