@@ -457,6 +457,11 @@ Observed a social post ([schema:CreativeWork](http://schema.org/CreativeWork)), 
   "from" : {
     "@type" : "Person",
     "name" : "Marzuki Syahfirin",
+    "url" : "https://www.facebook.com/10203536415231264",
+    "photo" : {
+      "@type" : "ImageObject",
+      "url" : "https://graph.facebook.com/10203536415231264/picture"
+    },
     "id" : "10203536415231264"
   },
   "message" : "Marzuki Syahfirin likes a post.",
@@ -468,6 +473,7 @@ Observed a social post ([schema:CreativeWork](http://schema.org/CreativeWork)), 
   "dateCreated" : "2015-01-19T01:07:44.000Z",
   "datePublished" : "2015-01-19T01:07:44.000Z",
   "dateModified" : "2015-01-19T01:07:44.000Z",
+  "url" : "https://www.facebook.com/10203536415231264_425825740901928",
   "id" : "10203536415231264_425825740901928"
 }
 {% endhighlight %}
