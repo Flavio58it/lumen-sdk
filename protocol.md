@@ -607,6 +607,10 @@ A human face is recognized:
 The recognition [truth value](http://en.wikipedia.org/wiki/Truth_value) intentionally mimics [OpenCog's TruthValue](http://wiki.opencog.org/w/TruthValue)
 to improve interoperability.
 
+### /topic/lumen.AGENT_ID.human.recognition
+
+TODO
+
 ### /topic/lumen.AGENT_ID.action.recognition
 
 TODO
