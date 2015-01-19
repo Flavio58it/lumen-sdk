@@ -42,7 +42,7 @@ angular.module('starter.controllers', [])
     $scope.client = ngstomp(stompUri);
     $scope.client.connect('guest', 'guest', function() {
         $log.info('Stomp connected to', stompUri);
-        $scope.client.subscribe('/topic/lumen.arkan.human.recognition', function(msg) {
+        $scope.client.subscribe('/topic/lumen.arkan.face.recognition', function(msg) {
             var recognized = JSON.parse(msg.body);
             recognized.cssStyle = {
                 left: recognized.minPoint.x + 'px',
@@ -106,7 +106,7 @@ angular.module('starter.controllers', [])
     $scope.client = ngstomp(stompUri);
     $scope.client.connect('guest', 'guest', function() {
         $log.info('Stomp connected to', stompUri);
-        $scope.client.subscribe('/topic/lumen.arkan.human.recognition', function(msg) {
+        $scope.client.subscribe('/topic/lumen.arkan.face.recognition', function(msg) {
             var recognized = JSON.parse(msg.body);
             recognized.cssStyle = {
                 left: recognized.minPoint.x + 'px',
