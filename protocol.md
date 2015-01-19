@@ -451,6 +451,27 @@ Observed a social post ([schema:CreativeWork](http://schema.org/CreativeWork)), 
 }
 {% endhighlight %}
 
+{% highlight json %}
+{
+  "@type" : "StatusUpdate",
+  "from" : {
+    "@type" : "Person",
+    "name" : "Marzuki Syahfirin",
+    "id" : "10203536415231264"
+  },
+  "message" : "Marzuki Syahfirin likes a post.",
+  "channel" : {
+    "@type" : "SocialChannel",
+    "name" : "Facebook",
+    "id" : "facebook"
+  },
+  "dateCreated" : "2015-01-19T01:07:44.000Z",
+  "datePublished" : "2015-01-19T01:07:44.000Z",
+  "dateModified" : "2015-01-19T01:07:44.000Z",
+  "id" : "10203536415231264_425825740901928"
+}
+{% endhighlight %}
+
 Receive a group mention, e.g. Facebook wall post, mentioned in a post, or mentioned in a comment.
 
 Facebook wall post or mentioned in a post:
