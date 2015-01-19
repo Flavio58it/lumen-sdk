@@ -34,12 +34,12 @@ A [Mobile App](/lumen-sdk/app/) is also provided to control Lumen robot using we
 ## Messaging Channels and Structures
 
 Each Lumen robot "instance" is assigned an ID which is used as the topic/queue's routing key prefix,
-e.g. for `arkan`, the available topics and queues are:
+e.g. for `arkan`, the available (Stomp) topics and queues are:
 
 1. `/topic/lumen.arkan.motion`
 2. `/topic/lumen.arkan.camera`
 3. `/topic/lumen.arkan.sonar`
-4. `/queue/lumen.arkan.social.expression`
+4. `/topic/lumen.arkan.social.expression`
 5. etc.
 
 ### /topic/lumen.AGENT_ID.motion
@@ -499,7 +499,7 @@ Mentioned in a Facebook comment:
 }
 {% endhighlight %}
 
-### /queue/lumen.AGENT_ID.social.expression
+### /topic/lumen.AGENT_ID.social.expression
 
 Publishes a status update to Facebook:
 
