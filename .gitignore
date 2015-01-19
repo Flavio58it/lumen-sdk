@@ -6,3 +6,17 @@ _site
 Gemfile.lock
 node_modules
 package.json
+.directory
+
+# Intellij
+**/.idea/copyright
+**/.idea/libraries
+**/.idea/scopes
+**/.idea/.name
+**/.idea/*.xml
+*.iml
+*.ipr
+*.iws
+out/
+.idea_modules/
+atlassian-ide-plugin.xml

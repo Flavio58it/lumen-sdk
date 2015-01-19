@@ -31,18 +31,18 @@ The protocol is implemented by corresponding SDKs in the following languages:
 
 A [Mobile App](/lumen-sdk/app/) is also provided to control Lumen robot using web browser or Android mobile device.
 
-## Messaging Topics and Structures
+## Messaging Channels and Structures
 
 Each Lumen robot "instance" is assigned an ID which is used as the topic/queue's routing key prefix,
 e.g. for `arkan`, the available topics and queues are:
 
-1. `/topic/arkan.motion`
-2. `/topic/arkan.camera`
-3. `/topic/arkan.sonar`
-4. `/queue/arkan.social.expression`
+1. `/topic/lumen.arkan.motion`
+2. `/topic/lumen.arkan.camera`
+3. `/topic/lumen.arkan.sonar`
+4. `/queue/lumen.arkan.social.expression`
 5. etc.
 
-### /topic/lumen.ROBOT_ID.motion
+### /topic/lumen.AGENT_ID.motion
 
 #### Wake up
 
@@ -215,7 +215,7 @@ Close and open hand: (TODO: should we use e.g. `SetHandState` instead?)
 }
 {% endhighlight %}
 
-### /topic/lumen.ROBOT_ID.posture
+### /topic/lumen.AGENT_ID.posture
 
 #### Go to posture:
 
@@ -235,7 +235,7 @@ Close and open hand: (TODO: should we use e.g. `SetHandState` instead?)
 }
 {% endhighlight %}
 
-### /topic/lumen.ROBOT_ID.camera
+### /topic/lumen.AGENT_ID.camera
 
 Get image remote: (one-off)
 
@@ -264,7 +264,7 @@ Reply: (see [Data URI](http://en.wikipedia.org/wiki/Data_URI_scheme))
 }
 {% endhighlight %}
 
-### /topic/lumen.ROBOT_ID.camera.stream
+### /topic/lumen.AGENT_ID.camera.stream
 
 Image streamed from camera:
 
@@ -279,7 +279,7 @@ Image streamed from camera:
 }
 {% endhighlight %}
 
-### /topic/lumen.ROBOT_ID.speech.synthesis
+### /topic/lumen.AGENT_ID.speech.synthesis
 
 Say text:
 
@@ -299,11 +299,11 @@ Set language:
 }
 {% endhighlight %}
 
-### /topic/lumen.ROBOT_ID.speech.recognition
+### /topic/lumen.AGENT_ID.speech.recognition
 
 TODO
 
-### /topic/lumen.ROBOT_ID.battery
+### /topic/lumen.AGENT_ID.battery
 
 Get battery percentage:
 
@@ -356,7 +356,7 @@ Reply:
 }
 {% endhighlight %}
 
-### /topic/lumen.ROBOT_ID.sensors
+### /topic/lumen.AGENT_ID.sensors
 
 Get tactile:
 
@@ -412,7 +412,7 @@ Reply:
 }
 {% endhighlight %}
 
-### /topic/lumen.ROBOT_ID.sonar
+### /topic/lumen.AGENT_ID.sonar
 
 Get distance:
 
@@ -432,7 +432,7 @@ Reply:
 }
 {% endhighlight %}
 
-### /topic/lumen.ROBOT_ID.social.perception
+### /topic/lumen.AGENT_ID.social.perception
 
 Observed a social post ([schema:CreativeWork](http://schema.org/CreativeWork)), e.g. Facebook friend's status post, Facebook Group post, news feed, etc.
 
@@ -499,7 +499,7 @@ Mentioned in a Facebook comment:
 }
 {% endhighlight %}
 
-### /queue/lumen.ROBOT_ID.social.expression
+### /queue/lumen.AGENT_ID.social.expression
 
 Publishes a status update to Facebook:
 
@@ -576,7 +576,7 @@ Publishes a post to Facebook Group:
 }
 {% endhighlight %}
 
-### /topic/lumen.ROBOT_ID.human.recognition
+### /topic/lumen.AGENT_ID.face.recognition
 
 A human face is recognized:
 
@@ -606,3 +606,7 @@ A human face is recognized:
 
 The recognition [truth value](http://en.wikipedia.org/wiki/Truth_value) intentionally mimics [OpenCog's TruthValue](http://wiki.opencog.org/w/TruthValue)
 to improve interoperability.
+
+### /topic/lumen.AGENT_ID.action.recognition
+
+TODO
