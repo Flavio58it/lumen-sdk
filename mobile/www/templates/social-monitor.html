@@ -1,0 +1,11 @@
+<ion-view view-title="Social: Monitor">
+  <ion-content>
+      <ion-list>
+        <ion-item class="item-avatar item-button-right" ng-repeat="post in posts">
+            <img ng-src="{{post.from.photo.url}}"/>
+            <strong><a ng-href="{{post.from.url}}">{{post.from.name}}</a></strong>: <span>{{post.message}}</span>
+            <a class="button button-light" ng-href="{{post.url}}"><i class="icon ion-link"></i></a>
+        </ion-item>
+      </ion-list>
+  </ion-content>
+</ion-view>

@@ -1,5 +1,6 @@
 package id.ac.itb.lumen.core
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import groovy.transform.CompileStatic
@@ -11,6 +12,7 @@ import org.joda.time.DateTime
  * @see id.co.bippo.common.rs.commerceplug.ImageObject
  */
 @CompileStatic
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonTypeInfo(use=JsonTypeInfo.Id.NAME, property="@type", defaultImpl=ImageObject.class)
 @JsonSubTypes(@JsonSubTypes.Type(name="ImageObject", value=ImageObject.class))
 class ImageObject {
@@ -24,5 +26,9 @@ class ImageObject {
      * or using Data URI with base64 encoding, e.g. {@code data:image/png;base64,iV...II=}.
      */
     String contentUrl
+    /**
+     * Normal or thumbnail image, e.g. used by {@link Person#photo}
+     */
+    String url
 
 }

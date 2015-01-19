@@ -213,6 +213,24 @@ angular.module('starter.controllers', [])
     };
 })
 
+.controller('SocialMonitorCtrl', function($scope, $stateParams, $log, ngstomp) {
+    $scope.posts = [];
+
+    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
+    $log.info('Stomp connecting to', stompUri);
+    $scope.client = ngstomp(stompUri);
+    $scope.client.connect('guest', 'guest', function() {
+        $log.info('Stomp connected to', stompUri);
+        $scope.client.subscribe('/topic/lumen.arkan.social.perception', function(msg) {
+            var post = JSON.parse(msg.body);
+            $scope.posts.push(post);
+        });
+    }, function(err) {
+        $log.error('Stomp error:', err);
+        $scope.client = null;
+    }, '/');
+})
+
 .controller('PlaylistsCtrl', function($scope) {
   $scope.playlists = [
     { title: 'Reggae', id: 1 },

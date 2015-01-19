@@ -58,6 +58,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'AngularStomp', 'webc
     }
   })
 
+  .state('app.social-monitor', {
+    url: "/social-monitor",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/social-monitor.html",
+        controller: 'SocialMonitorCtrl'
+      }
+    }
+  })
+
   .state('app.search', {
     url: "/search",
     views: {
