@@ -447,7 +447,7 @@ Observed a social post ([schema:CreativeWork](http://schema.org/CreativeWork)), 
   "channel": {
     "@type": "SocialChannel",
     "network": "Facebook"
-  },
+  }
 }
 {% endhighlight %}
 
