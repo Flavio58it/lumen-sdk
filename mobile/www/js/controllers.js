@@ -213,7 +213,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('SocialMonitorCtrl', function($scope, $stateParams, $log, ngstomp) {
+.controller('SocialMonitorCtrl', function($scope, $stateParams, $log, $ionicScrollDelegate, ngstomp) {
     $scope.posts = [];
 
     var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
@@ -224,6 +224,7 @@ angular.module('starter.controllers', [])
         $scope.client.subscribe('/topic/lumen.arkan.social.perception', function(msg) {
             var post = JSON.parse(msg.body);
             $scope.posts.push(post);
+            $ionicScrollDelegate.scrollBottom(true);
         });
     }, function(err) {
         $log.error('Stomp error:', err);
