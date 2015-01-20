@@ -3,10 +3,10 @@
 1. Install [NodeJS](http://nodejs.org/download/).
 
     **Windows:** Download and install [NodeJS](http://nodejs.org/download/).
-    Post-installation: create `.npm` directory and set [NPM proxy settings](http://jjasonclark.com/how-to-setup-node-behind-web-proxy)
+    Post-installation: set [NPM proxy settings](http://jjasonclark.com/how-to-setup-node-behind-web-proxy)
     as follows. Run command prompt as Administrator. From your user home directory:
 
-        mkdir .npm
+        npm -V -g install ionic # after progress shows up, press Ctrl+C then continue below
         npm config set proxy http://username:password@cache.itb.ac.id:8080
         npm config set https-proxy http://username:password@cache.itb.ac.id:8080
 
