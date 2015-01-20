@@ -478,6 +478,36 @@ Observed a social post ([schema:CreativeWork](http://schema.org/CreativeWork)), 
 }
 {% endhighlight %}
 
+Twitter home timeline:
+
+{% highlight json %}
+{
+  "@type" : "StatusUpdate",
+  "from" : {
+    "@type" : "Person",
+    "name" : "Narliswandi Piliang",
+    "url" : "https://twitter.com/IwanPiliang7",
+    "slug" : "IwanPiliang7",
+    "photo" : {
+      "@type" : "ImageObject",
+      "url" : "https://pbs.twimg.com/profile_images/490109846574727168/Z_JlloRU_normal.jpeg"
+    },
+    "id" : "19237217"
+  },
+  "message" : "RT @hidayatullahicb: Assalamu'alaikum @IwanPiliang7 Mari berpartisipasi untuk para penghafal Qur'an dengan menyalurkan donasi Anda di http:…",
+  "channel" : {
+    "@type" : "SocialChannel",
+    "name" : "Twitter",
+    "id" : "twitter"
+  },
+  "dateCreated" : "2015-01-20T11:34:04.000Z",
+  "datePublished" : "2015-01-20T11:34:04.000Z",
+  "dateModified" : "2015-01-20T11:34:04.000Z",
+  "url" : "https://twitter.com/IwanPiliang7/statuses/557501310153408512",
+  "id" : "557501310153408512"
+} 
+{% endhighlight %}
+
 Receive a group mention, e.g. Facebook wall post, mentioned in a post, or mentioned in a comment.
 
 Facebook wall post or mentioned in a post:
@@ -524,6 +554,35 @@ Mentioned in a Facebook comment:
     "id": "549283_927392"
   }
 }
+{% endhighlight %}
+
+Twitter direct message:
+
+{% highlight json %}
+{
+  "@type" : "PrivateMessage",
+  "from" : {
+    "@type" : "Person",
+    "name" : "Hendy Irawan",
+    "url" : "https://twitter.com/hendybippo",
+    "slug" : "hendybippo",
+    "photo" : {
+      "@type" : "ImageObject",
+      "url" : "https://pbs.twimg.com/profile_images/378800000076151845/a65f4a92d1a9cc28fe4660d9e8fc1e8c_normal.jpeg"
+    },
+    "id" : "19413"
+  },
+  "message" : "Uhuyyy",
+  "channel" : {
+    "@type" : "SocialChannel",
+    "name" : "Twitter",
+    "id" : "twitter"
+  },
+  "dateCreated" : "2015-01-20T12:20:52.000Z",
+  "datePublished" : "2015-01-20T12:20:52.000Z",
+  "dateModified" : "2015-01-20T12:20:52.000Z",
+  "id" : "557513088044257280"
+} 
 {% endhighlight %}
 
 ### /topic/lumen.AGENT_ID.social.expression
