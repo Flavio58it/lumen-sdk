@@ -25,9 +25,13 @@ class Person {
      */
     String name
     /**
-     * i.e. https://www.facebook.com/marzuki.rd
+     * e.g. https://www.facebook.com/marzuki.rd
      */
     String url
+    /**
+     * Username/slug (usually case-insensitive and punctuation-insensitive) e.g. {@code marzuki.rd}
+     */
+    String slug
     ImageObject photo
 
 }
