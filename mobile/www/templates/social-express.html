@@ -1,0 +1,13 @@
+<ion-view view-title="Social: Express">
+    <ion-content>
+        <label class="item item-input">
+            <input type="text" ng-model="post.message" placeholder="Message..."/>
+        </label>
+        <label class="item item-input item-select">
+            <div class="input-label">Network</div>
+            <select ng-model="post.network" ng-options="network.name for network in networks">
+            </select>
+        </label>
+        <button class="button button-positive button-block" ng-click="submit()">Post</button>
+    </ion-content>
+</ion-view>

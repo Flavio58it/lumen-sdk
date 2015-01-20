@@ -67,6 +67,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'AngularStomp', 'webc
       }
     }
   })
+  .state('app.social-express', {
+    url: "/social-express",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/social-express.html",
+        controller: 'SocialExpressCtrl'
+      }
+    }
+  })
 
   .state('app.search', {
     url: "/search",
