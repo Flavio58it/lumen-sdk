@@ -7,8 +7,8 @@
     as follows. Run command prompt as Administrator. From your user home directory:
 
         npm -V -g install ionic # after progress shows up, press Ctrl+C then continue below
-        npm config set proxy http://username:password@cache.itb.ac.id:8080
-        npm config set https-proxy http://username:password@cache.itb.ac.id:8080
+        npm -g config set proxy http://username:password@cache.itb.ac.id:8080
+        npm -g config set https-proxy http://username:password@cache.itb.ac.id:8080
 
     **Linux:**
 
