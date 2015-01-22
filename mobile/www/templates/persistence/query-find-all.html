@@ -1,0 +1,17 @@
+<ion-view view-title="Persistence: Query Find All">
+    <ion-content>
+        <label class="item item-input item-select">
+            <div class="input-label">Entity Class</div>
+            <select ng-model="form.class"
+                    ng-options="class.label for class in classes">
+            </select>
+        </label>
+        <button class="button button-positive button-block" ng-click="submit()">Query Find All</button>
+        
+        <ion-list>
+            <ion-item class="item-text-wrap" ng-repeat="resource in resources.content">
+                <strong>{{resource.label}}</strong> <small>{{resource.uri}}</small>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

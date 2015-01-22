@@ -22,15 +22,15 @@
 
 2. Install [Ionic](http://ionicframework.com/) and [Bower](http://bower.io/).
 
-    **Windows:** Run command prompt as Administrator:
+    **Windows:** Run _Node.js command prompt_ as Administrator:
 
-        npm -g install ionic bower
+        npm -V -g install ionic bower
 
     Note: If you don't install NodeJS modules globally (i.e. user-specific), you'll need to add `~/node_modules/.bin` to `PATH`.
 
     **Linux:**
 
-        sudo npm -g install ionic bower
+        sudo npm -V -g install ionic bower
 
 3. (If you want to deploy to Android/iOS/Windows Phone) Install Cordova: `npm -g install cordova`
 
@@ -44,7 +44,7 @@
 
 5. Install [RabbitMQ Web-Stomp Plugin](http://www.rabbitmq.com/web-stomp.html):
 
-    **Windows:**
+    **Windows:** Run _RabbitMQ command prompt_ as Normal User:
 
         rabbitmq-plugins enable rabbitmq_web_stomp
 
@@ -55,15 +55,13 @@
 
 ## Serve the App
 
-Use command prompt, to `mobile` directory, and run: `ionic serve`, e.g.
-
-Windows:
+**Windows:** Use _Node.js command prompt_, to `mobile` directory, and run: `ionic serve`, e.g.
 
     # go to directory git/lumen-sdk/mobile
     cd git\lumen-sdk\mobile
     ionic serve
 
-Linux:
+**Linux:** Use command prompt, to `mobile` directory, and run: `ionic serve`, e.g.
 
     # go to directory git/lumen-sdk/mobile
     cd git/lumen-sdk/mobile

@@ -33,6 +33,39 @@ angular.module('starter.controllers', [])
   };
 })
 
+.controller('PersistenceQueryFindAllCtrl', function($scope, $stateParams, $log, ngstomp) {
+    $scope.query = {
+        '@type': 'FindAllQuery',
+        classUri: null
+    };
+    $scope.resources = {content: []};
+    $scope.classes = [
+        {label: "person", uri: "http://yago-knowledge.org/resource/wordnet_person_100007846"},
+        {label: "city", uri: "http://yago-knowledge.org/resource/wordnet_city_108524735"}
+    ];
+    $scope.form = {};
+    
+    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
+    $log.info('Stomp connecting to', stompUri);
+    $scope.client = ngstomp(stompUri);
+    $scope.client.connect('guest', 'guest', function() {
+        $log.info('Stomp connected to', stompUri);
+        $scope.client.subscribe('/topic/lumen.arkan.persistence.replyfact', function(msg) {
+            $scope.resources = JSON.parse(msg.body);
+        });
+    }, function(err) {
+        $log.error('Stomp error:', err);
+        $scope.client = null;
+    }, '/');
+    $scope.submit = function() {
+        $scope.query.classUri = $scope.form.class.uri;
+        $log.info('FindAllQuery', $scope.query, JSON.stringify($scope.query));
+        $scope.client.send('/topic/lumen.arkan.persistence.fact',
+            {"reply-to": '/temp-queue/persistence'}, JSON.stringify($scope.query));
+    };
+    
+})
+
 .controller('FaceRecognitionImgCtrl', function($scope, $stateParams, $log, ngstomp) {
     $scope.imageObject = null;
     $scope.recognizeds = [];

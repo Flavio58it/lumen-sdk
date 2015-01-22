@@ -39,6 +39,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'AngularStomp', 'webc
     }
   })
 
+  .state('app.persistence-query-find-all', {
+    url: "/persistence/query-find-all",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/persistence/query-find-all.html",
+        controller: 'PersistenceQueryFindAllCtrl'
+      }
+    }
+  })
+  
   .state('app.face-recognition-img', {
     url: "/face-recognition-img",
     views: {
