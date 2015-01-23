@@ -40,19 +40,20 @@ angular.module('starter.controllers', [])
     };
     $scope.resources = {content: []};
     $scope.classes = [
-        {label: "person", uri: "http://yago-knowledge.org/resource/wordnet_person_100007846"},
-        {label: "city", uri: "http://yago-knowledge.org/resource/wordnet_city_108524735"}
+        {label: "person", uri: 'http://yago-knowledge.org/resource/wordnet_person_100007846'},
+        {label: "city", uri: 'http://yago-knowledge.org/resource/wordnet_city_108524735'}
     ];
-    $scope.form = {};
+    $scope.form = {class: $scope.classes[0]};
     
     var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
     $log.info('Stomp connecting to', stompUri);
     $scope.client = ngstomp(stompUri);
     $scope.client.connect('guest', 'guest', function() {
         $log.info('Stomp connected to', stompUri);
-        $scope.client.subscribe('/topic/lumen.arkan.persistence.replyfact', function(msg) {
+        $scope.client.stompClient.subscriptions['/temp-queue/persistence.fact'] = function(msg) {
+            $log.debug('Received /temp-queue/persistence.fact:', msg.body);
             $scope.resources = JSON.parse(msg.body);
-        });
+        };
     }, function(err) {
         $log.error('Stomp error:', err);
         $scope.client = null;
@@ -61,9 +62,8 @@ angular.module('starter.controllers', [])
         $scope.query.classUri = $scope.form.class.uri;
         $log.info('FindAllQuery', $scope.query, JSON.stringify($scope.query));
         $scope.client.send('/topic/lumen.arkan.persistence.fact',
-            {"reply-to": '/temp-queue/persistence'}, JSON.stringify($scope.query));
+            {"reply-to": '/temp-queue/persistence.fact'}, JSON.stringify($scope.query));
     };
-    
 })
 
 .controller('FaceRecognitionImgCtrl', function($scope, $stateParams, $log, ngstomp) {

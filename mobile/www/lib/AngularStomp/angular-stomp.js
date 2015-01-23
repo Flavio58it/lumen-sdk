@@ -22,7 +22,7 @@ angular.module('AngularStomp', []).
                 $rootScope.$apply(function() {
                     callback(args[0]);
                 })
-            })
+            });
         }
 
         NGStomp.prototype.send = function(queue, headers, data) {
