@@ -36,12 +36,12 @@ angular.module('starter.controllers', [])
 .controller('PersistenceQueryFindAllCtrl', function($scope, $stateParams, $log, ngstomp) {
     $scope.query = {
         '@type': 'FindAllQuery',
-        classUri: null
+        classRef: null
     };
     $scope.resources = {content: []};
     $scope.classes = [
-        {label: "person", uri: 'http://yago-knowledge.org/resource/wordnet_person_100007846'},
-        {label: "city", uri: 'http://yago-knowledge.org/resource/wordnet_city_108524735'}
+        {label: "person", ref: 'yago:wordnet_person_100007846'},
+        {label: "city", ref: 'yago:wordnet_city_108524735'}
     ];
     $scope.form = {class: $scope.classes[0]};
     
@@ -59,7 +59,7 @@ angular.module('starter.controllers', [])
         $scope.client = null;
     }, '/');
     $scope.submit = function() {
-        $scope.query.classUri = $scope.form.class.uri;
+        $scope.query.classRef = $scope.form.class.ref;
         $log.info('FindAllQuery', $scope.query, JSON.stringify($scope.query));
         $scope.client.send('/topic/lumen.arkan.persistence.fact',
             {"reply-to": '/temp-queue/persistence.fact'}, JSON.stringify($scope.query));
