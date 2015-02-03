@@ -52,7 +52,9 @@ angular.module('starter.controllers', [])
         $log.info('Stomp connected to', stompUri);
         $scope.client.stompClient.subscriptions['/temp-queue/persistence.fact'] = function(msg) {
             $log.debug('Received /temp-queue/persistence.fact:', msg.body);
-            $scope.resources = JSON.parse(msg.body);
+            $scope.$apply(function() {
+                $scope.resources = JSON.parse(msg.body);
+            });
         };
     }, function(err) {
         $log.error('Stomp error:', err);
