@@ -60,7 +60,14 @@ angular.module('starter.controllers', [])
         $scope.client.stompClient.subscriptions['/temp-queue/persistence.fact'] = function(msg) {
             $log.debug('Received /temp-queue/persistence.fact:', msg.body);
             $scope.$apply(function() {
-                $scope.resources = JSON.parse(msg.body);
+                var json = JSON.parse(msg.body);
+                if (json['@type'] == 'Resources') {
+                    $scope.resources = json;
+                } else {
+                    $log.error(json.exceptionClass + ': ' + json.message);
+                    $log.error(json.stackTrace);
+                    $window.alert(json.exceptionClass + ': ' + json.message + '\n' + json.stackTrace);
+                }
             });
         };
     }, function(err) {
@@ -72,6 +79,44 @@ angular.module('starter.controllers', [])
         $log.info('FindAllQuery', $scope.query, JSON.stringify($scope.query));
         $scope.client.send('/topic/lumen.arkan.persistence.fact',
             {"reply-to": '/temp-queue/persistence.fact'}, JSON.stringify($scope.query));
+    };
+})
+
+.controller('PersistenceQueryCypherCtrl', function($scope, $stateParams, $log, $window, ngstomp) {
+    $scope.resources = {content: []};
+    $scope.form = {
+        '@type': 'CypherQuery',
+        query: 'MATCH (n:Resource) -[:yago_graduatedFrom]-> (:Resource {href: "yago:Bandung_Institute_of_Technology"})\n' +
+            'RETURN n LIMIT 25;'
+    };
+
+    var tempQueue = '/temp-queue/persistence.fact.cypher';
+    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
+    $log.info('Stomp connecting to', stompUri);
+    $scope.client = ngstomp(stompUri);
+    $scope.client.connect('guest', 'guest', function() {
+        $log.info('Stomp connected to', stompUri);
+        $scope.client.stompClient.subscriptions[tempQueue] = function(msg) {
+            $log.debug('Received ', tempQueue, ':', msg.body);
+            $scope.$apply(function() {
+                var json = JSON.parse(msg.body);
+                if (json['@type'] == 'Resources') {
+                    $scope.resources = json;
+                } else {
+                    $log.error(json.exceptionClass + ': ' + json.message);
+                    $log.error(json.stackTrace);
+                    $window.alert(json.exceptionClass + ': ' + json.message + '\n' + json.stackTrace);
+                }
+            });
+        };
+    }, function(err) {
+        $log.error('Stomp error:', err);
+        $scope.client = null;
+    }, '/');
+    $scope.submit = function() {
+        $log.info('CypherQuery', $scope.form, JSON.stringify($scope.form));
+        $scope.client.send('/topic/lumen.arkan.persistence.fact',
+            {"reply-to": tempQueue}, JSON.stringify($scope.form));
     };
 })
 

@@ -48,7 +48,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'AngularStomp', 'webc
       }
     }
   })
-  
+  .state('app.persistence-query-cypher', {
+    url: "/persistence/query-cypher",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/persistence/query-cypher.html",
+        controller: 'PersistenceQueryCypherCtrl'
+      }
+    }
+  })
+
   .state('app.face-recognition-img', {
     url: "/face-recognition-img",
     views: {

@@ -1,0 +1,23 @@
+<ion-view view-title="Persistence: Query - Cypher">
+    <ion-content>
+        <label class="item item-input">
+            <div class="input-label">Query</div>
+            <textarea ng-model="form.query" style="text-align: left" rows="5">
+            </textarea>
+        </label>
+        <label class="item item-input item-select">
+            <select ng-model="form.class"
+                    ng-options="class.label for class in classes">
+            </select>
+        </label>
+        <button class="button button-positive button-block" ng-click="submit()">Execute</button>
+        
+        <ion-list>
+            <ion-item class="item-text-wrap" ng-repeat="row in resources.content">
+                <ul ng-repeat="cell in row.cells">
+                    <li><strong>{{cell.name}}</strong>: {{cell.value}}</li>
+                </ul>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>
