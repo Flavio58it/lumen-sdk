@@ -53,7 +53,14 @@ angular.module('starter.controllers', [])
         $scope.client.stompClient.subscriptions['/temp-queue/persistence.fact'] = function(msg) {
             $log.debug('Received /temp-queue/persistence.fact:', msg.body);
             $scope.$apply(function() {
-                $scope.resources = JSON.parse(msg.body);
+                var json = JSON.parse(msg.body);
+                if (json['@type'] == 'Resources') {
+                    $scope.resources = json;
+                } else {
+                    $log.error(json.exceptionClass + ': ' + json.message);
+                    $log.error(json.stackTrace);
+                    $window.alert(json.exceptionClass + ': ' + json.message + '\n' + json.stackTrace);
+                }
             });
         };
     }, function(err) {
