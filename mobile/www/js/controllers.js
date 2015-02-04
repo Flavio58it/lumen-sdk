@@ -41,7 +41,14 @@ angular.module('starter.controllers', [])
     $scope.resources = {content: []};
     $scope.classes = [
         {label: "person", ref: 'yago:wordnet_person_100007846'},
-        {label: "city", ref: 'yago:wordnet_city_108524735'}
+        {label: "city", ref: 'yago:wordnet_city_108524735'},
+        {label: "organization", ref: 'yago:wordnet_organization_108008335'}
+        {label: "alumnus", ref: 'yago:wordnet_alumnus_109786338'}
+        {label: "mountain", ref: 'yago:wordnet_mountain_109359803'}
+        {label: "lake", ref: 'yago:wordnet_lake_109328904'}
+        {label: "building", ref: 'yago:wordnet_building_102913152'}
+        {label: "island", ref: 'yago:wordnet_island_109316454'}
+        {label: "island", ref: 'yago:wordnet_island_109316454'}
     ];
     $scope.form = {class: $scope.classes[0]};
     
