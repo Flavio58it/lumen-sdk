@@ -79,8 +79,8 @@ angular.module('starter.controllers', [])
     $scope.resources = {content: []};
     $scope.form = {
         '@type': 'CypherQuery',
-        query: 'MATCH (n:Resource) -[:yago_graduatedFrom]-> (:Resource {href: "yago:Bandung_Institute_of_Technology"})\n' +
-            'RETURN n LIMIT 25;'
+        query: 'MATCH (n:Resource {href: \'lumen:Budhi_Yulianto\'}) -[r]-> (x)\n' +
+            'RETURN r, x;'
     };
 
     var tempQueue = '/temp-queue/persistence.fact.cypher';

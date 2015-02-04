@@ -20,6 +20,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'AngularStomp', 'webc
   });
 })
 
+.filter('trusted', ['$sce', function ($sce) {
+    return function(url) {
+        return $sce.trustAsResourceUrl(url);
+    };
+}])
+
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
