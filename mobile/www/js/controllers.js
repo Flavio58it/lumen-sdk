@@ -33,6 +33,40 @@ angular.module('starter.controllers', [])
   };
 })
 
+.controller('AvatarRemoteControlCtrl', function($scope, $stateParams, $log, ngstomp) {
+
+    var stompUri = 'http://167.205.66.130:15674/stomp';
+    $log.info('Stomp connecting to', stompUri);
+    $scope.client = ngstomp(stompUri);
+    $scope.client.connect('lumen', 'lumen', function() {
+        $log.info('Stomp connected to', stompUri);
+
+    }, function(err) {
+        $log.error('Stomp error:', err);
+        $scope.client = null;
+    }, '/');
+    $scope.wakeUp = function() {
+        var wakeMsg = {type : "motion",method : "wakeUp"};
+        $log.info('Remote Control', wakeMsg, JSON.stringify(wakeMsg));
+        $scope.client.send('/topic/avatar.NAO.command',
+            {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(wakeMsg));
+    };
+    $scope.goToPosture = function() {
+            var par = {postureName: "Stand", speed: 0.2}
+            var goToPosture = {type : "posture",method : "goToPosture", parameter: par};
+            $log.info('Remote Control', goToPosture, JSON.stringify(goToPosture));
+            $scope.client.send('/topic/avatar.NAO.command',
+                {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(goToPosture));
+    };
+    $scope.rest = function() {
+
+                var restMsg = {type : "motion",method : "rest"};
+                $log.info('Remote Control', restMsg, JSON.stringify(restMsg));
+                $scope.client.send('/topic/avatar.NAO.command',
+                    {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(restMsg));
+        };
+})
+
 .controller('PersistenceQueryFindAllCtrl', function($scope, $stateParams, $log, ngstomp) {
     $scope.query = {
         '@type': 'FindAllQuery',
