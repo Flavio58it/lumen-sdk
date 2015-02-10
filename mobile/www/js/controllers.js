@@ -62,35 +62,35 @@ angular.module('starter.controllers', [])
             {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(wakeMsg));
     };
     $scope.goToPosture = function() {
-            var par = {postureName: "Stand", speed: 0.4};
+            var par = {postureName: "Stand", speed: 0.5};
             var goToPosture = {type : "posture",method : "goToPosture", parameter: par};
             $log.info('Remote Control', goToPosture, JSON.stringify(goToPosture));
             $scope.client.send('/topic/avatar.NAO.command',
                 {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(goToPosture));
     };
     $scope.sit = function() {
-            var par = {postureName: "Sit", speed: 0.4};
+            var par = {postureName: "Sit", speed: 0.5};
             var msg = {type : "posture", method : "goToPosture", parameter: par};
             $log.info('Remote Control', msg, JSON.stringify(msg));
             $scope.client.send('/topic/avatar.NAO.command',
                 {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
     };
     $scope.sitRelax = function() {
-            var par = {postureName: "SitRelax", speed: 0.4};
+            var par = {postureName: "SitRelax", speed: 0.5};
             var msg = {type : "posture", method : "goToPosture", parameter: par};
             $log.info('Remote Control', msg, JSON.stringify(msg));
             $scope.client.send('/topic/avatar.NAO.command',
                 {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
     };
     $scope.standInit = function() {
-            var par = {postureName: "StandInit", speed: 0.4};
+            var par = {postureName: "StandInit", speed: 0.5};
             var msg = {type : "posture", method : "goToPosture", parameter: par};
             $log.info('Remote Control', msg, JSON.stringify(msg));
             $scope.client.send('/topic/avatar.NAO.command',
                 {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
     };
     $scope.standZero = function() {
-            var par = {postureName: "StandZero", speed: 0.4};
+            var par = {postureName: "StandZero", speed: 0.5};
             var msg = {type : "posture", method : "goToPosture", parameter: par};
             $log.info('Remote Control', msg, JSON.stringify(msg));
             $scope.client.send('/topic/avatar.NAO.command',
