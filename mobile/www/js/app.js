@@ -45,6 +45,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'AngularStomp', 'webc
     }
   })
 
+  .state('app.avatar-remote-control', {
+      url: "/avatar/remote-control",
+      views: {
+        'menuContent': {
+          templateUrl: "templates/avatar/remote-control.html",
+          controller: 'AvatarRemoteControlCtrl'
+        }
+      }
+    })
+
   .state('app.persistence-query-find-all', {
     url: "/persistence/query-find-all",
     views: {
@@ -63,6 +73,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'AngularStomp', 'webc
       }
     }
   })
+
+  .state('app.visual-camera', {
+      url: "/visual/camera",
+      views: {
+        'menuContent': {
+          templateUrl: "templates/visual/camera.html",
+          controller: 'VisualCameraCtrl'
+        }
+      }
+    })
 
   .state('app.face-recognition-img', {
     url: "/face-recognition-img",

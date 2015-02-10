@@ -33,6 +33,79 @@ angular.module('starter.controllers', [])
   };
 })
 
+.controller('AvatarRemoteControlCtrl', function($scope, $stateParams, $log, ngstomp) {
+    var stompUri = 'http://167.205.66.130:15674/stomp';
+    $log.info('Stomp connecting to', stompUri);
+    $scope.client = ngstomp(stompUri);
+    $scope.client.connect('lumen', 'lumen', function() {
+        $log.info('Stomp connected to', stompUri);
+
+    }, function(err) {
+        $log.error('Stomp error:', err);
+        $scope.client = null;
+    }, '/');
+
+    $scope.form = {
+        greeting: "Hello nice people from Melbourne University Australia. With love, from Bandung Institute of Technology",
+        speed: 0.5
+    };
+    $scope.sayHello = function() {
+        var msg = {type : "texttospeech", method : "say",
+            parameter: {text: $scope.form.greeting}};
+        $log.info('Remote Control', msg, JSON.stringify(msg));
+        $scope.client.send('/topic/avatar.NAO.command',
+            {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
+    };
+
+    $scope.wakeUp = function() {
+        var wakeMsg = {type : "motion",method : "wakeUp"};
+        $log.info('Remote Control', wakeMsg, JSON.stringify(wakeMsg));
+        $scope.client.send('/topic/avatar.NAO.command',
+            {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(wakeMsg));
+    };
+    $scope.goToPosture = function() {
+            var par = {postureName: "Stand", speed: $scope.form.speed};
+            var goToPosture = {type : "posture",method : "goToPosture", parameter: par};
+            $log.info('Remote Control', goToPosture, JSON.stringify(goToPosture));
+            $scope.client.send('/topic/avatar.NAO.command',
+                {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(goToPosture));
+    };
+    $scope.sit = function() {
+            var par = {postureName: "Sit", speed: $scope.form.speed};
+            var msg = {type : "posture", method : "goToPosture", parameter: par};
+            $log.info('Remote Control', msg, JSON.stringify(msg));
+            $scope.client.send('/topic/avatar.NAO.command',
+                {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
+    };
+    $scope.sitRelax = function() {
+            var par = {postureName: "SitRelax", speed: $scope.form.speed};
+            var msg = {type : "posture", method : "goToPosture", parameter: par};
+            $log.info('Remote Control', msg, JSON.stringify(msg));
+            $scope.client.send('/topic/avatar.NAO.command',
+                {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
+    };
+    $scope.standInit = function() {
+            var par = {postureName: "StandInit", speed: $scope.form.speed};
+            var msg = {type : "posture", method : "goToPosture", parameter: par};
+            $log.info('Remote Control', msg, JSON.stringify(msg));
+            $scope.client.send('/topic/avatar.NAO.command',
+                {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
+    };
+    $scope.standZero = function() {
+            var par = {postureName: "StandZero", speed: $scope.form.speed};
+            var msg = {type : "posture", method : "goToPosture", parameter: par};
+            $log.info('Remote Control', msg, JSON.stringify(msg));
+            $scope.client.send('/topic/avatar.NAO.command',
+                {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
+    };
+    $scope.rest = function() {
+                var restMsg = {type : "motion",method : "rest"};
+                $log.info('Remote Control', restMsg, JSON.stringify(restMsg));
+                $scope.client.send('/topic/avatar.NAO.command',
+                    {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(restMsg));
+        };
+})
+
 .controller('PersistenceQueryFindAllCtrl', function($scope, $stateParams, $log, ngstomp) {
     $scope.query = {
         '@type': 'FindAllQuery',
@@ -120,6 +193,37 @@ angular.module('starter.controllers', [])
     };
 })
 
+.controller('VisualCameraCtrl', function($scope, $stateParams, $log, ngstomp) {
+    $scope.imageObject = null;
+    $scope.recognizeds = [];
+
+    var stompUri = 'http://167.205.66.130:15674/stomp';
+    $log.info('Stomp connecting to', stompUri);
+    $scope.client = ngstomp(stompUri);
+    $scope.client.connect('lumen', 'lumen', function() {
+        $log.info('Stomp connected to', stompUri);
+        $scope.client.subscribe('/topic/avatar.NAO.data.image', function(msg) {
+            var imageObject = JSON.parse(msg.body);
+            $scope.imageObject = imageObject;
+            $log.debug('Got ImageObject', imageObject);
+        });
+        $scope.client.subscribe('/topic/lumen.arkan.face.recognition', function(msg) {
+            var recognized = JSON.parse(msg.body);
+            if (recognized.index == 0) {
+                $scope.recognizeds = [];
+            }
+            recognized.cssStyle = {
+                left: recognized.minPoint.x + 'px',
+                top: recognized.minPoint.y + 'px'
+            };
+            $scope.recognizeds.push(recognized);
+        });
+    }, function(err) {
+        $log.error('Stomp error:', err);
+        $scope.client = null;
+    }, '/');
+})
+
 .controller('FaceRecognitionImgCtrl', function($scope, $stateParams, $log, ngstomp) {
     $scope.imageObject = null;
     $scope.recognizeds = [];
@@ -181,7 +285,6 @@ angular.module('starter.controllers', [])
         $scope.client.send('/topic/lumen.arkan.camera.stream', {}, JSON.stringify($scope.imageObject));
     };
 })
-
 .controller('FaceRecognitionCamCtrl', function($scope, $stateParams, $log, ngstomp) {
     'use strict';
 
