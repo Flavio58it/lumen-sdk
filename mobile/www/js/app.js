@@ -74,6 +74,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'AngularStomp', 'webc
     }
   })
 
+  .state('app.visual-camera', {
+      url: "/visual/camera",
+      views: {
+        'menuContent': {
+          templateUrl: "templates/visual/camera.html",
+          controller: 'VisualCameraCtrl'
+        }
+      }
+    })
+
   .state('app.face-recognition-img', {
     url: "/face-recognition-img",
     views: {
