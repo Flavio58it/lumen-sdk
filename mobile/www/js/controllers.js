@@ -62,7 +62,7 @@ angular.module('starter.controllers', [])
             {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(wakeMsg));
     };
     $scope.goToPosture = function() {
-            var par = {postureName: "Stand", speed: 0.2};
+            var par = {postureName: "Stand", speed: 0.4};
             var goToPosture = {type : "posture",method : "goToPosture", parameter: par};
             $log.info('Remote Control', goToPosture, JSON.stringify(goToPosture));
             $scope.client.send('/topic/avatar.NAO.command',
