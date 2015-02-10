@@ -1,16 +1,29 @@
 <ion-view view-title="Avatar : Remote Control">
     <ion-content>
 
-        <textarea type="text" ng-model="form.greeting" rows="3"></textarea>
-        <button class="button button-positive button-block" ng-click="sayHello()">Say Hello</button>
-
-        <button class="button button-positive button-block" ng-click="wakeUp()">WakeUp</button>
-        <button class="button button-positive button-block" ng-click="goToPosture()">Stand</button>
-        <button class="button button-positive button-block" ng-click="standInit()">Stand Init</button>
-        <button class="button button-positive button-block" ng-click="standZero()">Stand Zero</button>
-        <button class="button button-positive button-block" ng-click="sit()">Sit</button>
-        <button class="button button-positive button-block" ng-click="sitRelax()">Sit Relax</button>
-        <button class="button button-positive button-block" ng-click="rest()">rest</button>
+        <ion-list>
+            <ion-item>
+                <textarea type="text" ng-model="form.greeting" rows="3"></textarea>
+                <button class="button button-positive button-block" ng-click="sayHello()">Say Hello</button>
+            </ion-item>
+            <ion-item>
+                <label><input type="radio" ng-model="form.speed" value="0.2"/>0.2</label>
+                <label><input type="radio" ng-model="form.speed" value="0.3"/>0.3</label>
+                <label><input type="radio" ng-model="form.speed" value="0.4"/>0.4</label>
+                <label><input type="radio" ng-model="form.speed" value="0.5"/>0.5</label>
+                <label><input type="radio" ng-model="form.speed" value="0.6"/>0.6</label>
+                <label><input type="radio" ng-model="form.speed" value="0.7"/>0.7</label>
+            </ion-item>
+            <ion-item>
+                <button class="button button-positive button-block" ng-click="wakeUp()">WakeUp</button>
+                <button class="button button-positive button-block" ng-click="goToPosture()">Stand</button>
+                <button class="button button-positive button-block" ng-click="standInit()">Stand Init</button>
+                <button class="button button-positive button-block" ng-click="standZero()">Stand Zero</button>
+                <button class="button button-positive button-block" ng-click="sit()">Sit</button>
+                <button class="button button-positive button-block" ng-click="sitRelax()">Sit Relax</button>
+                <button class="button button-positive button-block" ng-click="rest()">rest</button>
+            </ion-item>
+        </ion-list>
 
     </ion-content>
 </ion-view>
