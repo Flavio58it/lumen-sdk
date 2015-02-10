@@ -46,9 +46,10 @@ angular.module('starter.controllers', [])
         $scope.client = null;
     }, '/');
 
+    $scope.form = {greeting: "Hello nice people from Melbourne University Australia. With love, from Bandung Institute of Technology"};
     $scope.sayHello = function() {
         var msg = {type : "texttospeech", method : "say",
-            parameter: {text: "Hello nice people from Melbourne University Australia. Greetings from Bandung Institute of Technology"}};
+            parameter: {text: $scope.form.greeting}};
         $log.info('Remote Control', msg, JSON.stringify(msg));
         $scope.client.send('/topic/avatar.NAO.command',
             {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
