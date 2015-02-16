@@ -105,6 +105,59 @@ angular.module('starter.controllers', [])
                     {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(restMsg));
         };
 })
+.controller('AvatarInstrumentsCtrl', function($scope, $stateParams, $log, ngstomp) {
+    $scope.messages = [];
+//    var stompUri = 'http://167.205.66.130:15674/stomp';
+    var stompUri = 'http://169.254.26.17:15674/stomp';
+    $log.info('Stomp connecting to', stompUri);
+    $scope.client = ngstomp(stompUri);
+    $scope.client.connect('lumen', 'lumen', function() {
+        $log.info('Stomp connected to', stompUri);
+        $scope.client.subscribe('/topic/avatar.NAO.data.image', function(exchange) {
+            var msg = JSON.parse(exchange.body);
+            //$log.debug('joint ', msg, JSON.stringify(msg));
+//            $scope.messages.push(msg);
+            exchange.body = msg;
+//            $scope.messages.push(exchange);
+            $scope.image = exchange;
+        });
+        $scope.client.subscribe('/topic/avatar.NAO.data.joint', function(exchange) {
+            var msg = JSON.parse(exchange.body);
+            //$log.debug('joint ', msg, JSON.stringify(msg));
+//            $scope.messages.push(msg);
+            exchange.body = msg;
+//            $scope.messages.push(exchange);
+            $scope.joint = exchange;
+        });
+        $scope.client.subscribe('/topic/avatar.NAO.data.sonar', function(exchange) {
+            var msg = JSON.parse(exchange.body);
+            //$log.debug('sonar ', msg, JSON.stringify(msg));
+//            $scope.messages.push(msg);
+            exchange.body = msg;
+//            $scope.messages.push(exchange);
+            $scope.sonar = exchange;
+        });
+        $scope.client.subscribe('/topic/avatar.NAO.data.tactile', function(exchange) {
+            var msg = JSON.parse(exchange.body);
+            //$log.debug('tactile ', msg, JSON.stringify(msg));
+//            $scope.messages.push(msg);
+            exchange.body = msg;
+//            $scope.messages.push(exchange);
+            $scope.tactile = exchange;
+        });
+        $scope.client.subscribe('/topic/avatar.NAO.data.battery', function(exchange) {
+            var msg = JSON.parse(exchange.body);
+            //$log.debug('battery ', msg, JSON.stringify(msg));
+//            $scope.messages.push(msg);
+            exchange.body = msg;
+//            $scope.messages.push(exchange);
+            $scope.battery = exchange;
+        });
+    }, function(err) {
+        $log.error('Stomp error:', err);
+        $scope.client = null;
+    }, '/');
+})
 
 .controller('PersistenceQueryFindAllCtrl', function($scope, $stateParams, $log, ngstomp) {
     $scope.query = {
