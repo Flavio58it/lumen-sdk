@@ -11,12 +11,13 @@ import org.joda.time.DateTime
  */
 @CompileStatic
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, property="@type", defaultImpl=SonarState.class)
-@JsonSubTypes(@JsonSubTypes.Type(name="SonarState", value=SonarState.class))
-class SonarState {
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, property="@type", defaultImpl=JointState.class)
+@JsonSubTypes(@JsonSubTypes.Type(name="JointState", value=JointState.class))
+class JointState {
 
-    Double leftSensor
-    Double rightSensor
+    String name
+    Double angle
+    Double stiffness
     DateTime dateCreated
 
 }

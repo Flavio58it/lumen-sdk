@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import groovy.transform.CompileStatic
+import org.joda.time.DateTime
 
 /**
  * Created by ceefour on 19/01/15.
@@ -18,5 +19,6 @@ class BatteryState {
     Double percentage
     Boolean isPlugged
     Boolean isCharging
+    DateTime dateCreated
 
 }

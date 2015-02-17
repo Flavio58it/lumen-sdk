@@ -1,0 +1,21 @@
+<ion-view view-title="Persistence » Journal: Tactile">
+    <ion-content>
+        <label class="item item-input">
+            <div class="input-label">Time</div>
+            <input type="text" ng-model="form.maxDateCreated"/>
+        </label>
+        <label class="item item-input">
+            <div class="input-label">Limit</div>
+            <input type="number" ng-model="form.itemsPerPage"/>
+        </label>
+        <button class="button button-positive button-block" ng-click="submit()">Execute</button>
+
+        <ion-list>
+            <ion-item ng-repeat="tactile in resources.content" class="text-wrap">
+                <p><small style="color: #666">{{tactile.dateCreated}}</small>
+                    <strong>{{tactile.name}}</strong>: <strong style="color: green">{{tactile.value}}</strong></p>
+            </ion-item>
+        </ion-list>
+
+    </ion-content>
+</ion-view>

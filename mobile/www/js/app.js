@@ -91,6 +91,42 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     }
   })
+  .state('app.persistence-journal-joint', {
+    url: "/persistence/journal-joint",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/persistence/journal-joint.html",
+        controller: 'PersistenceJournalJointCtrl'
+      }
+    }
+  })
+  .state('app.persistence-journal-sonar', {
+    url: "/persistence/journal-sonar",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/persistence/journal-sonar.html",
+        controller: 'PersistenceJournalSonarCtrl'
+      }
+    }
+  })
+  .state('app.persistence-journal-tactile', {
+    url: "/persistence/journal-tactile",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/persistence/journal-tactile.html",
+        controller: 'PersistenceJournalTactileCtrl'
+      }
+    }
+  })
+  .state('app.persistence-journal-battery', {
+    url: "/persistence/journal-battery",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/persistence/journal-battery.html",
+        controller: 'PersistenceJournalBatteryCtrl'
+      }
+    }
+  })
 
   .state('app.visual-camera', {
       url: "/visual/camera",

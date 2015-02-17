@@ -288,7 +288,164 @@ angular.module('starter.controllers', [])
     }, '/');
     $scope.submit = function() {
         $log.info('JournalImageQuery', $scope.form, JSON.stringify($scope.form));
+        $scope.resources = {content: []};
         $scope.client.send('/topic/lumen.arkan.persistence.journal',
+            {"reply-to": tempQueue}, JSON.stringify($scope.form));
+    };
+})
+.controller('PersistenceJournalJointCtrl', function($scope, $stateParams, $log, $window, ngstomp, Settings) {
+    $scope.resources = {content: []};
+    $scope.form = {
+        '@type': 'JournalJointQuery',
+        maxDateCreated: '2015-02-17T16:11',
+        itemsPerPage: 25
+    };
+
+    var tempQueue = '/temp-queue/persistence.journal.joint';
+//    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
+    var settings = Settings.getSettings();
+    $log.info('Stomp connecting to', settings.stompUri);
+    $scope.client = ngstomp(settings.stompUri);
+    $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
+        $log.info('Stomp connected to', settings.stompUri);
+        $scope.client.stompClient.subscriptions[tempQueue] = function(msg) {
+            $log.debug('Received ', tempQueue, ':', msg.body);
+            $scope.$apply(function() {
+                var json = JSON.parse(msg.body);
+                if (json['@type'] == 'Resources') {
+                    $scope.resources = json;
+                } else {
+                    $log.error(json.exceptionClass + ': ' + json.message);
+                    $log.error(json.stackTrace);
+                    $window.alert(json.exceptionClass + ': ' + json.message + '\n' + json.stackTrace);
+                }
+            });
+        };
+    }, function(err) {
+        $log.error('Stomp error:', err);
+        $scope.client = null;
+    }, '/');
+    $scope.submit = function() {
+        $log.info('JournalJointQuery', $scope.form, JSON.stringify($scope.form));
+        $scope.resources = {content: []};
+        $scope.client.send('/topic/lumen.arkan.persistence.joint',
+            {"reply-to": tempQueue}, JSON.stringify($scope.form));
+    };
+})
+.controller('PersistenceJournalSonarCtrl', function($scope, $stateParams, $log, $window, ngstomp, Settings) {
+    $scope.resources = {content: []};
+    $scope.form = {
+        '@type': 'JournalSonarQuery',
+        maxDateCreated: '2015-02-17T16:11',
+        itemsPerPage: 25
+    };
+
+    var tempQueue = '/temp-queue/persistence.journal.sonar';
+//    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
+    var settings = Settings.getSettings();
+    $log.info('Stomp connecting to', settings.stompUri);
+    $scope.client = ngstomp(settings.stompUri);
+    $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
+        $log.info('Stomp connected to', settings.stompUri);
+        $scope.client.stompClient.subscriptions[tempQueue] = function(msg) {
+            $log.debug('Received ', tempQueue, ':', msg.body);
+            $scope.$apply(function() {
+                var json = JSON.parse(msg.body);
+                if (json['@type'] == 'Resources') {
+                    $scope.resources = json;
+                } else {
+                    $log.error(json.exceptionClass + ': ' + json.message);
+                    $log.error(json.stackTrace);
+                    $window.alert(json.exceptionClass + ': ' + json.message + '\n' + json.stackTrace);
+                }
+            });
+        };
+    }, function(err) {
+        $log.error('Stomp error:', err);
+        $scope.client = null;
+    }, '/');
+    $scope.submit = function() {
+        $log.info('JournalSonarQuery', $scope.form, JSON.stringify($scope.form));
+        $scope.resources = {content: []};
+        $scope.client.send('/topic/lumen.arkan.persistence.sonar',
+            {"reply-to": tempQueue}, JSON.stringify($scope.form));
+    };
+})
+.controller('PersistenceJournalTactileCtrl', function($scope, $stateParams, $log, $window, ngstomp, Settings) {
+    $scope.resources = {content: []};
+    $scope.form = {
+        '@type': 'JournalTactileQuery',
+        maxDateCreated: '2015-02-17T16:11',
+        itemsPerPage: 25
+    };
+
+    var tempQueue = '/temp-queue/persistence.journal.tactile';
+//    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
+    var settings = Settings.getSettings();
+    $log.info('Stomp connecting to', settings.stompUri);
+    $scope.client = ngstomp(settings.stompUri);
+    $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
+        $log.info('Stomp connected to', settings.stompUri);
+        $scope.client.stompClient.subscriptions[tempQueue] = function(msg) {
+            $log.debug('Received ', tempQueue, ':', msg.body);
+            $scope.$apply(function() {
+                var json = JSON.parse(msg.body);
+                if (json['@type'] == 'Resources') {
+                    $scope.resources = json;
+                } else {
+                    $log.error(json.exceptionClass + ': ' + json.message);
+                    $log.error(json.stackTrace);
+                    $window.alert(json.exceptionClass + ': ' + json.message + '\n' + json.stackTrace);
+                }
+            });
+        };
+    }, function(err) {
+        $log.error('Stomp error:', err);
+        $scope.client = null;
+    }, '/');
+    $scope.submit = function() {
+        $log.info('JournalTactileQuery', $scope.form, JSON.stringify($scope.form));
+        $scope.resources = {content: []};
+        $scope.client.send('/topic/lumen.arkan.persistence.tactile',
+            {"reply-to": tempQueue}, JSON.stringify($scope.form));
+    };
+})
+.controller('PersistenceJournalBatteryCtrl', function($scope, $stateParams, $log, $window, ngstomp, Settings) {
+    $scope.resources = {content: []};
+    $scope.form = {
+        '@type': 'JournalBatteryQuery',
+        maxDateCreated: '2015-02-17T16:11',
+        itemsPerPage: 25
+    };
+
+    var tempQueue = '/temp-queue/persistence.journal.battery';
+//    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
+    var settings = Settings.getSettings();
+    $log.info('Stomp connecting to', settings.stompUri);
+    $scope.client = ngstomp(settings.stompUri);
+    $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
+        $log.info('Stomp connected to', settings.stompUri);
+        $scope.client.stompClient.subscriptions[tempQueue] = function(msg) {
+            $log.debug('Received ', tempQueue, ':', msg.body);
+            $scope.$apply(function() {
+                var json = JSON.parse(msg.body);
+                if (json['@type'] == 'Resources') {
+                    $scope.resources = json;
+                } else {
+                    $log.error(json.exceptionClass + ': ' + json.message);
+                    $log.error(json.stackTrace);
+                    $window.alert(json.exceptionClass + ': ' + json.message + '\n' + json.stackTrace);
+                }
+            });
+        };
+    }, function(err) {
+        $log.error('Stomp error:', err);
+        $scope.client = null;
+    }, '/');
+    $scope.submit = function() {
+        $log.info('JournalBatteryQuery', $scope.form, JSON.stringify($scope.form));
+        $scope.resources = {content: []};
+        $scope.client.send('/topic/lumen.arkan.persistence.battery',
             {"reply-to": tempQueue}, JSON.stringify($scope.form));
     };
 })

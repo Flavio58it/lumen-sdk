@@ -1,6 +1,7 @@
 package id.ac.itb.lumen.core
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import groovy.transform.CompileStatic
@@ -11,12 +12,12 @@ import org.joda.time.DateTime
  */
 @CompileStatic
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, property="@type", defaultImpl=SonarState.class)
-@JsonSubTypes(@JsonSubTypes.Type(name="SonarState", value=SonarState.class))
-class SonarState {
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, property="@type", defaultImpl=TactileState.class)
+@JsonSubTypes(@JsonSubTypes.Type(name="TactileState", value=TactileState.class))
+class TactileState {
 
-    Double leftSensor
-    Double rightSensor
+    String name
+    Double value
     DateTime dateCreated
 
 }
