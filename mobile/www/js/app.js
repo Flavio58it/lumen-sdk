@@ -54,6 +54,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'AngularStomp', 'webc
         }
       }
     })
+  .state('app.avatar-instruments', {
+      url: "/avatar/instruments",
+      views: {
+        'menuContent': {
+          templateUrl: "templates/avatar/instruments.html",
+          controller: 'AvatarInstrumentsCtrl'
+        }
+      }
+    })
 
   .state('app.persistence-query-find-all', {
     url: "/persistence/query-find-all",
