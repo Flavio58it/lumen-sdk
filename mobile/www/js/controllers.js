@@ -33,12 +33,12 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('AvatarRemoteControlCtrl', function($scope, $stateParams, $log, ngstomp) {
-    var stompUri = 'http://167.205.66.130:15674/stomp';
-    $log.info('Stomp connecting to', stompUri);
-    $scope.client = ngstomp(stompUri);
-    $scope.client.connect('lumen', 'lumen', function() {
-        $log.info('Stomp connected to', stompUri);
+.controller('AvatarRemoteControlCtrl', function($scope, $stateParams, $log, ngstomp, Settings) {
+    var settings = Settings.getSettings();
+    $log.info('Stomp connecting to', settings.stompUri);
+    $scope.client = ngstomp(settings.stompUri);
+    $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
+        $log.info('Stomp connected to', settings.stompUri);
 
     }, function(err) {
         $log.error('Stomp error:', err);
@@ -105,14 +105,15 @@ angular.module('starter.controllers', [])
                     {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(restMsg));
         };
 })
-.controller('AvatarInstrumentsCtrl', function($scope, $stateParams, $log, ngstomp) {
+.controller('AvatarInstrumentsCtrl', function($scope, $stateParams, $log, ngstomp, Settings) {
     $scope.messages = [];
 //    var stompUri = 'http://167.205.66.130:15674/stomp';
-    var stompUri = 'http://169.254.26.17:15674/stomp';
-    $log.info('Stomp connecting to', stompUri);
-    $scope.client = ngstomp(stompUri);
-    $scope.client.connect('lumen', 'lumen', function() {
-        $log.info('Stomp connected to', stompUri);
+//    var stompUri = 'http://169.254.26.17:15674/stomp';
+    var settings = Settings.getSettings();
+    $log.info('Stomp connecting to', settings.stompUri);
+    $scope.client = ngstomp(settings.stompUri);
+    $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
+        $log.info('Stomp connected to', settings.stompUri);
         $scope.client.subscribe('/topic/avatar.NAO.data.image', function(exchange) {
             var msg = JSON.parse(exchange.body);
             //$log.debug('joint ', msg, JSON.stringify(msg));
@@ -159,7 +160,7 @@ angular.module('starter.controllers', [])
     }, '/');
 })
 
-.controller('PersistenceQueryFindAllCtrl', function($scope, $stateParams, $log, ngstomp) {
+.controller('PersistenceQueryFindAllCtrl', function($scope, $stateParams, $log, ngstomp, Settings) {
     $scope.query = {
         '@type': 'FindAllQuery',
         classRef: null
@@ -178,11 +179,12 @@ angular.module('starter.controllers', [])
     ];
     $scope.form = {class: $scope.classes[0]};
     
-    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
-    $log.info('Stomp connecting to', stompUri);
-    $scope.client = ngstomp(stompUri);
-    $scope.client.connect('guest', 'guest', function() {
-        $log.info('Stomp connected to', stompUri);
+//    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
+    var settings = Settings.getSettings();
+    $log.info('Stomp connecting to', settings.stompUri);
+    $scope.client = ngstomp(settings.stompUri);
+    $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
+        $log.info('Stomp connected to', settings.stompUri);
         $scope.client.stompClient.subscriptions['/temp-queue/persistence.fact'] = function(msg) {
             $log.debug('Received /temp-queue/persistence.fact:', msg.body);
             $scope.$apply(function() {
@@ -208,7 +210,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PersistenceQueryCypherCtrl', function($scope, $stateParams, $log, $window, ngstomp) {
+.controller('PersistenceQueryCypherCtrl', function($scope, $stateParams, $log, $window, ngstomp, Settings) {
     $scope.resources = {content: []};
     $scope.form = {
         '@type': 'CypherQuery',
@@ -217,11 +219,12 @@ angular.module('starter.controllers', [])
     };
 
     var tempQueue = '/temp-queue/persistence.fact.cypher';
-    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
-    $log.info('Stomp connecting to', stompUri);
-    $scope.client = ngstomp(stompUri);
-    $scope.client.connect('guest', 'guest', function() {
-        $log.info('Stomp connected to', stompUri);
+//    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
+    var settings = Settings.getSettings();
+    $log.info('Stomp connecting to', settings.stompUri);
+    $scope.client = ngstomp(settings.stompUri);
+    $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
+        $log.info('Stomp connected to', settings.stompUri);
         $scope.client.stompClient.subscriptions[tempQueue] = function(msg) {
             $log.debug('Received ', tempQueue, ':', msg.body);
             $scope.$apply(function() {
@@ -246,15 +249,16 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('VisualCameraCtrl', function($scope, $stateParams, $log, ngstomp) {
+.controller('VisualCameraCtrl', function($scope, $stateParams, $log, ngstomp, Settings) {
     $scope.imageObject = null;
     $scope.recognizeds = [];
 
-    var stompUri = 'http://167.205.66.130:15674/stomp';
-    $log.info('Stomp connecting to', stompUri);
-    $scope.client = ngstomp(stompUri);
-    $scope.client.connect('lumen', 'lumen', function() {
-        $log.info('Stomp connected to', stompUri);
+//    var stompUri = 'http://167.205.66.130:15674/stomp';
+    var settings = Settings.getSettings();
+    $log.info('Stomp connecting to', settings.stompUri);
+    $scope.client = ngstomp(settings.stompUri);
+    $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
+        $log.info('Stomp connected to', settings.stompUri);
         $scope.client.subscribe('/topic/avatar.NAO.data.image', function(msg) {
             var imageObject = JSON.parse(msg.body);
             $scope.imageObject = imageObject;
@@ -277,15 +281,16 @@ angular.module('starter.controllers', [])
     }, '/');
 })
 
-.controller('FaceRecognitionImgCtrl', function($scope, $stateParams, $log, ngstomp) {
+.controller('FaceRecognitionImgCtrl', function($scope, $stateParams, $log, ngstomp, Settings) {
     $scope.imageObject = null;
     $scope.recognizeds = [];
 
-    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
-    $log.info('Stomp connecting to', stompUri);
-    $scope.client = ngstomp(stompUri);
-    $scope.client.connect('guest', 'guest', function() {
-        $log.info('Stomp connected to', stompUri);
+//    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
+    var settings = Settings.getSettings();
+    $log.info('Stomp connecting to', settings.stompUri);
+    $scope.client = ngstomp(settings.stompUri);
+    $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
+        $log.info('Stomp connected to', settings.stompUri);
         $scope.client.subscribe('/topic/lumen.arkan.face.recognition', function(msg) {
             var recognized = JSON.parse(msg.body);
             recognized.cssStyle = {
@@ -338,17 +343,18 @@ angular.module('starter.controllers', [])
         $scope.client.send('/topic/lumen.arkan.camera.stream', {}, JSON.stringify($scope.imageObject));
     };
 })
-.controller('FaceRecognitionCamCtrl', function($scope, $stateParams, $log, ngstomp) {
+.controller('FaceRecognitionCamCtrl', function($scope, $stateParams, $log, ngstomp, Settings) {
     'use strict';
 
     $scope.imageObject = null;
     $scope.recognizeds = [];
 
-    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
-    $log.info('Stomp connecting to', stompUri);
-    $scope.client = ngstomp(stompUri);
-    $scope.client.connect('guest', 'guest', function() {
-        $log.info('Stomp connected to', stompUri);
+//    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
+    var settings = Settings.getSettings();
+    $log.info('Stomp connecting to', settings.stompUri);
+    $scope.client = ngstomp(settings.stompUri);
+    $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
+        $log.info('Stomp connected to', settings.stompUri);
         $scope.client.subscribe('/topic/lumen.arkan.face.recognition', function(msg) {
             var recognized = JSON.parse(msg.body);
             recognized.cssStyle = {
@@ -456,14 +462,15 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('SocialMonitorCtrl', function($scope, $stateParams, $log, $ionicScrollDelegate, ngstomp) {
+.controller('SocialMonitorCtrl', function($scope, $stateParams, $log, $ionicScrollDelegate, ngstomp, Settings) {
     $scope.posts = [];
 
-    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
-    $log.info('Stomp connecting to', stompUri);
-    $scope.client = ngstomp(stompUri);
-    $scope.client.connect('guest', 'guest', function() {
-        $log.info('Stomp connected to', stompUri);
+//    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
+    var settings = Settings.getSettings();
+    $log.info('Stomp connecting to', settings.stompUri);
+    $scope.client = ngstomp(settings.stompUri);
+    $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
+        $log.info('Stomp connected to', settings.stompUri);
         $scope.client.subscribe('/topic/lumen.arkan.social.perception', function(msg) {
             var post = JSON.parse(msg.body);
             $scope.posts.push(post);
@@ -475,7 +482,7 @@ angular.module('starter.controllers', [])
     }, '/');
 })
 
-.controller('SocialExpressCtrl', function($scope, $stateParams, $log, ngstomp) {
+.controller('SocialExpressCtrl', function($scope, $stateParams, $log, ngstomp, Settings) {
     $scope.posts = [];
     $scope.networks = [
         {'id': 'facebook', 'name': 'Facebook'},
@@ -483,11 +490,12 @@ angular.module('starter.controllers', [])
     ];
     $scope.post = {network: $scope.networks[0]};
 
-    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
-    $log.info('Stomp connecting to', stompUri);
-    $scope.client = ngstomp(stompUri);
-    $scope.client.connect('guest', 'guest', function() {
-        $log.info('Stomp connected to', stompUri);
+//    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
+    var settings = Settings.getSettings();
+    $log.info('Stomp connecting to', settings.stompUri);
+    $scope.client = ngstomp(settings.stompUri);
+    $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
+        $log.info('Stomp connected to', settings.stompUri);
 //        $scope.client.subscribe('/topic/lumen.arkan.social.perception', function(msg) {
 //            var post = JSON.parse(msg.body);
 //            $scope.posts.push(post);
@@ -506,6 +514,17 @@ angular.module('starter.controllers', [])
         };
         $log.info('Posting...', JSON.stringify($scope.statusUpdate));
         $scope.client.send('/topic/lumen.arkan.social.expression', {}, JSON.stringify($scope.statusUpdate));
+    };
+})
+
+.controller('SettingsCtrl', function($scope, $log, $window, Settings) {
+    $scope.settings = Settings.getSettings();
+    $scope.save = function() {
+        Settings.setSettings($scope.settings);
+        $window.alert('Settings saved.');
+    };
+    $scope.reset = function() {
+        $scope.settings = Settings.getDefault();
     };
 })
 

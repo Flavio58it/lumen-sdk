@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'AngularStomp', 'webcam'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'AngularStomp', 'webcam'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -127,6 +127,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'AngularStomp', 'webc
       'menuContent': {
         templateUrl: "templates/social-express.html",
         controller: 'SocialExpressCtrl'
+      }
+    }
+  })
+
+  .state('app.settings', {
+    url: "/settings",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/settings.html",
+        controller: 'SettingsCtrl'
       }
     }
   })
