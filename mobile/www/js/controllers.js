@@ -734,6 +734,13 @@ angular.module('starter.controllers', [])
             stompPassword: 'guest'
         };
     };
+    $scope.resetWindow = function() {
+        $scope.settings = {
+            stompUri: 'http://' + $window.location.hostname + ':15674/stomp',
+            stompUser: 'guest',
+            stompPassword: 'guest'
+        };
+    };
 })
 
 .controller('PlaylistsCtrl', function($scope) {
