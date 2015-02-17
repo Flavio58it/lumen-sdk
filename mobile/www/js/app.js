@@ -82,6 +82,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     }
   })
+  .state('app.persistence-journal-image', {
+    url: "/persistence/journal-image",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/persistence/journal-image.html",
+        controller: 'PersistenceJournalImageCtrl'
+      }
+    }
+  })
 
   .state('app.visual-camera', {
       url: "/visual/camera",

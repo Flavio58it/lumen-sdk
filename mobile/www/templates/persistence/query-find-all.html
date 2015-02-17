@@ -6,6 +6,10 @@
                     ng-options="class.label for class in classes">
             </select>
         </label>
+        <label class="item item-input">
+            <div class="input-label">Limit</div>
+            <input type="number" ng-model="query.itemsPerPage"/>
+        </label>
         <button class="button button-positive button-block" ng-click="submit()">Query Find All</button>
         
         <ion-list>

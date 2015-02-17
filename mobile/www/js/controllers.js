@@ -163,19 +163,24 @@ angular.module('starter.controllers', [])
 .controller('PersistenceQueryFindAllCtrl', function($scope, $stateParams, $log, ngstomp, Settings) {
     $scope.query = {
         '@type': 'FindAllQuery',
-        classRef: null
+        classRef: null,
+        itemsPerPage: 25
     };
     $scope.resources = {content: []};
     $scope.classes = [
         {label: "person", ref: 'yago:wordnet_person_100007846'},
-        {label: "city", ref: 'yago:wordnet_city_108524735'},
-        {label: "organization", ref: 'yago:wordnet_organization_108008335'}
-        {label: "alumnus", ref: 'yago:wordnet_alumnus_109786338'}
-        {label: "mountain", ref: 'yago:wordnet_mountain_109359803'}
-        {label: "lake", ref: 'yago:wordnet_lake_109328904'}
-        {label: "building", ref: 'yago:wordnet_building_102913152'}
-        {label: "island", ref: 'yago:wordnet_island_109316454'}
-        {label: "island", ref: 'yago:wordnet_island_109316454'}
+        {label: "country", ref: 'yago:wordnet_country_108544813'},
+        {label: "area", ref: 'yago:wordnet_area_108497294'},
+        {label: "organization", ref: 'yago:wordnet_organization_108008335'},
+        {label: "alumnus", ref: 'yago:wordnet_alumnus_109786338'},
+        {label: "university", ref: 'yago:wordnet_university_108286569'},
+        {label: "mountain", ref: 'yago:wordnet_mountain_109359803'},
+        {label: "lake", ref: 'yago:wordnet_lake_109328904'},
+        {label: "building", ref: 'yago:wordnet_building_102913152'},
+        {label: "island", ref: 'yago:wordnet_island_109316454'},
+        {label: "continent", ref: 'yago:wordnet_continent_109254614'},
+        {label: "planet", ref: 'yago:wordnet_planet_109394007'},
+        {label: "galaxy", ref: 'yago:wordnet_galaxy_108270938'}
     ];
     $scope.form = {class: $scope.classes[0]};
     
@@ -205,11 +210,11 @@ angular.module('starter.controllers', [])
     $scope.submit = function() {
         $scope.query.classRef = $scope.form.class.ref;
         $log.info('FindAllQuery', $scope.query, JSON.stringify($scope.query));
+        $scope.resources = {content: []};
         $scope.client.send('/topic/lumen.arkan.persistence.fact',
             {"reply-to": '/temp-queue/persistence.fact'}, JSON.stringify($scope.query));
     };
 })
-
 .controller('PersistenceQueryCypherCtrl', function($scope, $stateParams, $log, $window, ngstomp, Settings) {
     $scope.resources = {content: []};
     $scope.form = {
@@ -244,7 +249,46 @@ angular.module('starter.controllers', [])
     }, '/');
     $scope.submit = function() {
         $log.info('CypherQuery', $scope.form, JSON.stringify($scope.form));
+        $scope.resources = {content: []};
         $scope.client.send('/topic/lumen.arkan.persistence.fact',
+            {"reply-to": tempQueue}, JSON.stringify($scope.form));
+    };
+})
+.controller('PersistenceJournalImageCtrl', function($scope, $stateParams, $log, $window, ngstomp, Settings) {
+    $scope.resources = {content: []};
+    $scope.form = {
+        '@type': 'JournalImageQuery',
+        maxDateCreated: '2015-02-17T16:11',
+        itemsPerPage: 25
+    };
+
+    var tempQueue = '/temp-queue/persistence.journal.image';
+//    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
+    var settings = Settings.getSettings();
+    $log.info('Stomp connecting to', settings.stompUri);
+    $scope.client = ngstomp(settings.stompUri);
+    $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
+        $log.info('Stomp connected to', settings.stompUri);
+        $scope.client.stompClient.subscriptions[tempQueue] = function(msg) {
+            $log.debug('Received ', tempQueue, ':', msg.body);
+            $scope.$apply(function() {
+                var json = JSON.parse(msg.body);
+                if (json['@type'] == 'Resources') {
+                    $scope.resources = json;
+                } else {
+                    $log.error(json.exceptionClass + ': ' + json.message);
+                    $log.error(json.stackTrace);
+                    $window.alert(json.exceptionClass + ': ' + json.message + '\n' + json.stackTrace);
+                }
+            });
+        };
+    }, function(err) {
+        $log.error('Stomp error:', err);
+        $scope.client = null;
+    }, '/');
+    $scope.submit = function() {
+        $log.info('JournalImageQuery', $scope.form, JSON.stringify($scope.form));
+        $scope.client.send('/topic/lumen.arkan.persistence.journal',
             {"reply-to": tempQueue}, JSON.stringify($scope.form));
     };
 })
@@ -525,6 +569,13 @@ angular.module('starter.controllers', [])
     };
     $scope.reset = function() {
         $scope.settings = Settings.getDefault();
+    };
+    $scope.resetLocal = function() {
+        $scope.settings = {
+            stompUri: 'http://localhost:15674/stomp',
+            stompUser: 'guest',
+            stompPassword: 'guest'
+        };
     };
 })
 
