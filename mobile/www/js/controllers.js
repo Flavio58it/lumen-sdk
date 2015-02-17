@@ -328,7 +328,7 @@ angular.module('starter.controllers', [])
     $scope.submit = function() {
         $log.info('JournalJointQuery', $scope.form, JSON.stringify($scope.form));
         $scope.resources = {content: []};
-        $scope.client.send('/topic/lumen.arkan.persistence.joint',
+        $scope.client.send('/topic/lumen.arkan.persistence.journal',
             {"reply-to": tempQueue}, JSON.stringify($scope.form));
     };
 })
@@ -367,7 +367,7 @@ angular.module('starter.controllers', [])
     $scope.submit = function() {
         $log.info('JournalSonarQuery', $scope.form, JSON.stringify($scope.form));
         $scope.resources = {content: []};
-        $scope.client.send('/topic/lumen.arkan.persistence.sonar',
+        $scope.client.send('/topic/lumen.arkan.persistence.journal',
             {"reply-to": tempQueue}, JSON.stringify($scope.form));
     };
 })
@@ -406,7 +406,7 @@ angular.module('starter.controllers', [])
     $scope.submit = function() {
         $log.info('JournalTactileQuery', $scope.form, JSON.stringify($scope.form));
         $scope.resources = {content: []};
-        $scope.client.send('/topic/lumen.arkan.persistence.tactile',
+        $scope.client.send('/topic/lumen.arkan.persistence.journal',
             {"reply-to": tempQueue}, JSON.stringify($scope.form));
     };
 })
@@ -445,7 +445,7 @@ angular.module('starter.controllers', [])
     $scope.submit = function() {
         $log.info('JournalBatteryQuery', $scope.form, JSON.stringify($scope.form));
         $scope.resources = {content: []};
-        $scope.client.send('/topic/lumen.arkan.persistence.battery',
+        $scope.client.send('/topic/lumen.arkan.persistence.journal',
             {"reply-to": tempQueue}, JSON.stringify($scope.form));
     };
 })
