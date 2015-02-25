@@ -258,7 +258,7 @@ angular.module('starter.controllers', [])
     $scope.resources = {content: []};
     $scope.form = {
         '@type': 'JournalImageQuery',
-        maxDateCreated: '2015-02-17T16:11',
+        maxDateCreated: '2015-02-25T16:11',
         itemsPerPage: 25
     };
 
