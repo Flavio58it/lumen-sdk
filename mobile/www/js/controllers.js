@@ -672,7 +672,7 @@ angular.module('starter.controllers', [])
     $scope.client = ngstomp(settings.stompUri);
     $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
         $log.info('Stomp connected to', settings.stompUri);
-        $scope.client.subscribe('/topic/lumen.arkan.social.perception', function(msg) {
+        $scope.client.subscribe('/topic/lumen.*.social.perception', function(msg) {
             var post = JSON.parse(msg.body);
             $scope.posts.push(post);
             $ionicScrollDelegate.scrollBottom(true);
