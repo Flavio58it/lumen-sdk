@@ -11,7 +11,7 @@ Lumen Social Robot API, AngularJS SDK, and Client
 Install Ruby first.
 
     sudo gem install -V bundler # for Windows, omit 'sudo'
-    bundle install
+    bundle install -V
 
 Launch Jekyll development server by running:
 
