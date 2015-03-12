@@ -8,8 +8,9 @@ Lumen Social Robot API, AngularJS SDK, and Client
     cd lumen-sdk
     git checkout gh-pages
 
-Install Ruby first.
+Install Ruby first, and `zlib1g-dev` (required by `nokogiri` gem).
 
+    sudo aptitude install ruby-dev zlib1g-dev
     sudo gem install -V bundler # for Windows, omit 'sudo'
     bundle install -V
 
