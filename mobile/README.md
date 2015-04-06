@@ -7,8 +7,8 @@
     as follows. Run command prompt as Administrator. From your user home directory:
 
         npm -V -g install ionic # after progress shows up, press Ctrl+C then continue below
-        npm -g config set proxy http://username:password@cache.itb.ac.id:8080
-        npm -g config set https-proxy http://username:password@cache.itb.ac.id:8080
+        npm -g config set proxy http://username:password@cache.itb.ac.id:8080/
+        npm -g config set https-proxy http://username:password@cache.itb.ac.id:8080/
 
     **Linux:**
 
@@ -17,8 +17,8 @@
         #sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 68576280
         sudo aptitude update
         sudo aptitude install nodejs
-        npm config set proxy http://username:password@cache.itb.ac.id:8080
-        npm config set https-proxy http://username:password@cache.itb.ac.id:8080
+        npm config set proxy http://username:password@cache.itb.ac.id:8080/
+        npm config set https-proxy http://username:password@cache.itb.ac.id:8080/
 
 2. Install [Ionic](http://ionicframework.com/) and [Bower](http://bower.io/).
 

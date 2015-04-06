@@ -45,6 +45,38 @@ angular.module('starter.controllers', [])
         $scope.client = null;
     }, '/');
 
+    $scope.joints = [
+        // Head
+        {id: 'HeadYaw'},
+        {id: 'HeadPitch'},
+        // RArm
+        {id: 'RShoulderRoll'},
+        {id: 'RShoulderPitch'},
+        {id: 'RElbowYaw'},
+        {id: 'RElbowRoll'},
+        {id: 'RWristYaw'},
+        {id: 'RHand'},
+        // LArm
+        {id: 'LShoulderRoll'},
+        {id: 'LShoulderPitch'},
+        {id: 'LElbowYaw'},
+        {id: 'LElbowRoll'},
+        {id: 'LWristYaw'},
+        {id: 'LHand'},
+        // RLeg
+        {id: 'RHipPitch'},
+        {id: 'RHipRoll'},
+        {id: 'RKneePitch'},
+        {id: 'RAnklePitch'},
+        {id: 'RAnkleRoll'},
+        // LLeg
+        {id: 'LHipYawPitch'},
+        {id: 'LHipPitch'},
+        {id: 'LHipRoll'},
+        {id: 'LKneePitch'},
+        {id: 'LAnklePitch'},
+        {id: 'LAnkleRoll'}
+    ];
     $scope.form = {
         greeting: "Hello nice people from Melbourne University Australia. With love, from Bandung Institute of Technology",
         speed: 0.5,
@@ -52,7 +84,12 @@ angular.module('starter.controllers', [])
             backDistance: -0.1,
             rightDistance: 0,
             turnCcwDeg: 0
-        }
+        },
+        interpolateAngle: {
+            joint: $scope.joints[0],
+            targetCcwDeg: 0, // HeadYaw Range: -85 (right)..85 (left) degrees
+            duration: 3, // seconds
+        },
     };
     $scope.sayHello = function() {
         var msg = {type : "texttospeech", method : "say",
@@ -116,6 +153,18 @@ angular.module('starter.controllers', [])
             'backDistance': $scope.form.moveTo.backDistance,
             'rightDistance': $scope.form.moveTo.rightDistance,
             'turnCcwDeg': $scope.form.moveTo.turnCcwDeg
+        };
+        $log.info('Remote Control', msg, JSON.stringify(msg));
+        $scope.client.send('/topic/avatar.NAO.command',
+            {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
+    };
+
+    $scope.jointInterpolateAngle = function() {
+        var msg = {
+            '@type': "JointInterpolateAngle",
+            jointId: $scope.form.interpolateAngle.joint.id,
+            targetCcwDeg: $scope.form.interpolateAngle.targetCcwDeg,
+            duration: $scope.form.interpolateAngle.duration
         };
         $log.info('Remote Control', msg, JSON.stringify(msg));
         $scope.client.send('/topic/avatar.NAO.command',
