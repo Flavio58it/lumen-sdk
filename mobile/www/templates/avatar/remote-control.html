@@ -1,12 +1,18 @@
 <ion-view view-title="Avatar : Remote Control">
     <ion-content>
 
+        <h3>Text-to-Speech</h3>
         <ion-list>
             <ion-item>
                 <textarea type="text" ng-model="form.greeting" rows="3"></textarea>
                 <button class="button button-positive button-block" ng-click="sayHello()">Say Hello</button>
             </ion-item>
+        </ion-list>
+
+        <h3>Posture</h3>
+        <ion-list>
             <ion-item>
+                Speed:
                 <label><input type="radio" ng-model="form.speed" value="0.2"/>0.2</label>
                 <label><input type="radio" ng-model="form.speed" value="0.3"/>0.3</label>
                 <label><input type="radio" ng-model="form.speed" value="0.4"/>0.4</label>
@@ -15,15 +21,30 @@
                 <label><input type="radio" ng-model="form.speed" value="0.7"/>0.7</label>
             </ion-item>
             <ion-item>
-                <button class="button button-positive button-block" ng-click="wakeUp()">WakeUp</button>
-                <button class="button button-positive button-block" ng-click="goToPosture()">Stand</button>
-                <button class="button button-positive button-block" ng-click="standInit()">Stand Init</button>
-                <button class="button button-positive button-block" ng-click="standZero()">Stand Zero</button>
-                <button class="button button-positive button-block" ng-click="sit()">Sit</button>
-                <button class="button button-positive button-block" ng-click="sitRelax()">Sit Relax</button>
-                <button class="button button-positive button-block" ng-click="rest()">rest</button>
+                <button class="button button-energized button-block" ng-click="wakeUp()">Wake Up</button>
+                <button class="button button-default button-block" ng-click="goToPosture()">Stand</button>
+                <button class="button button-default button-block" ng-click="standInit()">Stand Init</button>
+                <button class="button button-default button-block" ng-click="standZero()">Stand Zero</button>
+                <button class="button button-default button-block" ng-click="sit()">Sit</button>
+                <button class="button button-default button-block" ng-click="sitRelax()">Sit Relax</button>
+                <button class="button button-calm button-block" ng-click="rest()">Rest</button>
             </ion-item>
         </ion-list>
 
+        <h3>Move To (walking)</h3>
+        <ion-list>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Back distance (m)</span> <input type="number" ng-model="form.moveTo.backDistance"/>
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Right distance (m)</span> <input type="number" ng-model="form.moveTo.rightDistance"/>
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Turn CCW (°)</span> <input type="number" ng-model="form.moveTo.turnCcwDeg"/>
+            </label>
+            <ion-item>
+                <button class="button button-positive button-block" ng-click="moveTo()">Move To</button>
+            </ion-item>
+        </ion-list>
     </ion-content>
 </ion-view>

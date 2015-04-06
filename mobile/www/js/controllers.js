@@ -47,7 +47,12 @@ angular.module('starter.controllers', [])
 
     $scope.form = {
         greeting: "Hello nice people from Melbourne University Australia. With love, from Bandung Institute of Technology",
-        speed: 0.5
+        speed: 0.5,
+        moveTo: {
+            backDistance: -0.1,
+            rightDistance: 0,
+            turnCcwDeg: 0
+        }
     };
     $scope.sayHello = function() {
         var msg = {type : "texttospeech", method : "say",
@@ -104,6 +109,19 @@ angular.module('starter.controllers', [])
                 $scope.client.send('/topic/avatar.NAO.command',
                     {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(restMsg));
         };
+
+    $scope.moveTo = function() {
+        var msg = {
+            '@type': "MoveTo",
+            'backDistance': $scope.form.moveTo.backDistance,
+            'rightDistance': $scope.form.moveTo.rightDistance,
+            'turnCcwDeg': $scope.form.moveTo.turnCcwDeg
+        };
+        $log.info('Remote Control', msg, JSON.stringify(msg));
+        $scope.client.send('/topic/avatar.NAO.command',
+            {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
+    };
+
 })
 .controller('AvatarInstrumentsCtrl', function($scope, $stateParams, $log, ngstomp, Settings) {
     $scope.messages = [];
