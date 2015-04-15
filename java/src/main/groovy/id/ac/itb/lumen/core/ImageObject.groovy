@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import groovy.transform.CompileStatic
+import org.apache.commons.lang3.StringUtils
 import org.joda.time.DateTime
 
 /**
@@ -34,4 +35,18 @@ class ImageObject {
      */
     String url
 
+    @Override
+    public String toString() {
+        return "ImageObject{" +
+                "name='" + name + '\'' +
+                ", contentType='" + contentType + '\'' +
+                ", contentSize=" + contentSize +
+                ", uploadDate=" + uploadDate +
+                ", dateCreated=" + dateCreated +
+                ", dateModified=" + dateModified +
+                ", datePublished=" + datePublished +
+                ", contentUrl='" + StringUtils.abbreviate(contentUrl, 100) + '\'' +
+                ", url='" + url + '\'' +
+                '}';
+    }
 }
