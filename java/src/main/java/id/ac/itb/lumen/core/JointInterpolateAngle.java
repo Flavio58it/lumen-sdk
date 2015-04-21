@@ -3,7 +3,7 @@ package id.ac.itb.lumen.core;
 /**
  * Created by ceefour on 21/04/2015.
  */
-public class JointInterpolateAngle extends MoveTo implements LumenThing {
+public class JointInterpolateAngle implements LumenThing {
 
     public static enum JointId {
         // Head

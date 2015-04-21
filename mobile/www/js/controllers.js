@@ -79,8 +79,8 @@ angular.module('starter.controllers', [])
     ];
     $scope.form = {
         audioVolume: 0.8,
-        greeting: "Hello nice people from Melbourne University Australia. With love, from Bandung Institute of Technology",
-        speed: 0.5,
+        greeting: "Hello I am Arkan Lumen from Bandung Institute of Technology. What can I help you?",
+        speed: 0.7,
         moveTo: {
             backDistance: -0.1,
             rightDistance: 0,
@@ -113,47 +113,18 @@ angular.module('starter.controllers', [])
         $scope.client.send('/topic/avatar.NAO.command',
             {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(wakeMsg));
     };
-    $scope.goToPosture = function() {
-            var par = {postureName: "Stand", speed: $scope.form.speed};
-            var goToPosture = {type : "posture",method : "goToPosture", parameter: par};
-            $log.info('Remote Control', goToPosture, JSON.stringify(goToPosture));
-            $scope.client.send('/topic/avatar.NAO.command',
-                {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(goToPosture));
-    };
-    $scope.sit = function() {
-            var par = {postureName: "Sit", speed: $scope.form.speed};
-            var msg = {type : "posture", method : "goToPosture", parameter: par};
-            $log.info('Remote Control', msg, JSON.stringify(msg));
-            $scope.client.send('/topic/avatar.NAO.command',
-                {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
-    };
-    $scope.sitRelax = function() {
-            var par = {postureName: "SitRelax", speed: $scope.form.speed};
-            var msg = {type : "posture", method : "goToPosture", parameter: par};
-            $log.info('Remote Control', msg, JSON.stringify(msg));
-            $scope.client.send('/topic/avatar.NAO.command',
-                {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
-    };
-    $scope.standInit = function() {
-            var par = {postureName: "StandInit", speed: $scope.form.speed};
-            var msg = {type : "posture", method : "goToPosture", parameter: par};
-            $log.info('Remote Control', msg, JSON.stringify(msg));
-            $scope.client.send('/topic/avatar.NAO.command',
-                {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
-    };
-    $scope.standZero = function() {
-            var par = {postureName: "StandZero", speed: $scope.form.speed};
-            var msg = {type : "posture", method : "goToPosture", parameter: par};
-            $log.info('Remote Control', msg, JSON.stringify(msg));
-            $scope.client.send('/topic/avatar.NAO.command',
-                {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
-    };
     $scope.rest = function() {
-                var restMsg = {type : "motion",method : "rest"};
-                $log.info('Remote Control', restMsg, JSON.stringify(restMsg));
-                $scope.client.send('/topic/avatar.NAO.command',
-                    {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(restMsg));
-        };
+        var restMsg = {type : "motion",method : "rest"};
+        $log.info('Remote Control', restMsg, JSON.stringify(restMsg));
+        $scope.client.send('/topic/avatar.NAO.command',
+            {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(restMsg));
+    };
+    $scope.changePosture = function(postureId) {
+        var msg = {'@type': 'PostureChange', postureId: postureId, speed: $scope.form.speed};
+        $log.info('Remote Control', msg, JSON.stringify(msg));
+        $scope.client.send('/topic/avatar.NAO.command',
+            {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
+    };
 
     $scope.moveTo = function() {
         var msg = {
