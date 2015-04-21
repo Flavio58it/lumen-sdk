@@ -78,6 +78,7 @@ angular.module('starter.controllers', [])
         {id: 'LAnkleRoll'}
     ];
     $scope.form = {
+        audioVolume: 0.8,
         greeting: "Hello nice people from Melbourne University Australia. With love, from Bandung Institute of Technology",
         speed: 0.5,
         moveTo: {
@@ -90,6 +91,13 @@ angular.module('starter.controllers', [])
             targetCcwDeg: 0, // HeadYaw Range: -85 (right)..85 (left) degrees
             duration: 3, // seconds
         },
+    };
+
+    $scope.changeVolume = function() {
+        var msg = {'@type': 'AudioVolume', volume: $scope.form.audioVolume};
+        $log.info('Remote Control', msg, JSON.stringify(msg));
+        $scope.client.send('/topic/avatar.NAO.command',
+            {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
     };
     $scope.sayHello = function() {
         var msg = {type : "texttospeech", method : "say",

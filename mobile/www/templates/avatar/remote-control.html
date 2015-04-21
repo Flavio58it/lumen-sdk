@@ -3,6 +3,13 @@
 
         <h3>Text-to-Speech</h3>
         <ion-list>
+            <div class="item item-input item-stacked-label">
+                <span class="input-label">
+                    Audio Volume: <strong>{{form.audioVolume}}</strong>
+                </span>
+                <input type="range" ng-model="form.audioVolume" min="0.0" max="1.0" step="0.1" style="width: 80%"/>
+                <button class="button button-default button-block" ng-click="changeVolume()">Set Volume</button>
+            </div>
             <ion-item>
                 <textarea type="text" ng-model="form.greeting" rows="3"></textarea>
                 <button class="button button-positive button-block" ng-click="sayHello()">Say Hello</button>
