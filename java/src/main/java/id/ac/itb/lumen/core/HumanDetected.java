@@ -10,6 +10,9 @@ public class HumanDetected implements LumenThing {
     private String humanId;
     private Vector3 position;
     private Rotation3 rotation;
+    private Integer imageU;
+    private Integer imageV;
+    private Integer imageVH;
 
     public String getHumanId() {
         return humanId;
@@ -33,6 +36,30 @@ public class HumanDetected implements LumenThing {
 
     public void setRotation(Rotation3 rotation) {
         this.rotation = rotation;
+    }
+
+    public Integer getImageU() {
+        return imageU;
+    }
+
+    public void setImageU(Integer imageU) {
+        this.imageU = imageU;
+    }
+
+    public Integer getImageV() {
+        return imageV;
+    }
+
+    public void setImageV(Integer imageV) {
+        this.imageV = imageV;
+    }
+
+    public Integer getImageVH() {
+        return imageVH;
+    }
+
+    public void setImageVH(Integer imageVH) {
+        this.imageVH = imageVH;
     }
 
     @Override

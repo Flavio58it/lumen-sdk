@@ -596,6 +596,7 @@ angular.module('starter.controllers', [])
     $scope.imageObject = null;
     $scope.recognizeds = [];
     $scope.humanPos = {x: null, y: null, z: null};
+    $scope.markers = [{cssStyle: {left: '0px', top: '0px', height: '0px'}}];
 
 //    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
     var settings = Settings.getSettings();
@@ -613,10 +614,19 @@ angular.module('starter.controllers', [])
         });
         $scope.client.subscribe('/topic/lumen.arkan.human.detection', function(msg) {
             var humanChanges = JSON.parse(msg.body);
+            var humanThing = null;
             if (humanChanges.humanDetecteds.length > 0) {
-                $scope.humanPos = humanChanges.humanDetecteds[0].position;
+                humanThing = humanChanges.humanDetecteds[0];
             } else if (humanChanges.humanMovings.length > 0) {
-                $scope.humanPos = humanChanges.humanMovings[0].position;
+                humanThing = humanChanges.humanMovings[0];
+            }
+            if (humanThing != null) {
+                $scope.humanPos = humanThing.position;
+                $scope.markers[0] = {cssStyle: {
+                    left: (humanThing.imageU-2) + 'px',
+                    top: (humanThing.imageV - humanThing.imageVH) + 'px',
+                    width: '5px',
+                    height: humanThing.imageVH + 'px'}};
             }
         });
     }, function(err) {
@@ -679,8 +689,10 @@ angular.module('starter.controllers', [])
             patCanvas.height = $scope.patOpts.h;
             var ctxPat = patCanvas.getContext('2d');
 
-            var idata = getVideoData($scope.patOpts.x, $scope.patOpts.y, $scope.patOpts.w, $scope.patOpts.h);
-            ctxPat.putImageData(idata, 0, 0);
+//            var idata = getVideoData($scope.patOpts.x, $scope.patOpts.y, $scope.patOpts.w, $scope.patOpts.h);
+//            ctxPat.putImageData(idata, 0, 0);
+            ctxPat.drawImage(_video, 0, 0, $scope.patOpts.w, $scope.patOpts.h);
+            var idata = ctxPat.getImageData($scope.patOpts.x, $scope.patOpts.y, $scope.patOpts.w, $scope.patOpts.h);
 
             sendSnapshotToServer(patCanvas.toDataURL(imageContentType));
 

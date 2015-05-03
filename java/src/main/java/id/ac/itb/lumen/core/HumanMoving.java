@@ -10,6 +10,9 @@ public class HumanMoving implements LumenThing {
     private Vector3 position;
     private Vector3 rotation;
     private Vector3 speed;
+    private Integer imageU;
+    private Integer imageV;
+    private Integer imageVH;
 
     /**
      * Human ID that is moving.
@@ -59,4 +62,27 @@ public class HumanMoving implements LumenThing {
         this.speed = speed;
     }
 
+    public Integer getImageU() {
+        return imageU;
+    }
+
+    public void setImageU(Integer imageU) {
+        this.imageU = imageU;
+    }
+
+    public Integer getImageV() {
+        return imageV;
+    }
+
+    public void setImageV(Integer imageV) {
+        this.imageV = imageV;
+    }
+
+    public Integer getImageVH() {
+        return imageVH;
+    }
+
+    public void setImageVH(Integer imageVH) {
+        this.imageVH = imageVH;
+    }
 }
