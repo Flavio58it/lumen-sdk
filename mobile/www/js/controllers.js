@@ -587,7 +587,7 @@ angular.module('starter.controllers', [])
     };
     $scope.recognize = function() {
         $log.info('Recognizing...', $scope.imageObject, JSON.stringify($scope.imageObject));
-        $scope.client.send('/topic/lumen.arkan.camera.stream', {}, JSON.stringify($scope.imageObject));
+        $scope.client.send('/topic/avatar.NAO.data.image', {}, JSON.stringify($scope.imageObject));
     };
 })
 .controller('FaceRecognitionCamCtrl', function($scope, $stateParams, $log, $interval, ngstomp, Settings) {
@@ -595,6 +595,7 @@ angular.module('starter.controllers', [])
 
     $scope.imageObject = null;
     $scope.recognizeds = [];
+    $scope.humanPos = {x: null, y: null, z: null};
 
 //    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
     var settings = Settings.getSettings();
@@ -609,6 +610,14 @@ angular.module('starter.controllers', [])
                 top: recognized.minPoint.y + 'px'
             };
             $scope.recognizeds.push(recognized);
+        });
+        $scope.client.subscribe('/topic/lumen.arkan.human.detection', function(msg) {
+            var humanChanges = JSON.parse(msg.body);
+            if (humanChanges.humanDetecteds.length > 0) {
+                $scope.humanPos = humanChanges.humanDetecteds[0].position;
+            } else if (humanChanges.humanMovings.length > 0) {
+                $scope.humanPos = humanChanges.humanMovings[0].position;
+            }
         });
     }, function(err) {
         $log.error('Stomp error:', err);
@@ -693,7 +702,7 @@ angular.module('starter.controllers', [])
             contentUrl: $scope.snapshotData
         };
         $log.info('Recognizing...', $scope.imageObject, JSON.stringify($scope.imageObject));
-        $scope.client.send('/topic/lumen.arkan.camera.stream', {}, JSON.stringify($scope.imageObject));
+        $scope.client.send('/topic/avatar.NAO.data.image', {}, JSON.stringify($scope.imageObject));
 //        window.alert('Sent: ' + JSON.stringify($scope.imageObject).substr(0, 300));
     };
     $scope.makeSnapshotAndRecognize = function() {
@@ -709,7 +718,7 @@ angular.module('starter.controllers', [])
         window.location.href = dataURL;
     };
 
-    $scope.streamingInterval = 1000;
+    $scope.streamingInterval = 1500;
     $scope.streamer = null;
     $scope.startStreaming = function() {
         $scope.streamer = $interval(function() {

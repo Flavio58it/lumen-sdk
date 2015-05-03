@@ -1,4 +1,4 @@
-<ion-view view-title="Face Recognition: Camera">
+<ion-view view-title="Recognition: Camera">
   <ion-content>
       <ion-list>
         <ion-item>
@@ -16,7 +16,10 @@
             <button class="button button-small" ng-click="startStreaming()" ng-show="!streamer"><i class="ion-record"></i> Start Streaming</button>
             <button class="button button-small" ng-click="stopStreaming()" ng-show="streamer"><i class="ion-stop"></i> Stop Streaming</Streaming></button>
             <div>
-                Streaming interval: <input ng-model="streamingInterval" type="number" min="100" max="15000" step="100"/>
+                Streaming interval: <input ng-model="streamingInterval" type="number" min="300" max="15000" step="100"/>
+            </div>
+            <div style="font-size: 3em">
+                Human#1: {{humanPos.x | number:2}}, {{humanPos.y | number:2}}, {{humanPos.z | number:2}}
             </div>
         </ion-item>
           <ion-item>

@@ -20,6 +20,7 @@ import java.io.Serializable;
         @JsonSubTypes.Type(name="Speech", value=Speech.class),
         @JsonSubTypes.Type(name="AudioVolume", value=AudioVolume.class),
         @JsonSubTypes.Type(name="JointInterpolateAngle", value=JointInterpolateAngle.class),
+        @JsonSubTypes.Type(name="HumanChanges", value=HumanChanges.class),
 })
 public interface LumenThing extends Serializable {
 }
