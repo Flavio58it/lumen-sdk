@@ -590,7 +590,7 @@ angular.module('starter.controllers', [])
         $scope.client.send('/topic/lumen.arkan.camera.stream', {}, JSON.stringify($scope.imageObject));
     };
 })
-.controller('FaceRecognitionCamCtrl', function($scope, $stateParams, $log, ngstomp, Settings) {
+.controller('FaceRecognitionCamCtrl', function($scope, $stateParams, $log, $interval, ngstomp, Settings) {
     'use strict';
 
     $scope.imageObject = null;
@@ -615,6 +615,7 @@ angular.module('starter.controllers', [])
         $scope.client = null;
     }, '/');
 
+    var imageContentType = 'image/jpeg'; // stomp.js can't handle big messages yet :(
     var _video = null,
         patData = null,
         dataUri = null;
@@ -672,7 +673,7 @@ angular.module('starter.controllers', [])
             var idata = getVideoData($scope.patOpts.x, $scope.patOpts.y, $scope.patOpts.w, $scope.patOpts.h);
             ctxPat.putImageData(idata, 0, 0);
 
-            sendSnapshotToServer(patCanvas.toDataURL());
+            sendSnapshotToServer(patCanvas.toDataURL(imageContentType));
 
             patData = idata;
         }
@@ -685,8 +686,8 @@ angular.module('starter.controllers', [])
 
         $scope.imageObject = {
             '@type': 'ImageObject',
-            name: 'camera.png',
-            contentType: 'image/png',
+            name: 'camera.jpg',
+            contentType: imageContentType,
             // TODO: contentSize: imageFile.size,
             // TODO: dateModified: imageFile.lastModifiedDate,
             contentUrl: $scope.snapshotData
@@ -706,6 +707,19 @@ angular.module('starter.controllers', [])
      */
     $scope.downloadSnapshot = function downloadSnapshot(dataURL) {
         window.location.href = dataURL;
+    };
+
+    $scope.streamingInterval = 1000;
+    $scope.streamer = null;
+    $scope.startStreaming = function() {
+        $scope.streamer = $interval(function() {
+            $scope.makeSnapshotAndRecognize();
+        }, $scope.streamingInterval);
+    };
+    $scope.stopStreaming = function() {
+        $log.info('Canceling streamer');
+        $interval.cancel($scope.streamer);
+        $scope.streamer = null;
     };
 })
 
