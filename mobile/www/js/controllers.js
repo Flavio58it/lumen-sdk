@@ -587,7 +587,7 @@ angular.module('starter.controllers', [])
     };
     $scope.recognize = function() {
         $log.info('Recognizing...', $scope.imageObject, JSON.stringify($scope.imageObject));
-        $scope.client.send('/topic/lumen.arkan.camera.stream', {}, JSON.stringify($scope.imageObject));
+        $scope.client.send('/topic/avatar.NAO.data.image', {}, JSON.stringify($scope.imageObject));
     };
 })
 .controller('FaceRecognitionCamCtrl', function($scope, $stateParams, $log, ngstomp, Settings) {
@@ -692,7 +692,7 @@ angular.module('starter.controllers', [])
             contentUrl: $scope.snapshotData
         };
         $log.info('Recognizing...', $scope.imageObject, JSON.stringify($scope.imageObject));
-        $scope.client.send('/topic/lumen.arkan.camera.stream', {}, JSON.stringify($scope.imageObject));
+        $scope.client.send('/topic/avatar.NAO.data.image', {}, JSON.stringify($scope.imageObject));
 //        window.alert('Sent: ' + JSON.stringify($scope.imageObject).substr(0, 300));
     };
     $scope.makeSnapshotAndRecognize = function() {
