@@ -1,23 +1,12 @@
 package id.ac.itb.lumen.core;
 
 /**
- * If human detected by human detector, then this is sent,
- * and virtual perception (Unity3D) can instantiate a 3D human visualization in game level.
+ * Inform the current position and/or rotation of the avatar.
  * Created by Sigit on 23/04/2015.
  */
-public class HumanDetected implements LumenThing {
-
-    private String humanId;
+public class AvatarTransform implements LumenThing {
     private Vector3 position;
     private Rotation3 rotation;
-
-    public String getHumanId() {
-        return humanId;
-    }
-
-    public void setHumanId(String humanId) {
-        this.humanId = humanId;
-    }
 
     public Vector3 getPosition() {
         return position;
@@ -37,11 +26,9 @@ public class HumanDetected implements LumenThing {
 
     @Override
     public String toString() {
-        return "HumanDetected{" +
-                "humanId='" + humanId + '\'' +
-                ", position=" + position +
+        return "AvatarTransform{" +
+                "position=" + position +
                 ", rotation=" + rotation +
                 '}';
     }
-
 }

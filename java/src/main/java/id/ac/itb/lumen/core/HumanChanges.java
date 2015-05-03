@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * DUMMY
- * Created by ceefour on 03/05/2015.
+ * Created by Sigit on 03/05/2015.
  */
 public class HumanChanges implements LumenThing {
 
@@ -19,4 +18,5 @@ public class HumanChanges implements LumenThing {
     public List<HumanMoving> getHumanMovings() {
         return humanMovings;
     }
+
 }
