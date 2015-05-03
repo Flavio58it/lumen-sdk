@@ -13,6 +13,11 @@
             <button class="button button-small" ng-click="makeSnapshot()"><i class="ion-camera"></i> Snap!</button>
             <button class="button button-small button-energized" ng-click="makeSnapshotAndRecognize()"><i class="ion-camera"></i> Snap &amp; Recognize!</button>
             <button class="button button-small" ng-click="recognize()" ng-show="snapshotData"><i class="ion-person"></i> Recognize</button>
+            <button class="button button-small" ng-click="startStreaming()" ng-show="!streamer"><i class="ion-record"></i> Start Streaming</button>
+            <button class="button button-small" ng-click="stopStreaming()" ng-show="streamer"><i class="ion-stop"></i> Stop Streaming</Streaming></button>
+            <div>
+                Streaming interval: <input ng-model="streamingInterval" type="number" min="100" max="15000" step="100"/>
+            </div>
         </ion-item>
           <ion-item>
             <canvas id="snapshot"></canvas>
