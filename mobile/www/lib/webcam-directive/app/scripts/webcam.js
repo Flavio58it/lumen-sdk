@@ -113,6 +113,8 @@ angular.module('webcam', [])
           }
 
           var mediaConstraint = { video: true, audio: false };
+          // Lumen wants 640x480 for better but doesn't work
+//          var mediaConstraint = { video: {mandatory: {minWidth: 640, minHeight: 480}}, audio: false };
           navigator.getMedia(mediaConstraint, onSuccess, onFailure);
 
           /* Start streaming the webcam data when the video element can play
