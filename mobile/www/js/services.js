@@ -4,7 +4,7 @@ angular.module('starter.services', [])
     return {
         getDefault: function() {
             var defaultSettings = {
-                stompUri: 'http://167.205.56.130:15674/stomp',
+                stompUri: 'http://167.205.66.219:15674/stomp',
                 stompUser: 'lumen',
                 stompPassword: 'lumen',
             };
@@ -12,7 +12,7 @@ angular.module('starter.services', [])
         },
         getSettings: function() {
             var defaultSettings = {
-                stompUri: 'http://167.205.56.130:15674/stomp',
+                stompUri: 'http://167.205.66.219:15674/stomp',
                 stompUser: 'lumen',
                 stompPassword: 'lumen',
             };
