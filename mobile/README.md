@@ -4,11 +4,10 @@
 
     **Windows:** Download and install [NodeJS](http://nodejs.org/download/).
     Post-installation: set [NPM proxy settings](http://jjasonclark.com/how-to-setup-node-behind-web-proxy)
-    as follows. Run command prompt as Administrator. From your user home directory:
+    as follows. Create file `C:\Users\<username>\.npmrc` : (change with your own username and password below)
 
-        npm -V -g install ionic # after progress shows up, press Ctrl+C then continue below
-        npm -g config set proxy http://username:password@cache.itb.ac.id:8080/
-        npm -g config set https-proxy http://username:password@cache.itb.ac.id:8080/
+        proxy=http://username:password@cache.itb.ac.id:8080/
+        https-proxy=http://username:password@cache.itb.ac.id:8080
 
     **Linux:**
 
@@ -22,7 +21,7 @@
 
 2. Install [Ionic](http://ionicframework.com/) and [Bower](http://bower.io/).
 
-    **Windows:** Run _Node.js command prompt_ as Administrator:
+    **Windows:** Run _Node.js command prompt_:
 
         npm -V -g install ionic bower
 
@@ -32,7 +31,7 @@
 
         sudo npm -V -g install ionic bower
 
-3. (If you want to deploy to Android/iOS/Windows Phone) Install Cordova: `npm -g install cordova`
+3. (If you want to deploy to Android/iOS/Windows Phone) Install Cordova: `npm -V -g install cordova`
 
 4. Lumen mobile client needs RabbitMQ to communicate over Stomp-WebSockets.
 
