@@ -24,6 +24,7 @@ import java.io.Serializable;
         @JsonSubTypes.Type(name="HumanDetected", value=HumanDetected.class),
         @JsonSubTypes.Type(name="HumanChanges", value=HumanChanges.class),
         @JsonSubTypes.Type(name="HumanMoving", value=HumanMoving.class),
+        @JsonSubTypes.Type(name="LedOperation", value=LedOperation.class),
 })
 public interface LumenThing extends Serializable {
 }

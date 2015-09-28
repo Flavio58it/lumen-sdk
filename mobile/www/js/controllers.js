@@ -91,6 +91,12 @@ angular.module('starter.controllers', [])
             targetCcwDeg: 0, // HeadYaw Range: -85 (right)..85 (left) degrees
             duration: 3, // seconds
         },
+        leds: {
+            name: 'FaceLeds',
+            color: '#ff0000',
+            intensity: 1.0,
+            duration: 3.0, // seconds
+        }
     };
 
     $scope.changeVolume = function() {
@@ -148,6 +154,80 @@ angular.module('starter.controllers', [])
         $log.info('Remote Control', msg, JSON.stringify(msg));
         $scope.client.send('/topic/avatar.NAO.command',
             {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
+    };
+
+    // LEDs
+    $scope.ledsOn = function() {
+        var msg = {
+            '@type': 'LedOperation',
+            kind: 'ON',
+            duration: $scope.form.leds.duration,
+            intensity: $scope.form.leds.intensity,
+            color: $scope.form.leds.color,
+        };
+        $log.info('LED', msg, JSON.stringify(msg));
+        $scope.client.send('/topic/avatar.nao1.leds',
+            {"reply-to": '/temp-queue/avatar.nao1.leds'}, JSON.stringify(msg));
+    };
+    $scope.ledsOff = function() {
+        var msg = {
+            '@type': 'LedOperation',
+            kind: 'OFF',
+            duration: $scope.form.leds.duration,
+            intensity: $scope.form.leds.intensity,
+            color: $scope.form.leds.color,
+        };
+        $log.info('LED', msg, JSON.stringify(msg));
+        $scope.client.send('/topic/avatar.nao1.leds',
+            {"reply-to": '/temp-queue/avatar.nao1.leds'}, JSON.stringify(msg));
+    };
+    $scope.ledsFade = function() {
+        var msg = {
+            '@type': 'LedOperation',
+            kind: 'FADE',
+            duration: $scope.form.leds.duration,
+            intensity: $scope.form.leds.intensity,
+            color: $scope.form.leds.color,
+        };
+        $log.info('LED', msg, JSON.stringify(msg));
+        $scope.client.send('/topic/avatar.nao1.leds',
+            {"reply-to": '/temp-queue/avatar.nao1.leds'}, JSON.stringify(msg));
+    };
+    $scope.ledsFadeRgb = function() {
+        var msg = {
+            '@type': 'LedOperation',
+            kind: 'FADE_RGB',
+            duration: $scope.form.leds.duration,
+            intensity: $scope.form.leds.intensity,
+            color: $scope.form.leds.color,
+        };
+        $log.info('LED', msg, JSON.stringify(msg));
+        $scope.client.send('/topic/avatar.nao1.leds',
+            {"reply-to": '/temp-queue/avatar.nao1.leds'}, JSON.stringify(msg));
+    };
+    $scope.ledsRandomEyes = function() {
+        var msg = {
+            '@type': 'LedOperation',
+            kind: 'RANDOM_EYES',
+            duration: $scope.form.leds.duration,
+            intensity: $scope.form.leds.intensity,
+            color: $scope.form.leds.color,
+        };
+        $log.info('LED', msg, JSON.stringify(msg));
+        $scope.client.send('/topic/avatar.nao1.leds',
+            {"reply-to": '/temp-queue/avatar.nao1.leds'}, JSON.stringify(msg));
+    };
+    $scope.ledsRasta = function() {
+        var msg = {
+            '@type': 'LedOperation',
+            kind: 'RASTA',
+            duration: $scope.form.leds.duration,
+            intensity: $scope.form.leds.intensity,
+            color: $scope.form.leds.color,
+        };
+        $log.info('LED', msg, JSON.stringify(msg));
+        $scope.client.send('/topic/avatar.nao1.leds',
+            {"reply-to": '/temp-queue/avatar.nao1.leds'}, JSON.stringify(msg));
     };
 
 })

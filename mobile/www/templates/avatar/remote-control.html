@@ -67,5 +67,33 @@
             </ion-item>
         </ion-list>
         
+        <h3>LEDs</h3>
+        <ion-list>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">LED Group/Name:</span>
+                <input type="text" ng-model="form.leds.name"/>
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Color: <strong>{{form.leds.color}}</strong></span>
+                <input type="color" ng-model="form.leds.color" />
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Intensity: <strong>{{form.leds.intensity * 100}}</strong>%</span>
+                <input type="range" ng-model="form.leds.intensity" min="0.0" max="1.0" step="0.1"/>
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Duration: <strong>{{form.leds.duration}}</strong> s</span>
+                <input type="range" ng-model="form.leds.duration" min="0.5" max="10" step="0.2"/>
+            </label>
+            <ion-item>
+                <button class="button button-positive button-block" ng-click="ledsOn()">On</button>
+                <button class="button button-positive button-block" ng-click="ledsOff()">Off</button>
+                <button class="button button-positive button-block" ng-click="ledsFade()">Fade Intensity</button>
+                <button class="button button-positive button-block" ng-click="ledsFadeRgb()">Fade Color</button>
+                <button class="button button-positive button-block" ng-click="ledsRandomEyes()">Random Eyes</button>
+                <button class="button button-positive button-block" ng-click="ledsRasta()">Rasta</button>
+            </ion-item>
+        </ion-list>
+
     </ion-content>
 </ion-view>
