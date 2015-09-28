@@ -161,6 +161,7 @@ angular.module('starter.controllers', [])
         var msg = {
             '@type': 'LedOperation',
             kind: 'ON',
+            names: [$scope.form.leds.name],
             duration: $scope.form.leds.duration,
             intensity: $scope.form.leds.intensity,
             color: $scope.form.leds.color,
@@ -173,6 +174,7 @@ angular.module('starter.controllers', [])
         var msg = {
             '@type': 'LedOperation',
             kind: 'OFF',
+            names: [$scope.form.leds.name],
             duration: $scope.form.leds.duration,
             intensity: $scope.form.leds.intensity,
             color: $scope.form.leds.color,
@@ -185,6 +187,7 @@ angular.module('starter.controllers', [])
         var msg = {
             '@type': 'LedOperation',
             kind: 'FADE',
+            names: [$scope.form.leds.name],
             duration: $scope.form.leds.duration,
             intensity: $scope.form.leds.intensity,
             color: $scope.form.leds.color,
@@ -197,6 +200,7 @@ angular.module('starter.controllers', [])
         var msg = {
             '@type': 'LedOperation',
             kind: 'FADE_RGB',
+            names: [$scope.form.leds.name],
             duration: $scope.form.leds.duration,
             intensity: $scope.form.leds.intensity,
             color: $scope.form.leds.color,
@@ -209,6 +213,7 @@ angular.module('starter.controllers', [])
         var msg = {
             '@type': 'LedOperation',
             kind: 'RANDOM_EYES',
+            names: [$scope.form.leds.name],
             duration: $scope.form.leds.duration,
             intensity: $scope.form.leds.intensity,
             color: $scope.form.leds.color,
@@ -221,6 +226,7 @@ angular.module('starter.controllers', [])
         var msg = {
             '@type': 'LedOperation',
             kind: 'RASTA',
+            names: [$scope.form.leds.name],
             duration: $scope.form.leds.duration,
             intensity: $scope.form.leds.intensity,
             color: $scope.form.leds.color,
