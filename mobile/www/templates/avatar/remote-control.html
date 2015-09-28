@@ -2,23 +2,55 @@
     <ion-content>
 
         <h3>Text-to-Speech</h3>
-        <ion-list>
-            <div class="item item-input item-stacked-label">
+        <div class="list">
+            <div class="item range item-stacked-label">
                 <span class="input-label">
                     Audio Volume: <strong>{{form.audioVolume}}</strong>
                 </span>
                 <input type="range" ng-model="form.audioVolume" min="0.0" max="1.0" step="0.1" style="width: 80%"/>
+            </div>
+            <div class="item">
                 <button class="button button-default button-block" ng-click="changeVolume()">Set Volume</button>
             </div>
-            <ion-item>
+            <ion-item class="item-input">
                 <textarea type="text" ng-model="form.greeting" rows="3"></textarea>
+            </ion-item>
+            <ion-item>
                 <button class="button button-positive button-block" ng-click="sayHello()">Say Hello</button>
+            </ion-item>
+        </div>
+
+        <h3>LEDs</h3>
+        <ion-list>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">LED Group/Name:</span>
+                <input type="text" ng-model="form.leds.name"/>
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Color: <strong>{{form.leds.color}}</strong></span>
+                <input type="color" ng-model="form.leds.color" />
+            </label>
+            <label class="item range item-stacked-label">
+                <span class="input-label">Intensity: <strong>{{form.leds.intensity * 100}}</strong>%</span>
+                <input type="range" ng-model="form.leds.intensity" min="0.0" max="1.0" step="0.1"/>
+            </label>
+            <label class="item range item-stacked-label">
+                <span class="input-label">Duration: <strong>{{form.leds.duration}}</strong> s</span>
+                <input type="range" ng-model="form.leds.duration" min="0.5" max="10" step="0.2"/>
+            </label>
+            <ion-item>
+                <button class="button button-positive button-block" ng-click="ledsOn()">On</button>
+                <button class="button button-positive button-block" ng-click="ledsOff()">Off</button>
+                <button class="button button-positive button-block" ng-click="ledsFade()">Fade Intensity</button>
+                <button class="button button-positive button-block" ng-click="ledsFadeRgb()">Fade Color</button>
+                <button class="button button-positive button-block" ng-click="ledsRandomEyes()">Random Eyes</button>
+                <button class="button button-positive button-block" ng-click="ledsRasta()">Rasta</button>
             </ion-item>
         </ion-list>
 
         <h3>Posture</h3>
         <ion-list>
-            <label class="item item-input item-stacked-label">
+            <label class="item range item-stacked-label">
                 <span class="input-label">
                     Speed: <strong>{{form.speed}}</strong>
                 </span>
@@ -37,14 +69,17 @@
 
         <h3>Move To (walking)</h3>
         <ion-list>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Back distance: <strong>{{form.moveTo.backDistance}}</strong> m</span> <input type="range" ng-model="form.moveTo.backDistance" min="-2.5" max="2.5" step="0.1"/>
+            <label class="item range item-stacked-label">
+                <span class="input-label">Back distance: <strong>{{form.moveTo.backDistance}}</strong> m</span>
+                <input type="range" ng-model="form.moveTo.backDistance" min="-2.5" max="2.5" step="0.1"/>
             </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Right distance: <strong>{{form.moveTo.rightDistance}}</strong> m</span> <input type="range" ng-model="form.moveTo.rightDistance" min="-2.5" max="2.5" step="0.1"/>
+            <label class="item range item-stacked-label">
+                <span class="input-label">Right distance: <strong>{{form.moveTo.rightDistance}}</strong> m</span>
+                <input type="range" ng-model="form.moveTo.rightDistance" min="-2.5" max="2.5" step="0.1"/>
             </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Turn CCW: <strong>{{form.moveTo.turnCcwDeg}}</strong>°</span> <input type="range" ng-model="form.moveTo.turnCcwDeg" min="-85" max="85" step="5"/>
+            <label class="item range item-stacked-label">
+                <span class="input-label">Turn CCW: <strong>{{form.moveTo.turnCcwDeg}}</strong>°</span>
+                <input type="range" ng-model="form.moveTo.turnCcwDeg" min="-85" max="85" step="5"/>
             </label>
             <ion-item>
                 <button class="button button-positive button-block" ng-click="moveTo()">Move To</button>
@@ -53,45 +88,20 @@
 
         <h3>Joint: Interpolate Angle</h3>
         <ion-list>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Joint</span> <select ng-model="form.interpolateAngle.joint" ng-options="joint.id for joint in joints"></select>
+            <label class="item item-input item-select item-stacked-label">
+                <span class="input-label">Joint</span>
+                <select ng-model="form.interpolateAngle.joint" ng-options="joint.id for joint in joints"></select>
             </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Target Angle CCW: <strong>{{form.interpolateAngle.targetCcwDeg}}</strong>°</span> <input type="range" ng-model="form.interpolateAngle.targetCcwDeg" min="-85" max="85" step="5"/>
+            <label class="item range item-stacked-label">
+                <span class="input-label">Target Angle CCW: <strong>{{form.interpolateAngle.targetCcwDeg}}</strong>°</span>
+                <input type="range" ng-model="form.interpolateAngle.targetCcwDeg" min="-85" max="85" step="5"/>
             </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Duration: <strong>{{form.interpolateAngle.duration}}</strong> s</span> <input type="range" ng-model="form.interpolateAngle.duration" min="1" max="10"/>
+            <label class="item range item-stacked-label">
+                <span class="input-label">Duration: <strong>{{form.interpolateAngle.duration}}</strong> s</span>
+                <input type="range" ng-model="form.interpolateAngle.duration" min="1" max="10"/>
             </label>
             <ion-item>
                 <button class="button button-positive button-block" ng-click="jointInterpolateAngle()">Joint: Interpolate Angle</button>
-            </ion-item>
-        </ion-list>
-        
-        <h3>LEDs</h3>
-        <ion-list>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">LED Group/Name:</span>
-                <input type="text" ng-model="form.leds.name"/>
-            </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Color: <strong>{{form.leds.color}}</strong></span>
-                <input type="color" ng-model="form.leds.color" />
-            </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Intensity: <strong>{{form.leds.intensity * 100}}</strong>%</span>
-                <input type="range" ng-model="form.leds.intensity" min="0.0" max="1.0" step="0.1"/>
-            </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Duration: <strong>{{form.leds.duration}}</strong> s</span>
-                <input type="range" ng-model="form.leds.duration" min="0.5" max="10" step="0.2"/>
-            </label>
-            <ion-item>
-                <button class="button button-positive button-block" ng-click="ledsOn()">On</button>
-                <button class="button button-positive button-block" ng-click="ledsOff()">Off</button>
-                <button class="button button-positive button-block" ng-click="ledsFade()">Fade Intensity</button>
-                <button class="button button-positive button-block" ng-click="ledsFadeRgb()">Fade Color</button>
-                <button class="button button-positive button-block" ng-click="ledsRandomEyes()">Random Eyes</button>
-                <button class="button button-positive button-block" ng-click="ledsRasta()">Rasta</button>
             </ion-item>
         </ion-list>
 
