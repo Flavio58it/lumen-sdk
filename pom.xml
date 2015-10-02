@@ -4,8 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<!-- Dummy POM just to make easily importable to IDE -->
-	<groupId>id.ac.itb.lumen</groupId>
-	<artifactId>id.ac.itb.lumen.sdk</artifactId>
+	<groupId>org.lskk.lumen</groupId>
+	<artifactId>org.lskk.lumen.sdk</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
