@@ -1,8 +1,10 @@
 <ion-view view-title="Avatar : Remote Control">
     <ion-content>
 
-        <h3>Text-to-Speech</h3>
-        <div class="list">
+        <div class="list card">
+            <h2 class="item stable-bg">
+                Text-to-Speech
+            </h2>
             <div class="row item range">
                 <label class="col item-stacked-label">
                     <span class="input-label">
@@ -24,11 +26,12 @@
             </ion-item>
         </div>
 
-        <h3>Audio</h3>
-        <div class="list">
-            <ion-item class="item-input">
+        <div class="list card">
+            <h2 class="item stable-bg">Audio</h2>
+            <label class="item item-input">
+                <span class="input-label">Content URL</span>
                 <input type="text" ng-model="form.audio.contentUrl"/>
-            </ion-item>
+            </label>
             <ion-item>
                 <div class="row">
                     <div class="col">
@@ -51,11 +54,11 @@
             </ion-item>
         </div>
 
-        <h3>LEDs</h3>
-        <ion-list>
-            <label class="item item-input item-stacked-label">
+        <ion-list class="card">
+            <h2 class="item stable-bg">LEDs</h2>
+            <label class="item item-select item-stacked-label">
                 <span class="input-label">LED Group/Name:</span>
-                <input type="text" ng-model="form.leds.name"/>
+                <select ng-model="form.leds.led" ng-options="led.id for led in leds"></select>
             </label>
             <div class="row item item-input item-stacked-label">
                 <label class="col">
@@ -93,8 +96,19 @@
             </ion-item>
         </ion-list>
 
-        <h3>Posture</h3>
-        <ion-list>
+        <ion-list class="card">
+            <h2 class="item stable-bg">Actor</h2>
+            <label class="item item-select item-stacked-label">
+                <span class="input-label">Acting Script:</span>
+                <select ng-model="form.actor.actingScript" ng-options="actingScript.id for actingScript in actingScripts"></select>
+            </label>
+            <div class="item">
+                <button class="button button-energized button-block" ng-click="act()"><i class="ion ion-ios-videocam"></i> Act!</button>
+            </div>
+        </ion-list>
+
+        <ion-list class="card">
+            <h2 class="item stable-bg">Posture</h2>
             <label class="item range item-stacked-label" ng-show="motionAllowed">
                 <span class="input-label">
                     Speed: <strong>{{form.speed}}</strong>
@@ -114,8 +128,8 @@
             </ion-item>
         </ion-list>
 
-        <h3 ng-show="motionAllowed">Move To (walking)</h3>
-        <ion-list ng-show="motionAllowed">
+        <ion-list class="card" ng-show="motionAllowed">
+            <h2 class="item stable-bg">Move To (walking)</h2>
             <label class="item range item-stacked-label">
                 <span class="input-label">Back distance: <strong>{{form.moveTo.backDistance}}</strong> m</span>
                 <input type="range" ng-model="form.moveTo.backDistance" min="-2.5" max="2.5" step="0.1"/>
@@ -133,9 +147,9 @@
             </ion-item>
         </ion-list>
 
-        <h3 ng-show="motionAllowed">Joint: Interpolate Angle</h3>
-        <ion-list ng-show="motionAllowed">
-            <label class="item item-input item-select item-stacked-label">
+        <ion-list class="card" ng-show="motionAllowed">
+            <h2 class="item stable-bg">Joint: Interpolate Angle</h2>
+            <label class="item item-select item-stacked-label">
                 <span class="input-label">Joint</span>
                 <select ng-model="form.interpolateAngle.joint" ng-options="joint.id for joint in joints"></select>
             </label>

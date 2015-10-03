@@ -28,6 +28,7 @@ import java.io.Serializable;
         @JsonSubTypes.Type(name="LedOperation", value=LedOperation.class),
         @JsonSubTypes.Type(name="PlayAudio", value=PlayAudio.class),
         @JsonSubTypes.Type(name="StopAudio", value=StopAudio.class),
+        @JsonSubTypes.Type(name="ActingPerformance", value=ActingPerformance.class),
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public interface LumenThing extends Serializable {

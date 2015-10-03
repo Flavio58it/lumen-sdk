@@ -78,12 +78,27 @@ angular.module('starter.controllers', [])
         {id: 'LAnklePitch'},
         {id: 'LAnkleRoll'}
     ];
+    $scope.leds = [
+        {id: 'FaceLeds'},
+        {id: 'AllLeds'},
+    ];
+    $scope.actingScripts = [
+        {id: 'GOOD_BYE'},
+        {id: 'PHOTO_POSE'},
+        {id: 'DANCE_GANGNAM'},
+        {id: 'SING_MANUK'},
+        {id: 'SING_UPTOWN'},
+    ];
     $scope.form = {
         audioVolume: 0.8,
         greeting: "Hello I am Arkan Lumen from Bandung Institute of Technology. What can I help you?",
         // Audio
         audio: {
             contentUrl: 'file:///home/nao/gangnam.mp3',
+        },
+        // Actor
+        actor: {
+            actingScript: $scope.actingScripts[2]
         },
         // Motion
         speed: 0.7,
@@ -98,7 +113,7 @@ angular.module('starter.controllers', [])
             duration: 3, // seconds
         },
         leds: {
-            name: 'FaceLeds',
+            led: $scope.leds[0],
             color: '#ff0000',
             intensity: 1.0,
             duration: 3.0, // seconds
@@ -163,15 +178,25 @@ angular.module('starter.controllers', [])
         reader.readAsDataURL(audioFile);
     };
 
+    // Actor
+    $scope.act = function() {
+        var msg = {
+            '@type': 'ActingPerformance',
+            script: $scope.form.actor.actingScript.id
+        };
+        $scope.client.send('/topic/avatar.nao1.actor',
+            {"reply-to": '/temp-queue/avatar.nao1.actor'}, JSON.stringify(msg));
+    };
+
     // Motion
     $scope.wakeUp = function() {
-        var wakeMsg = {type : "motion",method : "wakeUp"};
+        var wakeMsg = {type: "motion", method: "wakeUp"};
         $log.info('Remote Control', wakeMsg, JSON.stringify(wakeMsg));
         $scope.client.send('/topic/avatar.NAO.command',
             {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(wakeMsg));
     };
     $scope.rest = function() {
-        var restMsg = {type : "motion",method : "rest"};
+        var restMsg = {type: "motion", method: "rest"};
         $log.info('Remote Control', restMsg, JSON.stringify(restMsg));
         $scope.client.send('/topic/avatar.NAO.command',
             {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(restMsg));
@@ -212,7 +237,7 @@ angular.module('starter.controllers', [])
         var msg = {
             '@type': 'LedOperation',
             kind: 'ON',
-            names: [$scope.form.leds.name],
+            names: [$scope.form.leds.led.id],
             duration: $scope.form.leds.duration,
             intensity: $scope.form.leds.intensity,
             color: $scope.form.leds.color,
@@ -225,7 +250,7 @@ angular.module('starter.controllers', [])
         var msg = {
             '@type': 'LedOperation',
             kind: 'OFF',
-            names: [$scope.form.leds.name],
+            names: [$scope.form.leds.led.id],
             duration: $scope.form.leds.duration,
             intensity: $scope.form.leds.intensity,
             color: $scope.form.leds.color,
@@ -238,7 +263,7 @@ angular.module('starter.controllers', [])
         var msg = {
             '@type': 'LedOperation',
             kind: 'FADE',
-            names: [$scope.form.leds.name],
+            names: [$scope.form.leds.led.id],
             duration: $scope.form.leds.duration,
             intensity: $scope.form.leds.intensity,
             color: $scope.form.leds.color,
@@ -251,7 +276,7 @@ angular.module('starter.controllers', [])
         var msg = {
             '@type': 'LedOperation',
             kind: 'FADE_RGB',
-            names: [$scope.form.leds.name],
+            names: [$scope.form.leds.led.id],
             duration: $scope.form.leds.duration,
             intensity: $scope.form.leds.intensity,
             color: $scope.form.leds.color,
@@ -264,7 +289,7 @@ angular.module('starter.controllers', [])
         var msg = {
             '@type': 'LedOperation',
             kind: 'RANDOM_EYES',
-            names: [$scope.form.leds.name],
+            names: [$scope.form.leds.led.id],
             duration: $scope.form.leds.duration,
             intensity: $scope.form.leds.intensity,
             color: $scope.form.leds.color,
@@ -277,7 +302,7 @@ angular.module('starter.controllers', [])
         var msg = {
             '@type': 'LedOperation',
             kind: 'RASTA',
-            names: [$scope.form.leds.name],
+            names: [$scope.form.leds.led.id],
             duration: $scope.form.leds.duration,
             intensity: $scope.form.leds.intensity,
             color: $scope.form.leds.color,
