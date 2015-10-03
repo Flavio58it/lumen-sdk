@@ -138,7 +138,7 @@ angular.module('starter.controllers', [])
     // Audio
     $scope.playAudio = function() {
         var msg = {
-            '@type': 'PlayAudio',
+            '@type': 'AudioObject',
             contentUrl: $scope.form.audio.contentUrl
         };
         $scope.client.send('/topic/avatar.nao1.audio.out',
@@ -163,7 +163,7 @@ angular.module('starter.controllers', [])
                 $window.alert('Audio file too large! Must be < 128 KB for JavaScript');
             } else {
                 var msg = {
-                    '@type': 'PlayAudio',
+                    '@type': 'AudioObject',
                     name: audioFile.name,
                     contentType: audioFile.type,
                     contentSize: audioFile.size,

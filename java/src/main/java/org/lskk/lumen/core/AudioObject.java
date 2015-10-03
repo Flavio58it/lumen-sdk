@@ -3,9 +3,12 @@ package org.lskk.lumen.core;
 import org.joda.time.DateTime;
 
 /**
- * http://doc.aldebaran.com/1-14/naoqi/audio/alaudioplayer-api.html
+ * Audio object both for playing audio and recording audio.
+ *
+ * @see <a href="* http://doc.aldebaran.com/1-14/naoqi/audio/alaudioplayer-api.html">* http://doc.aldebaran.com/1-14/naoqi/audio/alaudioplayer-api.html</a>
+ * @see <a href="http://schema.org/AudioObject">schema:AudioObject</a>
  */
-public class PlayAudio implements LumenThing {
+public class AudioObject implements LumenThing {
 
     private String name;
     private String contentType;
@@ -93,7 +96,7 @@ public class PlayAudio implements LumenThing {
 
     @Override
     public String toString() {
-        return "PlayAudio{" +
+        return "AudioObject{" +
                 "name='" + name + '\'' +
                 ", contentType='" + contentType + '\'' +
                 ", contentSize=" + contentSize +
