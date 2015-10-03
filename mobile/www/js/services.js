@@ -1,21 +1,17 @@
 angular.module('starter.services', [])
 
 .factory('Settings', function($q, $log, $window) {
+    var defaultSettings = {
+        stompUri: 'http://167.205.66.219:15674/stomp',
+        stompUser: 'lumen',
+        stompPassword: 'lumen',
+        motionAllowed: false,
+    };
     return {
         getDefault: function() {
-            var defaultSettings = {
-                stompUri: 'http://167.205.66.219:15674/stomp',
-                stompUser: 'lumen',
-                stompPassword: 'lumen',
-            };
             return defaultSettings;
         },
         getSettings: function() {
-            var defaultSettings = {
-                stompUri: 'http://167.205.66.219:15674/stomp',
-                stompUser: 'lumen',
-                stompPassword: 'lumen',
-            };
             var settingsJson = $window.localStorage.getItem('settings');
             var settings = settingsJson !== null ? JSON.parse(settingsJson) : defaultSettings;
             return settings;

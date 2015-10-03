@@ -3,20 +3,51 @@
 
         <h3>Text-to-Speech</h3>
         <div class="list">
-            <div class="item range item-stacked-label">
-                <span class="input-label">
-                    Audio Volume: <strong>{{form.audioVolume}}</strong>
-                </span>
-                <input type="range" ng-model="form.audioVolume" min="0.0" max="1.0" step="0.1" style="width: 80%"/>
+            <div class="row item range">
+                <label class="col item-stacked-label">
+                    <span class="input-label">
+                        Audio Volume: <strong>{{form.audioVolume * 100}}%</strong>
+                    </span>
+                    <input type="range" ng-model="form.audioVolume" min="0.0" max="1.0" step="0.1" style="width: 80%"/>
+                </label>
+                <div class="col-20">
+                    <button class="button button-default button-block" ng-click="changeVolume()"><i class="ion ion-volume-medium"></i> Set</button>
+                </div>
             </div>
-            <div class="item">
-                <button class="button button-default button-block" ng-click="changeVolume()">Set Volume</button>
-            </div>
+            <ion-item class="row item-input">
+                <div class="col">
+                    <textarea type="text" ng-model="form.greeting" rows="3"></textarea>
+                </div>
+                <div class="col-20">
+                    <button class="button button-positive button-block" ng-click="sayHello()"><i class="ion ion-chatbubble-working"></i> Say!</button>
+                </div>
+            </ion-item>
+        </div>
+
+        <h3>Audio</h3>
+        <div class="list">
             <ion-item class="item-input">
-                <textarea type="text" ng-model="form.greeting" rows="3"></textarea>
+                <input type="text" ng-model="form.audio.contentUrl"/>
             </ion-item>
             <ion-item>
-                <button class="button button-positive button-block" ng-click="sayHello()">Say Hello</button>
+                <div class="row">
+                    <div class="col">
+                        <button class="button button-positive button-block" ng-click="playAudio()"><i class="ion ion-play"></i> Play!</button>
+                    </div>
+                    <div class="col">
+                        <button class="button button-light button-block" ng-click="stopAudio()"><i class="ion ion-stop"></i> Stop</button>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item class="item-input">
+                <div class="row">
+                    <div class="col">
+                        <input id="audioFile" type="file" accept="audio/*"/>
+                    </div>
+                    <div class="col-20">
+                        <button class="button button-small button-positive" ng-click="playAudioData()"><i class="ion-play"></i> Play!</button>
+                    </div>
+                </div>
             </ion-item>
         </div>
 
@@ -26,39 +57,55 @@
                 <span class="input-label">LED Group/Name:</span>
                 <input type="text" ng-model="form.leds.name"/>
             </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Color: <strong>{{form.leds.color}}</strong></span>
-                <input type="color" ng-model="form.leds.color" />
-            </label>
-            <label class="item range item-stacked-label">
-                <span class="input-label">Intensity: <strong>{{form.leds.intensity * 100}}</strong>%</span>
-                <input type="range" ng-model="form.leds.intensity" min="0.0" max="1.0" step="0.1"/>
-            </label>
+            <div class="row item item-input item-stacked-label">
+                <label class="col">
+                    <span class="input-label">Color: <strong>{{form.leds.color}}</strong></span>
+                    <input type="color" ng-model="form.leds.color" />
+                </label>
+                <div class="col-20">
+                    <button class="button button button-block" ng-click="ledsFadeRgb()">Fade Color</button>
+                </div>
+            </div>
+            <div class="row item item-stacked-label">
+                <div class="col">
+                    <label class="range">
+                        <span class="input-label">Intensity: <strong>{{form.leds.intensity * 100}}</strong>%</span>
+                        <input type="range" ng-model="form.leds.intensity" min="0.0" max="1.0" step="0.1"/>
+                    </label>
+                </div>
+                <div class="col-20">
+                    <button class="button button button-block" ng-click="ledsFade()">Fade Intensity</button>
+                </div>
+            </div>
             <label class="item range item-stacked-label">
                 <span class="input-label">Duration: <strong>{{form.leds.duration}}</strong> s</span>
                 <input type="range" ng-model="form.leds.duration" min="0.5" max="10" step="0.2"/>
             </label>
             <ion-item>
-                <button class="button button-positive button-block" ng-click="ledsOn()">On</button>
-                <button class="button button-positive button-block" ng-click="ledsOff()">Off</button>
-                <button class="button button-positive button-block" ng-click="ledsFade()">Fade Intensity</button>
-                <button class="button button-positive button-block" ng-click="ledsFadeRgb()">Fade Color</button>
-                <button class="button button-positive button-block" ng-click="ledsRandomEyes()">Random Eyes</button>
-                <button class="button button-positive button-block" ng-click="ledsRasta()">Rasta</button>
+                <div class="row">
+                    <div class="col"><button class="button button-balanced button-block" ng-click="ledsOn()">On</button></div>
+                    <div class="col"><button class="button button-light button-block" ng-click="ledsOff()">Off</button></div>
+                </div>
+                <div class="row">
+                    <div class="col"><button class="button button-energized button-block" ng-click="ledsRandomEyes()">Random Eyes</button></div>
+                    <div class="col"><button class="button button-energized button-block" ng-click="ledsRasta()">Rasta</button></div>
+                </div>
             </ion-item>
         </ion-list>
 
         <h3>Posture</h3>
         <ion-list>
-            <label class="item range item-stacked-label">
+            <label class="item range item-stacked-label" ng-show="motionAllowed">
                 <span class="input-label">
                     Speed: <strong>{{form.speed}}</strong>
                 </span>
                 <input type="range" ng-model="form.speed" min="0.2" max="0.7" step="0.1"/>
             </label>
             <ion-item>
-                <button class="button button-energized button-block" ng-click="wakeUp()">Wake Up</button>
                 <button class="button button-calm button-block" ng-click="rest()">Rest</button>
+            </ion-item>
+            <ion-item ng-show="motionAllowed">
+                <button class="button button-energized button-block" ng-click="wakeUp()">Wake Up</button>
                 <button class="button button-default button-block" ng-click="changePosture('Stand')">Stand</button>
                 <button class="button button-default button-block" ng-click="changePosture('StandInit')">Stand Init</button>
                 <button class="button button-default button-block" ng-click="changePosture('StandZero')">Stand Zero</button>
@@ -67,8 +114,8 @@
             </ion-item>
         </ion-list>
 
-        <h3>Move To (walking)</h3>
-        <ion-list>
+        <h3 ng-show="motionAllowed">Move To (walking)</h3>
+        <ion-list ng-show="motionAllowed">
             <label class="item range item-stacked-label">
                 <span class="input-label">Back distance: <strong>{{form.moveTo.backDistance}}</strong> m</span>
                 <input type="range" ng-model="form.moveTo.backDistance" min="-2.5" max="2.5" step="0.1"/>
@@ -86,8 +133,8 @@
             </ion-item>
         </ion-list>
 
-        <h3>Joint: Interpolate Angle</h3>
-        <ion-list>
+        <h3 ng-show="motionAllowed">Joint: Interpolate Angle</h3>
+        <ion-list ng-show="motionAllowed">
             <label class="item item-input item-select item-stacked-label">
                 <span class="input-label">Joint</span>
                 <select ng-model="form.interpolateAngle.joint" ng-options="joint.id for joint in joints"></select>

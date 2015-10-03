@@ -1,5 +1,6 @@
 package org.lskk.lumen.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,6 +26,9 @@ import java.io.Serializable;
         @JsonSubTypes.Type(name="HumanChanges", value=HumanChanges.class),
         @JsonSubTypes.Type(name="HumanMoving", value=HumanMoving.class),
         @JsonSubTypes.Type(name="LedOperation", value=LedOperation.class),
+        @JsonSubTypes.Type(name="PlayAudio", value=PlayAudio.class),
+        @JsonSubTypes.Type(name="StopAudio", value=StopAudio.class),
 })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public interface LumenThing extends Serializable {
 }

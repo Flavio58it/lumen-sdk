@@ -33,7 +33,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('AvatarRemoteControlCtrl', function($scope, $stateParams, $log, ngstomp, Settings) {
+.controller('AvatarRemoteControlCtrl', function($scope, $stateParams, $log, ngstomp, $window, Settings) {
     var settings = Settings.getSettings();
     $log.info('Stomp connecting to', settings.stompUri);
     $scope.client = ngstomp(settings.stompUri);
@@ -45,6 +45,7 @@ angular.module('starter.controllers', [])
         $scope.client = null;
     }, '/');
 
+    $scope.motionAllowed = settings.motionAllowed || false;
     $scope.joints = [
         // Head
         {id: 'HeadYaw'},
@@ -80,6 +81,11 @@ angular.module('starter.controllers', [])
     $scope.form = {
         audioVolume: 0.8,
         greeting: "Hello I am Arkan Lumen from Bandung Institute of Technology. What can I help you?",
+        // Audio
+        audio: {
+            contentUrl: 'file:///home/nao/gangnam.mp3',
+        },
+        // Motion
         speed: 0.7,
         moveTo: {
             backDistance: -0.1,
@@ -99,6 +105,7 @@ angular.module('starter.controllers', [])
         }
     };
 
+    // Text-to-Speech
     $scope.changeVolume = function() {
         var msg = {'@type': 'AudioVolume', volume: $scope.form.audioVolume};
         $log.info('Remote Control', msg, JSON.stringify(msg));
@@ -113,6 +120,50 @@ angular.module('starter.controllers', [])
             {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
     };
 
+    // Audio
+    $scope.playAudio = function() {
+        var msg = {
+            '@type': 'PlayAudio',
+            contentUrl: $scope.form.audio.contentUrl
+        };
+        $scope.client.send('/topic/avatar.nao1.audio.out',
+            {"reply-to": '/temp-queue/avatar.nao1.audio.out'}, JSON.stringify(msg));
+    };
+    $scope.stopAudio = function() {
+        var msg = {
+            '@type': 'StopAudio',
+        };
+        $scope.client.send('/topic/avatar.nao1.audio.out',
+            {"reply-to": '/temp-queue/avatar.nao1.audio.out'}, JSON.stringify(msg));
+    };
+    $scope.playAudioData = function() {
+        var audioFileEl = document.getElementById('audioFile');
+        // {"webkitRelativePath":"","lastModified":1373040168000,"lastModifiedDate":"2013-07-05T16:02:48.000Z","name":"Sate Tegal Balibul3.jpg","type":"image/jpeg","size":42082}
+        var audioFile = audioFileEl.files[0];
+        $log.debug('Reading...', audioFileEl, audioFileEl.files, audioFile, JSON.stringify(audioFile));
+        // ImageObject: name, contentType, contentUrl, contentSize, width, height, uploadDate, dateCreated, dateModified, datePublished
+        var reader = new FileReader();
+        reader.onloadend = function() {
+            if (audioFile.size > 128 * 1024) {
+                $window.alert('Audio file too large! Must be < 128 KB for JavaScript');
+            } else {
+                var msg = {
+                    '@type': 'PlayAudio',
+                    name: audioFile.name,
+                    contentType: audioFile.type,
+                    contentSize: audioFile.size,
+                    dateModified: audioFile.lastModifiedDate,
+                    contentUrl: reader.result
+                };
+                $log.info('Playing audio', msg.name, '(', msg.contentSize, 'bytes)');
+                $scope.client.send('/topic/avatar.nao1.audio.out',
+                    {"reply-to": '/temp-queue/avatar.nao1.audio.out'}, JSON.stringify(msg));
+            }
+        };
+        reader.readAsDataURL(audioFile);
+    };
+
+    // Motion
     $scope.wakeUp = function() {
         var wakeMsg = {type : "motion",method : "wakeUp"};
         $log.info('Remote Control', wakeMsg, JSON.stringify(wakeMsg));
