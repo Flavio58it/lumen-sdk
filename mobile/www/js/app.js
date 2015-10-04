@@ -26,7 +26,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     };
 }])
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $sceDelegateProvider) {
+
+  $sceDelegateProvider.resourceUrlWhitelist([
+    // Allow same origin resource loads.
+    'self',
+    // Allow loading from data URI
+    'data:**'
+  ]);
+
   $stateProvider
 
   .state('app', {

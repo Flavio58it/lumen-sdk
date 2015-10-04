@@ -52,6 +52,27 @@
                     </div>
                 </div>
             </ion-item>
+            <ion-item class="row range">
+                <div class="col">
+                    <span class="input-label">
+                        Duration: <strong>{{form.audio.recordDuration}}</strong> s
+                    </span>
+                    <input type="range" ng-model="form.audio.recordDuration" min="1.0" max="30.0" step="1.0" style="width: 80%"/>
+                </div>
+                <div class="col-20">
+                    <button class="button button-assertive button-block" ng-click="recordAudio()"><i class="ion-record"></i> Record!</button>
+                </div>
+            </ion-item>
+            <ion-item class="row item-input item-stacked-label">
+                <div class="col">
+                    <audio id="recorded" controls="controls" style="width: 100%">
+                        <source type="audio/x-wav"/>
+                    </audio>
+                </div>
+                <div class="col-20">
+                    <button class="button button-block" ng-click="replayRecorded()"><i class="ion-play"></i> Replay</button>
+                </div>
+            </ion-item>
         </div>
 
         <ion-list class="card">

@@ -40,6 +40,14 @@ angular.module('starter.controllers', [])
     $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
         $log.info('Stomp connected to', settings.stompUri);
 
+        // RecordAudio
+        $scope.client.subscribe('/topic/avatar.nao1.audio.in', function(exchange) {
+            var msg = JSON.parse(exchange.body);
+            $log.info("Received audio", msg.name, msg.contentType, msg.contentSize, 'bytes');
+            document.getElementById('recorded').src = msg.contentUrl;
+            $scope.replayRecorded();
+        });
+
     }, function(err) {
         $log.error('Stomp error:', err);
         $scope.client = null;
@@ -95,6 +103,7 @@ angular.module('starter.controllers', [])
         // Audio
         audio: {
             contentUrl: 'file:///home/nao/gangnam.mp3',
+            recordDuration: 5.0,
         },
         // Actor
         actor: {
@@ -176,6 +185,19 @@ angular.module('starter.controllers', [])
             }
         };
         reader.readAsDataURL(audioFile);
+    };
+    $scope.recordAudio = function() {
+        var msg = {
+            '@type': 'RecordAudio',
+            duration: $scope.form.audio.recordDuration,
+        };
+        $scope.client.send('/topic/avatar.nao1.audio.out',
+            {"reply-to": '/temp-queue/avatar.nao1.audio.out'}, JSON.stringify(msg));
+    };
+    $scope.replayRecorded = function() {
+        var recordedEl = document.getElementById('recorded');
+        $log.info('Playing recorded ', recordedEl, 'seconds ...');
+        recordedEl.play();
     };
 
     // Actor
