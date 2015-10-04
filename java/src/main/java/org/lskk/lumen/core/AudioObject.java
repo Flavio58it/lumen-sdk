@@ -1,5 +1,6 @@
 package org.lskk.lumen.core;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 /**
@@ -104,7 +105,7 @@ public class AudioObject implements LumenThing {
                 ", dateCreated=" + dateCreated +
                 ", dateModified=" + dateModified +
                 ", datePublished=" + datePublished +
-                ", contentUrl='" + contentUrl + '\'' +
+                ", contentUrl='" + StringUtils.abbreviateMiddle(contentUrl, "…", 80) + '\'' +
                 '}';
     }
 }
