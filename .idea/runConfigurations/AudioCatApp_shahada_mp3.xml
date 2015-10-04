@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="AudioCatApp shahada" type="Application" factoryName="Application" singleton="true">
+  <configuration default="false" name="AudioCatApp shahada.mp3" type="Application" factoryName="Application" singleton="true">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
       <pattern>
         <option name="PATTERN" value="org.lskk.lumen.speech.recognition.*" />
@@ -8,7 +8,7 @@
     </extension>
     <option name="MAIN_CLASS_NAME" value="org.lskk.lumen.speech.recognition.AudioCatApp" />
     <option name="VM_PARAMETERS" value="" />
-    <option name="PROGRAM_PARAMETERS" value="sample/shahada.flac" />
+    <option name="PROGRAM_PARAMETERS" value="sample/shahada.mp3" />
     <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" value="" />
