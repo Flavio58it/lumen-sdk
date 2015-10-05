@@ -47,6 +47,12 @@ angular.module('starter.controllers', [])
             document.getElementById('recorded').src = msg.contentUrl;
             $scope.replayRecorded();
         });
+        // Speech Recognition
+        $scope.client.subscribe('/topic/lumen.speech.recognition', function(exchange) {
+            var msg = JSON.parse(exchange.body);
+            $log.info("Received recognized speech", msg);
+            $scope.recognizedSpeech = msg;
+        });
 
     }, function(err) {
         $log.error('Stomp error:', err);
@@ -206,8 +212,8 @@ angular.module('starter.controllers', [])
             '@type': 'ActingPerformance',
             script: $scope.form.actor.actingScript.id
         };
-        $scope.client.send('/topic/avatar.nao1.actor',
-            {"reply-to": '/temp-queue/avatar.nao1.actor'}, JSON.stringify(msg));
+        $scope.client.send('/topic/avatar.nao1.acting',
+            {"reply-to": '/temp-queue/avatar.nao1.acting'}, JSON.stringify(msg));
     };
 
     // Motion

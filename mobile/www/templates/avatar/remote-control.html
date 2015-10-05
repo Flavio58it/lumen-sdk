@@ -13,7 +13,7 @@
                     <input type="range" ng-model="form.audioVolume" min="0.0" max="1.0" step="0.1" style="width: 80%"/>
                 </label>
                 <div class="col-20">
-                    <button class="button button-default button-block" ng-click="changeVolume()"><i class="ion ion-volume-medium"></i> Set</button>
+                    <button class="button button-default button-block" ng-click="changeVolume()"><i class="icon ion-volume-medium"></i> Set</button>
                 </div>
             </div>
             <ion-item class="row item-input">
@@ -21,12 +21,12 @@
                     <textarea type="text" ng-model="form.greeting" rows="3"></textarea>
                 </div>
                 <div class="col-20">
-                    <button class="button button-positive button-block" ng-click="sayHello()"><i class="ion ion-chatbubble-working"></i> Say!</button>
+                    <button class="button button-positive button-block" ng-click="sayHello()"><i class="icon ion-chatbubble-working"></i> Say!</button>
                 </div>
             </ion-item>
         </div>
 
-        <div class="list card">
+        <ul class="list card">
             <h2 class="item stable-bg">Audio</h2>
             <label class="item item-input">
                 <span class="input-label">Content URL</span>
@@ -35,10 +35,10 @@
             <ion-item>
                 <div class="row">
                     <div class="col">
-                        <button class="button button-positive button-block" ng-click="playAudio()"><i class="ion ion-play"></i> Play!</button>
+                        <button class="button button-positive button-block" ng-click="playAudio()"><i class="icon ion-play"></i> Play!</button>
                     </div>
                     <div class="col">
-                        <button class="button button-light button-block" ng-click="stopAudio()"><i class="ion ion-stop"></i> Stop</button>
+                        <button class="button button-light button-block" ng-click="stopAudio()"><i class="icon ion-stop"></i> Stop</button>
                     </div>
                 </div>
             </ion-item>
@@ -66,14 +66,18 @@
             <ion-item class="row item-input item-stacked-label">
                 <div class="col">
                     <audio id="recorded" controls="controls" style="width: 100%">
-                        <source type="audio/x-wav"/>
+                        <source />
                     </audio>
                 </div>
                 <div class="col-20">
                     <button class="button button-block" ng-click="replayRecorded()"><i class="ion-play"></i> Replay</button>
                 </div>
             </ion-item>
-        </div>
+            <li class="item item-icon-left item-text-wrap">
+                <i class="icon ion-chatbubble-working"></i> {{recognizedSpeech.result[0].alternative[0].transcript || '(no input from speech recognition yet)'}}
+                <span class="badge badge-calm" ng-show="recognizedSpeech.result[0]">{{recognizedSpeech.result[0].alternative[0].confidence * 100 | number:0}}%</span>
+            </li>
+        </ul>
 
         <ion-list class="card">
             <h2 class="item stable-bg">LEDs</h2>
@@ -124,7 +128,7 @@
                 <select ng-model="form.actor.actingScript" ng-options="actingScript.id for actingScript in actingScripts"></select>
             </label>
             <div class="item">
-                <button class="button button-energized button-block" ng-click="act()"><i class="ion ion-ios-videocam"></i> Act!</button>
+                <button class="button button-energized button-block" ng-click="act()"><i class="icon ion-ios-videocam"></i> Act!</button>
             </div>
         </ion-list>
 
