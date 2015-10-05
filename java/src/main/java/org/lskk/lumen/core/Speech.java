@@ -6,6 +6,7 @@ package org.lskk.lumen.core;
  */
 public class Speech implements LumenThing {
     private String markup;
+    private String avatarId;
 
     public Speech() {
     }
@@ -26,10 +27,19 @@ public class Speech implements LumenThing {
         this.markup = markup;
     }
 
+    public String getAvatarId() {
+        return avatarId;
+    }
+
+    public void setAvatarId(String avatarId) {
+        this.avatarId = avatarId;
+    }
+
     @Override
     public String toString() {
         return "Speech{" +
                 "markup='" + markup + '\'' +
+                ", avatarId='" + avatarId + '\'' +
                 '}';
     }
 }

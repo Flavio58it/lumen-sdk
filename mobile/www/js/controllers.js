@@ -139,15 +139,15 @@ angular.module('starter.controllers', [])
     $scope.changeVolume = function() {
         var msg = {'@type': 'AudioVolume', volume: $scope.form.audioVolume};
         $log.info('Remote Control', msg, JSON.stringify(msg));
-        $scope.client.send('/topic/avatar.NAO.command',
-            {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
+        $scope.client.send('/topic/avatar.nao1.command',
+            {"reply-to": '/temp-queue/avatar.nao1.command'}, JSON.stringify(msg));
     };
     $scope.sayHello = function() {
-        var msg = {type : "texttospeech", method : "say",
-            parameter: {text: $scope.form.greeting}};
+        var msg = {'@type': 'Speech', avatarId: 'nao1',
+            markup: $scope.form.greeting};
         $log.info('Remote Control', msg, JSON.stringify(msg));
-        $scope.client.send('/topic/avatar.NAO.command',
-            {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
+        $scope.client.send('/topic/lumen.speech.expression',
+            {"reply-to": '/temp-queue/lumen.speech.expression'}, JSON.stringify(msg));
     };
 
     // Audio
@@ -163,8 +163,8 @@ angular.module('starter.controllers', [])
         var msg = {
             '@type': 'StopAudio',
         };
-        $scope.client.send('/topic/avatar.nao1.audio.out',
-            {"reply-to": '/temp-queue/avatar.nao1.audio.out'}, JSON.stringify(msg));
+        $scope.client.send('/topic/avatar.nao1.audio',
+            {"reply-to": '/temp-queue/avatar.nao1.audio'}, JSON.stringify(msg));
     };
     $scope.playAudioData = function() {
         var audioFileEl = document.getElementById('audioFile');
@@ -197,8 +197,8 @@ angular.module('starter.controllers', [])
             '@type': 'RecordAudio',
             duration: $scope.form.audio.recordDuration,
         };
-        $scope.client.send('/topic/avatar.nao1.audio.out',
-            {"reply-to": '/temp-queue/avatar.nao1.audio.out'}, JSON.stringify(msg));
+        $scope.client.send('/topic/avatar.nao1.audio',
+            {"reply-to": '/temp-queue/avatar.nao1.audio'}, JSON.stringify(msg));
     };
     $scope.replayRecorded = function() {
         var recordedEl = document.getElementById('recorded');
@@ -220,20 +220,20 @@ angular.module('starter.controllers', [])
     $scope.wakeUp = function() {
         var wakeMsg = {type: "motion", method: "wakeUp"};
         $log.info('Remote Control', wakeMsg, JSON.stringify(wakeMsg));
-        $scope.client.send('/topic/avatar.NAO.command',
-            {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(wakeMsg));
+        $scope.client.send('/topic/avatar.nao1.command',
+            {"reply-to": '/temp-queue/avatar.nao1.command'}, JSON.stringify(wakeMsg));
     };
     $scope.rest = function() {
         var restMsg = {type: "motion", method: "rest"};
         $log.info('Remote Control', restMsg, JSON.stringify(restMsg));
-        $scope.client.send('/topic/avatar.NAO.command',
-            {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(restMsg));
+        $scope.client.send('/topic/avatar.nao1.command',
+            {"reply-to": '/temp-queue/avatar.nao1.command'}, JSON.stringify(restMsg));
     };
     $scope.changePosture = function(postureId) {
         var msg = {'@type': 'PostureChange', postureId: postureId, speed: $scope.form.speed};
         $log.info('Remote Control', msg, JSON.stringify(msg));
-        $scope.client.send('/topic/avatar.NAO.command',
-            {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
+        $scope.client.send('/topic/avatar.nao1.command',
+            {"reply-to": '/temp-queue/avatar.nao1.command'}, JSON.stringify(msg));
     };
 
     $scope.moveTo = function() {
@@ -244,8 +244,8 @@ angular.module('starter.controllers', [])
             'turnCcwDeg': $scope.form.moveTo.turnCcwDeg
         };
         $log.info('Remote Control', msg, JSON.stringify(msg));
-        $scope.client.send('/topic/avatar.NAO.command',
-            {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
+        $scope.client.send('/topic/avatar.nao1.command',
+            {"reply-to": '/temp-queue/avatar.nao1.command'}, JSON.stringify(msg));
     };
 
     $scope.jointInterpolateAngle = function() {
@@ -256,8 +256,8 @@ angular.module('starter.controllers', [])
             duration: $scope.form.interpolateAngle.duration
         };
         $log.info('Remote Control', msg, JSON.stringify(msg));
-        $scope.client.send('/topic/avatar.NAO.command',
-            {"reply-to": '/temp-queue/avatar.NAO.command'}, JSON.stringify(msg));
+        $scope.client.send('/topic/avatar.nao1.command',
+            {"reply-to": '/temp-queue/avatar.nao1.command'}, JSON.stringify(msg));
     };
 
     // LEDs
@@ -358,7 +358,7 @@ angular.module('starter.controllers', [])
 //            $scope.messages.push(exchange);
             $scope.image = exchange;
         });
-        $scope.client.subscribe('/topic/avatar.NAO.data.joint', function(exchange) {
+        $scope.client.subscribe('/topic/avatar.nao1.data.joint', function(exchange) {
             var msg = JSON.parse(exchange.body);
             //$log.debug('joint ', msg, JSON.stringify(msg));
 //            $scope.messages.push(msg);
@@ -366,7 +366,7 @@ angular.module('starter.controllers', [])
 //            $scope.messages.push(exchange);
             $scope.joint = exchange;
         });
-        $scope.client.subscribe('/topic/avatar.NAO.data.sonar', function(exchange) {
+        $scope.client.subscribe('/topic/avatar.nao1.data.sonar', function(exchange) {
             var msg = JSON.parse(exchange.body);
             //$log.debug('sonar ', msg, JSON.stringify(msg));
 //            $scope.messages.push(msg);
@@ -374,7 +374,7 @@ angular.module('starter.controllers', [])
 //            $scope.messages.push(exchange);
             $scope.sonar = exchange;
         });
-        $scope.client.subscribe('/topic/avatar.NAO.data.tactile', function(exchange) {
+        $scope.client.subscribe('/topic/avatar.nao1.data.tactile', function(exchange) {
             var msg = JSON.parse(exchange.body);
             //$log.debug('tactile ', msg, JSON.stringify(msg));
 //            $scope.messages.push(msg);
@@ -382,7 +382,7 @@ angular.module('starter.controllers', [])
 //            $scope.messages.push(exchange);
             $scope.tactile = exchange;
         });
-        $scope.client.subscribe('/topic/avatar.NAO.data.battery', function(exchange) {
+        $scope.client.subscribe('/topic/avatar.nao1.data.battery', function(exchange) {
             var msg = JSON.parse(exchange.body);
             //$log.debug('battery ', msg, JSON.stringify(msg));
 //            $scope.messages.push(msg);
