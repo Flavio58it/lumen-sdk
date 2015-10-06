@@ -218,13 +218,13 @@ angular.module('starter.controllers', [])
 
     // Motion
     $scope.wakeUp = function() {
-        var wakeMsg = {type: "motion", method: "wakeUp"};
+        var wakeMsg = {'@type': 'WakeUp'};
         $log.info('Remote Control', wakeMsg, JSON.stringify(wakeMsg));
         $scope.client.send('/topic/avatar.nao1.command',
             {"reply-to": '/temp-queue/avatar.nao1.command'}, JSON.stringify(wakeMsg));
     };
     $scope.rest = function() {
-        var restMsg = {type: "motion", method: "rest"};
+        var restMsg = {'@type': 'Rest'};
         $log.info('Remote Control', restMsg, JSON.stringify(restMsg));
         $scope.client.send('/topic/avatar.nao1.command',
             {"reply-to": '/temp-queue/avatar.nao1.command'}, JSON.stringify(restMsg));
