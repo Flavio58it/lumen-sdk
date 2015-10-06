@@ -29,4 +29,12 @@ public class RecognizedSpeech implements LumenThing {
     public void setResults(List<SpeechResult> results) {
         this.results = results;
     }
+
+    @Override
+    public String toString() {
+        return "RecognizedSpeech{" +
+                "results=" + results +
+                ", dateCreated=" + dateCreated +
+                '}';
+    }
 }
