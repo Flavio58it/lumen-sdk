@@ -12,6 +12,7 @@ public class CommunicateAction implements LumenThing {
     private String object;
     private ActionStatusType actionStatus;
     private String avatarId;
+    private EmotionKind emotionKind;
 
     public CommunicateAction() {
     }
@@ -66,12 +67,22 @@ public class CommunicateAction implements LumenThing {
         this.avatarId = avatarId;
     }
 
+    public EmotionKind getEmotionKind() {
+        return emotionKind;
+    }
+
+    public void setEmotionKind(EmotionKind emotionKind) {
+        this.emotionKind = emotionKind;
+    }
+
     @Override
     public String toString() {
-        return "Speech{" +
+        return "CommunicateAction{" +
                 "inLanguage=" + inLanguage +
                 ", object='" + object + '\'' +
+                ", actionStatus=" + actionStatus +
                 ", avatarId='" + avatarId + '\'' +
+                ", emotionKind=" + emotionKind +
                 '}';
     }
 }
