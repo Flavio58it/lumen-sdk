@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="CommunicateApp english" type="Application" factoryName="Application" singleton="true">
+  <configuration default="false" name="CommunicateApp id anger" type="Application" factoryName="Application" singleton="true">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
       <pattern>
         <option name="PATTERN" value="org.lskk.lumen.speech.expression.*" />
@@ -8,7 +8,7 @@
     </extension>
     <option name="MAIN_CLASS_NAME" value="org.lskk.lumen.speech.expression.CommunicateApp" />
     <option name="VM_PARAMETERS" value="" />
-    <option name="PROGRAM_PARAMETERS" value="&quot;The strong man is not the good wrestler; the strong man is only the one who controls himself when he is angry.&quot;" />
+    <option name="PROGRAM_PARAMETERS" value="-l id-ID -e ANGER &quot;Awas kau bohong&quot;" />
     <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" value="" />

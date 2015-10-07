@@ -13,6 +13,7 @@ public class CommunicateAction implements LumenThing {
     private ActionStatusType actionStatus;
     private String avatarId;
     private EmotionKind emotionKind;
+    private String voiceId;
 
     public CommunicateAction() {
     }
@@ -73,6 +74,23 @@ public class CommunicateAction implements LumenThing {
 
     public void setEmotionKind(EmotionKind emotionKind) {
         this.emotionKind = emotionKind;
+    }
+
+    /**
+     * The chosen voice ID. The text-to-speech engine will update this when it has chosen the
+     * voice based on {@link #getInLanguage()}.
+     * @return
+     */
+    public String getVoiceId() {
+        return voiceId;
+    }
+
+    /**
+     * Manually set the voice ID, usually this is inferred by {@link #getInLanguage()}.
+     * @param voiceId
+     */
+    public void setVoiceId(String voiceId) {
+        this.voiceId = voiceId;
     }
 
     @Override
