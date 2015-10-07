@@ -1,0 +1,19 @@
+<ion-view view-title="Audio : Monitor">
+    <ion-content>
+
+        <ul class="list card">
+            <h2 class="item stable-bg">Audio</h2>
+            <ion-item class="row item-input item-stacked-label">
+                <div class="col">
+                    <audio id="played" controls="controls" style="width: 100%">
+                        <source />
+                    </audio>
+                </div>
+                <div class="col-20">
+                    <button class="button button-block" ng-click="replayPlayed()"><i class="icon ion-play"></i> Replay</button>
+                </div>
+            </ion-item>
+        </ul>
+
+    </ion-content>
+</ion-view>

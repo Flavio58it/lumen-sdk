@@ -396,6 +396,97 @@ angular.module('starter.controllers', [])
     }, '/');
 })
 
+// Visual
+
+// ---------------------------------- Audio ----------------------------------
+.controller('AudioMonitorCtrl', function($scope, $stateParams, $log, ngstomp, $window, Settings) {
+    var settings = Settings.getSettings();
+    $log.info('Stomp connecting to', settings.stompUri);
+    $scope.client = ngstomp(settings.stompUri);
+    $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
+        $log.info('Stomp connected to', settings.stompUri);
+
+        // audio.out: AudioObject
+        $scope.client.subscribe('/topic/avatar.*.audio.out', function(exchange) {
+            var msg = JSON.parse(exchange.body);
+            $log.info("Received audio", msg.name, msg.contentType, msg.contentSize, 'bytes');
+            document.getElementById('played').src = msg.contentUrl;
+            $scope.replayPlayed();
+        });
+
+    }, function(err) {
+        $log.error('Stomp error:', err);
+        $scope.client = null;
+    }, '/');
+
+    $scope.form = {
+    };
+
+    // Audio
+    $scope.replayPlayed = function() {
+        var playedEl = document.getElementById('played');
+        $log.info('Playing played ', playedEl, 'seconds ...');
+        playedEl.play();
+    };
+
+})
+
+.controller('AvatarInstrumentsCtrl', function($scope, $stateParams, $log, ngstomp, Settings) {
+    $scope.messages = [];
+//    var stompUri = 'http://167.205.66.130:15674/stomp';
+//    var stompUri = 'http://169.254.26.17:15674/stomp';
+    var settings = Settings.getSettings();
+    $log.info('Stomp connecting to', settings.stompUri);
+    $scope.client = ngstomp(settings.stompUri);
+    $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
+        $log.info('Stomp connected to', settings.stompUri);
+        $scope.client.subscribe('/topic/avatar.nao1.camera.main', function(exchange) {
+            var msg = JSON.parse(exchange.body);
+            //$log.debug('joint ', msg, JSON.stringify(msg));
+//            $scope.messages.push(msg);
+            exchange.body = msg;
+//            $scope.messages.push(exchange);
+            $scope.image = exchange;
+        });
+        $scope.client.subscribe('/topic/avatar.nao1.data.joint', function(exchange) {
+            var msg = JSON.parse(exchange.body);
+            //$log.debug('joint ', msg, JSON.stringify(msg));
+//            $scope.messages.push(msg);
+            exchange.body = msg;
+//            $scope.messages.push(exchange);
+            $scope.joint = exchange;
+        });
+        $scope.client.subscribe('/topic/avatar.nao1.data.sonar', function(exchange) {
+            var msg = JSON.parse(exchange.body);
+            //$log.debug('sonar ', msg, JSON.stringify(msg));
+//            $scope.messages.push(msg);
+            exchange.body = msg;
+//            $scope.messages.push(exchange);
+            $scope.sonar = exchange;
+        });
+        $scope.client.subscribe('/topic/avatar.nao1.data.tactile', function(exchange) {
+            var msg = JSON.parse(exchange.body);
+            //$log.debug('tactile ', msg, JSON.stringify(msg));
+//            $scope.messages.push(msg);
+            exchange.body = msg;
+//            $scope.messages.push(exchange);
+            $scope.tactile = exchange;
+        });
+        $scope.client.subscribe('/topic/avatar.nao1.data.battery', function(exchange) {
+            var msg = JSON.parse(exchange.body);
+            //$log.debug('battery ', msg, JSON.stringify(msg));
+//            $scope.messages.push(msg);
+            exchange.body = msg;
+//            $scope.messages.push(exchange);
+            $scope.battery = exchange;
+        });
+    }, function(err) {
+        $log.error('Stomp error:', err);
+        $scope.client = null;
+    }, '/');
+})
+
+// Persistence
 .controller('PersistenceQueryFindAllCtrl', function($scope, $stateParams, $log, ngstomp, Settings) {
     $scope.query = {
         '@type': 'FindAllQuery',

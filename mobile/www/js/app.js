@@ -72,6 +72,48 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     })
 
+    // Visual
+  .state('app.visual-camera', {
+      url: "/visual/camera",
+      views: {
+        'menuContent': {
+          templateUrl: "templates/visual/camera.html",
+          controller: 'VisualCameraCtrl'
+        }
+      }
+    })
+
+  .state('app.face-recognition-img', {
+    url: "/face-recognition-img",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/face-recognition-img.html",
+        controller: 'FaceRecognitionImgCtrl'
+      }
+    }
+  })
+  .state('app.face-recognition-cam', {
+    url: "/face-recognition-cam",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/face-recognition-cam.html",
+        controller: 'FaceRecognitionCamCtrl'
+      }
+    }
+  })
+
+    // Audio
+  .state('app.audio-monitor', {
+    url: "/audio/monitor",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/audio/monitor.html",
+        controller: 'AudioMonitorCtrl'
+      }
+    }
+  })
+
+  // Persistence
   .state('app.persistence-query-find-all', {
     url: "/persistence/query-find-all",
     views: {
@@ -136,34 +178,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
   })
 
-  .state('app.visual-camera', {
-      url: "/visual/camera",
-      views: {
-        'menuContent': {
-          templateUrl: "templates/visual/camera.html",
-          controller: 'VisualCameraCtrl'
-        }
-      }
-    })
-
-  .state('app.face-recognition-img', {
-    url: "/face-recognition-img",
-    views: {
-      'menuContent': {
-        templateUrl: "templates/face-recognition-img.html",
-        controller: 'FaceRecognitionImgCtrl'
-      }
-    }
-  })
-  .state('app.face-recognition-cam', {
-    url: "/face-recognition-cam",
-    views: {
-      'menuContent': {
-        templateUrl: "templates/face-recognition-cam.html",
-        controller: 'FaceRecognitionCamCtrl'
-      }
-    }
-  })
 
   .state('app.social-monitor', {
     url: "/social-monitor",
