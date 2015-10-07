@@ -18,7 +18,7 @@ import java.io.Serializable;
         @JsonSubTypes.Type(name="WakeUp", value=WakeUp.class),
         @JsonSubTypes.Type(name="Rest", value=Rest.class),
         @JsonSubTypes.Type(name="PostureChange", value=PostureChange.class),
-        @JsonSubTypes.Type(name="Speech", value=Speech.class),
+        @JsonSubTypes.Type(name="CommunicateAction", value=CommunicateAction.class),
         @JsonSubTypes.Type(name="AudioVolume", value=AudioVolume.class),
         @JsonSubTypes.Type(name="JointInterpolateAngle", value=JointInterpolateAngle.class),
         @JsonSubTypes.Type(name="AvatarTransform", value=AvatarTransform.class),

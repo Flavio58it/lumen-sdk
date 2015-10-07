@@ -143,8 +143,8 @@ angular.module('starter.controllers', [])
             {"reply-to": '/temp-queue/avatar.nao1.command'}, JSON.stringify(msg));
     };
     $scope.sayHello = function() {
-        var msg = {'@type': 'Speech', avatarId: 'nao1',
-            markup: $scope.form.greeting};
+        var msg = {'@type': 'CommunicateAction', avatarId: 'nao1',
+            object: $scope.form.greeting};
         $log.info('Remote Control', msg, JSON.stringify(msg));
         $scope.client.send('/topic/lumen.speech.expression',
             {"reply-to": '/temp-queue/lumen.speech.expression'}, JSON.stringify(msg));
