@@ -1,6 +1,14 @@
 package org.lskk.lumen.core;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonValueInstantiator;
+
 import java.util.Locale;
+import java.util.Optional;
 
 /**
  * Speak a word or sentence using <a href="http://www.w3.org/TR/speech-synthesis/">Speech Synthesis Markup Language (SSML)</a>.
@@ -40,8 +48,18 @@ public class CommunicateAction implements LumenThing {
         return inLanguage;
     }
 
+    @JsonGetter("inLanguage")
+    public String getInLanguageAsString() {
+        return inLanguage != null ? inLanguage.toLanguageTag() : null;
+    }
+
     public void setInLanguage(Locale inLanguage) {
         this.inLanguage = inLanguage;
+    }
+
+    @JsonSetter
+    public void setInLanguage(String inLanguage) {
+        this.inLanguage = inLanguage != null ? Locale.forLanguageTag(inLanguage) : null;
     }
 
     /**
@@ -96,7 +114,7 @@ public class CommunicateAction implements LumenThing {
     @Override
     public String toString() {
         return "CommunicateAction{" +
-                "inLanguage=" + inLanguage +
+                "inLanguage=" + Optional.ofNullable(inLanguage).map(Locale::toLanguageTag).orElse(null) +
                 ", object='" + object + '\'' +
                 ", actionStatus=" + actionStatus +
                 ", avatarId='" + avatarId + '\'' +

@@ -103,9 +103,22 @@ angular.module('starter.controllers', [])
         {id: 'SING_MANUK'},
         {id: 'SING_UPTOWN'},
     ];
+    $scope.locales = [
+        {id: 'en-US', name: 'English (US)'},
+        {id: 'en-UK', name: 'English (UK)'},
+        {id: 'en-AU', name: 'English (Australia)'},
+        {id: 'id-ID', name: 'Indonesian'},
+        {id: 'ar-SA', name: 'Arabic'}
+    ];
     $scope.form = {
         audioVolume: 0.8,
         greeting: "Hello I am Arkan Lumen from Bandung Institute of Technology. What can I help you?",
+        // Speech
+        speech: {
+            expression: {
+                inLanguage: $scope.locales[0]
+            }
+        },
         // Audio
         audio: {
             contentUrl: 'file:///home/nao/gangnam.mp3',
@@ -136,14 +149,9 @@ angular.module('starter.controllers', [])
     };
 
     // Text-to-Speech
-    $scope.changeVolume = function() {
-        var msg = {'@type': 'AudioVolume', volume: $scope.form.audioVolume};
-        $log.info('Remote Control', msg, JSON.stringify(msg));
-        $scope.client.send('/topic/avatar.nao1.command',
-            {"reply-to": '/temp-queue/avatar.nao1.command'}, JSON.stringify(msg));
-    };
     $scope.sayHello = function() {
         var msg = {'@type': 'CommunicateAction', avatarId: 'nao1',
+            inLanguage: $scope.form.speech.expression.inLanguage.id,
             object: $scope.form.greeting};
         $log.info('Remote Control', msg, JSON.stringify(msg));
         $scope.client.send('/topic/lumen.speech.expression',
@@ -151,6 +159,12 @@ angular.module('starter.controllers', [])
     };
 
     // Audio
+    $scope.changeVolume = function() {
+        var msg = {'@type': 'AudioVolume', volume: $scope.form.audioVolume};
+        $log.info('Remote Control', msg, JSON.stringify(msg));
+        $scope.client.send('/topic/avatar.nao1.command',
+            {"reply-to": '/temp-queue/avatar.nao1.command'}, JSON.stringify(msg));
+    };
     $scope.playAudio = function() {
         var msg = {
             '@type': 'AudioObject',
