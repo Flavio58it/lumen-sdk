@@ -3,18 +3,18 @@
 
         <div class="list card">
             <h2 class="item stable-bg">
-                Text-to-Speech
+                Speech Synthesis
             </h2>
             <label class="item item-select item-stacked-label">
                 <span class="input-label">Language:</span>
-                <select ng-model="form.speech.expression.inLanguage" ng-options="locale.name for locale in locales"></select>
+                <select ng-model="form.speech.synthesis.inLanguage" ng-options="locale.name for locale in locales"></select>
             </label>
             <div class="row item item-input item-stacked-label">
                 <div class="col">
-                    <textarea type="text" ng-model="form.greeting" rows="3"></textarea>
+                    <textarea type="text" ng-model="form.speech.synthesis.object" rows="3"></textarea>
                 </div>
                 <div class="col-20">
-                    <button class="button button-positive button-block" ng-click="sayHello()"><i class="icon ion-chatbubble-working"></i> Say!</button>
+                    <button class="button button-positive button-block" ng-click="communicateAction()"><i class="icon ion-chatbubble-working"></i> Say!</button>
                 </div>
             </div>
         </div>
@@ -67,6 +67,9 @@
                 </div>
             </ion-item>
             <li class="item item-icon-left item-text-wrap">
+                <span class="input-label">
+                    Speech Recognition
+                </span>
                 <i class="icon ion-chatbubble-working"></i> {{recognizedSpeech.result[0].alternative[0].transcript || '(no input from speech recognition yet)'}}
                 <span class="badge badge-calm" ng-show="recognizedSpeech.result[0]">{{recognizedSpeech.result[0].alternative[0].confidence * 100 | number:0}}%</span>
             </li>

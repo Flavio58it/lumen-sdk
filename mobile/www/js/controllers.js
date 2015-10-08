@@ -112,11 +112,11 @@ angular.module('starter.controllers', [])
     ];
     $scope.form = {
         audioVolume: 0.8,
-        greeting: "Hello I am Arkan Lumen from Bandung Institute of Technology. What can I help you?",
         // Speech
         speech: {
-            expression: {
-                inLanguage: $scope.locales[0]
+            synthesis: {
+                inLanguage: $scope.locales[0],
+                object: "Hello I am Arkan Lumen from Bandung Institute of Technology. What can I help you?",
             }
         },
         // Audio
@@ -148,14 +148,14 @@ angular.module('starter.controllers', [])
         }
     };
 
-    // Text-to-Speech
-    $scope.sayHello = function() {
+    // Speech Synthesis
+    $scope.communicateAction = function() {
         var msg = {'@type': 'CommunicateAction', avatarId: 'nao1',
-            inLanguage: $scope.form.speech.expression.inLanguage.id,
-            object: $scope.form.greeting};
-        $log.info('Remote Control', msg, JSON.stringify(msg));
-        $scope.client.send('/topic/lumen.speech.expression',
-            {"reply-to": '/temp-queue/lumen.speech.expression'}, JSON.stringify(msg));
+            inLanguage: $scope.form.speech.synthesis.inLanguage.id,
+            object: $scope.form.speech.synthesis.object};
+        $log.info('Speech Synthesis', msg, JSON.stringify(msg));
+        $scope.client.send('/topic/lumen.speech.synthesis',
+            {"reply-to": '/temp-queue/lumen.speech.synthesis'}, JSON.stringify(msg));
     };
 
     // Audio

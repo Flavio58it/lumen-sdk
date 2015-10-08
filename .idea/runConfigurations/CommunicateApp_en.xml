@@ -2,11 +2,11 @@
   <configuration default="false" name="CommunicateApp en" type="Application" factoryName="Application" singleton="true">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
       <pattern>
-        <option name="PATTERN" value="org.lskk.lumen.speech.expression.*" />
+        <option name="PATTERN" value="org.lskk.lumen.speech.synthesis.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
-    <option name="MAIN_CLASS_NAME" value="org.lskk.lumen.speech.expression.CommunicateApp" />
+    <option name="MAIN_CLASS_NAME" value="org.lskk.lumen.speech.synthesis.CommunicateApp" />
     <option name="VM_PARAMETERS" value="" />
     <option name="PROGRAM_PARAMETERS" value="&quot;The strong man is not the good wrestler; the strong man is only the one who controls himself when he is angry.&quot;" />
     <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />

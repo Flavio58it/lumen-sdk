@@ -85,7 +85,7 @@ public class StatusUpdate {
     @JsonProperty("id")
     private String thingId;
     /**
-     * When publishing to {@link Channel#SOCIAL_EXPRESSION}, this must be left empty.
+     * When publishing to {@link LumenChannel#SOCIAL_EXPRESSION}, this must be left empty.
      */
     private Person from;
     private String message;
