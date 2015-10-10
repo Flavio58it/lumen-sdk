@@ -6,6 +6,7 @@ package org.lskk.lumen.core;
  * Created by ceefour on 07/10/2015.
  */
 public enum EmotionKind {
+    NEUTRAL,
     JOY,
     TRUST,
     FEAR,
@@ -13,5 +14,5 @@ public enum EmotionKind {
     SADNESS,
     DISGUST,
     ANGER,
-    emotionKind, ANTICIPATION
+    ANTICIPATION
 }
