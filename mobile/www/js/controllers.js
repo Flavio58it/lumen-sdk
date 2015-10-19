@@ -110,12 +110,19 @@ angular.module('starter.controllers', [])
         {id: 'id-ID', name: 'Indonesian'},
         {id: 'ar-SA', name: 'Arabic'}
     ];
+    $scope.emotionKinds = [
+        {id: 'NEUTRAL', name: 'Neutral'},
+        {id: 'JOY', name: 'Joy'},
+        {id: 'ANGER', name: 'Anger'},
+        {id: 'SADNESS', name: 'Sadness'}
+    ];
     $scope.form = {
         audioVolume: 0.8,
         // Speech
         speech: {
             synthesis: {
                 inLanguage: $scope.locales[0],
+                emotionKind: $scope.emotionKinds[0],
                 object: "Hello I am Arkan Lumen from Bandung Institute of Technology. What can I help you?",
             }
         },
@@ -152,6 +159,7 @@ angular.module('starter.controllers', [])
     $scope.communicateAction = function() {
         var msg = {'@type': 'CommunicateAction', avatarId: 'nao1',
             inLanguage: $scope.form.speech.synthesis.inLanguage.id,
+            emotionKind: $scope.form.speech.synthesis.emotionKind.id,
             object: $scope.form.speech.synthesis.object};
         $log.info('Speech Synthesis', msg, JSON.stringify(msg));
         $scope.client.send('/topic/lumen.speech.synthesis',

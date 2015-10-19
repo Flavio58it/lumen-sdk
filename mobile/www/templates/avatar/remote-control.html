@@ -9,6 +9,10 @@
                 <span class="input-label">Language:</span>
                 <select ng-model="form.speech.synthesis.inLanguage" ng-options="locale.name for locale in locales"></select>
             </label>
+            <label class="item item-select item-stacked-label">
+                <span class="input-label">Emotion:</span>
+                <select ng-model="form.speech.synthesis.emotionKind" ng-options="emotionKind.name for emotionKind in emotionKinds"></select>
+            </label>
             <div class="row item item-input item-stacked-label">
                 <div class="col">
                     <textarea type="text" ng-model="form.speech.synthesis.object" rows="3"></textarea>
