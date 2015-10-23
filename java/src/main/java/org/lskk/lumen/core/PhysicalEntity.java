@@ -3,9 +3,10 @@ package org.lskk.lumen.core;
 import org.joda.time.DateTime;
 
 /**
- * Objek (physical body) di dunia nyata yang terdeteksi oleh modul visual processing.
+ * Objek (<a href="https://en.wikipedia.org/wiki/Physical_body">physical body</a>) di dunia nyata yang terdeteksi oleh modul visual processing.
+ * @see <a href="https://gate.d5.mpi-inf.mpg.de/webyago3spotlx/Browser?entity=%3Cwordnet_physical_entity_100001930%3E">yago:wordnet_physical_entity_100001930</a>
  */
-public class PhysicalBody implements LumenThing {
+public class PhysicalEntity implements LumenThing {
 
     /**
      * Avatar yang mengirimkan citra asalnya.

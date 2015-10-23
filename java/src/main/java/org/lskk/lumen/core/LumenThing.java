@@ -33,8 +33,9 @@ import java.io.Serializable;
         @JsonSubTypes.Type(name="RecognizedSpeech", value=RecognizedSpeech.class),
         @JsonSubTypes.Type(name="Status", value=Status.class),
         @JsonSubTypes.Type(name="Error", value=Error.class),
-        @JsonSubTypes.Type(name="PhysicalBody", value=PhysicalBody.class),
-        @JsonSubTypes.Type(name="Surroundings", value=Surroundings.class),
+        @JsonSubTypes.Type(name="VisualDetection", value=VisualDetection.class),
+        @JsonSubTypes.Type(name="PhysicalEntity", value=PhysicalEntity.class),
+        @JsonSubTypes.Type(name="Scene", value=Scene.class),
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public interface LumenThing extends Serializable {

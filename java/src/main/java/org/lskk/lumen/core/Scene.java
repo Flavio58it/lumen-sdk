@@ -4,19 +4,20 @@ import org.joda.time.DateTime;
 
 /**
  * Lingkungan di dunia nyata yang dikenali oleh modul visual processing dan/atau reasoning.
+ * @see <a href="https://gate.d5.mpi-inf.mpg.de/webyago3spotlx/Browser?entity=%3Cwordnet_scene_108645963%3E">yago:wordnet_scene_108645963</a>
  */
-public class Surroundings implements LumenThing {
+public class Scene implements LumenThing {
 
     /**
      * Avatar yang mengirimkan citra asalnya.
      */
     private String avatarId;
     /**
-     * The name of the surroundings that was recognized.
+     * The name of the scene that was recognized.
      */
     private String name;
     /**
-     * YAGO Class dari surroundings yang terdeteksi.
+     * YAGO Class dari scene yang terdeteksi.
      */
     private String kind;
     /**
