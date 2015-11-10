@@ -1133,8 +1133,8 @@ angular.module('starter.controllers', [])
     $scope.resetWindow = function() {
         $scope.settings = {
             stompUri: 'http://' + $window.location.hostname + ':15674/stomp',
-            stompUser: 'guest',
-            stompPassword: 'guest'
+            stompUser: 'lumen',
+            stompPassword: 'lumen'
         };
     };
 })
