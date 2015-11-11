@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
+import javax.xml.bind.annotation.XmlAttribute;
+
 /**
  * Created by ceefour on 19/01/15.
  * @see <a href="http://schema.org/ImageObject">schema:ImageObject</a>
@@ -101,6 +103,7 @@ public class ImageObject {
         return url;
     }
 
+    @XmlAttribute
     public void setUrl(String url) {
         this.url = url;
     }

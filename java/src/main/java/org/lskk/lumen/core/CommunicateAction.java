@@ -23,6 +23,7 @@ public class CommunicateAction implements LumenThing {
     private EmotionKind emotionKind;
     private String voiceId;
     private Gender gender;
+    private ImageObject image;
 
     public CommunicateAction() {
     }
@@ -120,6 +121,14 @@ public class CommunicateAction implements LumenThing {
         this.gender = gender;
     }
 
+    public ImageObject getImage() {
+        return image;
+    }
+
+    public void setImage(ImageObject image) {
+        this.image = image;
+    }
+
     @Override
     public String toString() {
         return "CommunicateAction{" +
@@ -129,6 +138,7 @@ public class CommunicateAction implements LumenThing {
                 ", avatarId='" + avatarId + '\'' +
                 ", emotionKind=" + emotionKind +
                 ", gender=" + gender +
+                ", image=" + image +
                 '}';
     }
 }
