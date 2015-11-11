@@ -801,6 +801,7 @@ angular.module('starter.controllers', [])
 
 .controller('VisualCameraCtrl', function($scope, $stateParams, $log, ngstomp, Settings) {
     $scope.imageObject = null;
+    $scope.bottomImageObject = null;
     $scope.recognizeds = [];
 
 //    var stompUri = 'http://167.205.66.130:15674/stomp';
@@ -812,7 +813,12 @@ angular.module('starter.controllers', [])
         $scope.client.subscribe('/topic/avatar.nao1.camera.main', function(msg) {
             var imageObject = JSON.parse(msg.body);
             $scope.imageObject = imageObject;
-            $log.debug('Got ImageObject', imageObject);
+            $log.debug('Got main ImageObject', imageObject);
+        });
+        $scope.client.subscribe('/topic/avatar.nao1.camera.bottom', function(msg) {
+            var imageObject = JSON.parse(msg.body);
+            $scope.bottomImageObject = imageObject;
+            $log.debug('Got bottom ImageObject', imageObject);
         });
         $scope.client.subscribe('/topic/lumen.arkan.face.recognition', function(msg) {
             var recognized = JSON.parse(msg.body);
