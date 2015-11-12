@@ -1,5 +1,6 @@
 package org.lskk.lumen.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -34,6 +35,8 @@ public class ImageObject {
      * Normal or thumbnail image, e.g. used by {@link Person#photo}
      */
     private String url;
+    @JsonIgnore
+    private byte[] content;
 
     public String getName() {
         return name;
@@ -106,6 +109,18 @@ public class ImageObject {
     @XmlAttribute
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    /**
+     * Temporary place to put image content.
+     * @return
+     */
+    public byte[] getContent() {
+        return content;
+    }
+
+    public void setContent(byte[] content) {
+        this.content = content;
     }
 
     @Override
