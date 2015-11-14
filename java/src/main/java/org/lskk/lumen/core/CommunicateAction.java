@@ -66,6 +66,7 @@ public class CommunicateAction implements LumenThing {
 
     /**
      * Speech in <a href="http://www.w3.org/TR/speech-synthesis/">Speech Synthesis Markup Language (SSML)</a> format.
+     * This can be empty String, which makes sense when {@link #getImage()} is set.
      * @return
      */
     public String getObject() {
