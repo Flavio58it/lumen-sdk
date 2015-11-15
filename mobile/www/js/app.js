@@ -179,6 +179,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   })
 
 
+  .state('app.social-chat', {
+    url: "/social-chat",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/social-chat.html",
+        controller: 'SocialChatCtrl'
+      }
+    }
+  })
   .state('app.social-monitor', {
     url: "/social-monitor",
     views: {
