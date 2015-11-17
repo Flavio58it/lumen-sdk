@@ -1,5 +1,8 @@
-<ion-view cache-view="false"
-          view-title="<i class='icon ion-chatbubble user-messages-top-icon'></i> <div class='msg-header-username'>{{toUser.name}}</div>">
+<!-- Ionic Elastichat: http://codepen.io/rossmartin/pen/XJmpQr -->
+<!-- <i class='icon ion-chatbubble user-messages-top-icon'></i> <div class='msg-header-username'>{{toUser.name}}</div> -->
+<ion-view id="userMessagesView"
+          cache-view="false"
+          view-title="{{toUser.name}}">
 
     <div class="loader-center" ng-if="!doneLoading">
         <div class="loader">
@@ -16,7 +19,7 @@
             <div ng-if="user._id !== message.userId">
 
                 <img ng-click="viewProfile(message)" class="profile-pic left"
-                     ng-src="{{toUser.pic}}" onerror="onProfilePicError(this)" />
+                     ng-src="{{toUser.pic}}" onerror="onProfilePicError(this)"/>
 
                 <div class="chat-bubble left">
 
@@ -35,7 +38,7 @@
             <div ng-if="user._id === message.userId">
 
                 <img ng-click="viewProfile(message)" class="profile-pic right"
-                     ng-src="{{user.pic}}" onerror="onProfilePicError(this)" />
+                     ng-src="{{user.pic}}" onerror="onProfilePicError(this)"/>
 
                 <div class="chat-bubble right">
 
@@ -60,8 +63,11 @@
     <form name="sendMessageForm" ng-submit="sendMessage(sendMessageForm)" novalidate>
         <ion-footer-bar class="bar-stable item-input-inset message-footer" keyboard-attach>
             <label class="item-input-wrapper">
-                <textarea ng-model="form.message" valueExpression="" placeholder="Send {{toUser.username}} a message..." required minlength="1" maxlength="1500" msd-elastic></textarea>
+                <textarea ng-model="form.message" valueExpression="" placeholder="Send {{toUser.username}} a message..."
+                          required minlength="1" maxlength="1500" msd-elastic
+                          style="width: 100%"></textarea>
             </label>
+
             <div class="footer-btn-wrap">
                 <button class="button button-icon icon ion-android-send footer-btn" type="submit"
                         ng-disabled="!form.message || form.message === ''">

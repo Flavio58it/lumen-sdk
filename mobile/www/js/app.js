@@ -4,7 +4,8 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'AngularStomp', 'webcam'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services',
+    'AngularStomp', 'webcam', 'monospaced.elastic', 'angularMoment'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -183,7 +184,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     url: "/social-chat",
     views: {
       'menuContent': {
-        templateUrl: "templates/social-chat.html",
+        templateUrl: "templates/social/chat.html",
         controller: 'SocialChatCtrl'
       }
     }
@@ -192,7 +193,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     url: "/social-monitor",
     views: {
       'menuContent': {
-        templateUrl: "templates/social-monitor.html",
+        templateUrl: "templates/social/monitor.html",
         controller: 'SocialMonitorCtrl'
       }
     }
@@ -201,7 +202,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     url: "/social-express",
     views: {
       'menuContent': {
-        templateUrl: "templates/social-express.html",
+        templateUrl: "templates/social/express.html",
         controller: 'SocialExpressCtrl'
       }
     }

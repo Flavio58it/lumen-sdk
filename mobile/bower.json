@@ -10,7 +10,10 @@
     "AngularStomp": "https://github.com/ceefour/AngularStomp.git",
     "webcam-directive": "~2.0.0",
     "underscore": "~1.8.3",
-    "angular-elastic": "~2.5.1"
+    "angular-elastic": "~2.5.1",
+    "angular-moment": "~0.10.3",
+    "moment": "~2.10.6",
+    "Autolinker.js": "~0.22.0"
   },
   "resolutions": {
     "angular": "1.4.3",
