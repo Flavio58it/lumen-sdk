@@ -23,6 +23,10 @@
 
                 <div class="chat-bubble left">
 
+                    <img ng-src="{{message.image.contentUrl}}"
+                         ng-show="message.image.contentUrl"
+                         style="max-width: 100%; max-height: 20em"/>
+
                     <div class="message" ng-bind-html="message.text | nl2br" autolinker>
                     </div>
 
@@ -41,6 +45,10 @@
                      ng-src="{{user.pic}}" onerror="onProfilePicError(this)"/>
 
                 <div class="chat-bubble right">
+
+                    <img ng-src="{{message.image.contentUrl}}"
+                         ng-show="message.image.contentUrl"
+                         style="max-width: 100%; max-height: 20em"/>
 
                     <div class="message" ng-bind-html="message.text | nl2br" autolinker>
                     </div>
@@ -63,8 +71,9 @@
     <form name="sendMessageForm" ng-submit="sendMessage(sendMessageForm)" novalidate>
         <ion-footer-bar class="bar-stable item-input-inset message-footer" keyboard-attach>
             <label class="item-input-wrapper">
-                <textarea ng-model="form.message" valueExpression="" placeholder="Send {{toUser.username}} a message..."
-                          required minlength="1" maxlength="1500" msd-elastic
+                <textarea ng-model="form.message" ng-enter="sendMessage(sendMessageForm)"
+                          valueExpression="" placeholder="Send {{toUser.username}} a message..."
+                          required minlength="1" maxlength="1500" msd-elastic autofocus
                           style="width: 100%"></textarea>
             </label>
 

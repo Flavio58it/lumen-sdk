@@ -14,12 +14,12 @@ angular.module('starter.controllers')
         $ionicPopup, $ionicScrollDelegate, $timeout, $interval) {
     $scope.messages = [];
     $scope.toUser = {
-        _id: '534b8e5aaa5e7afc1b23e69b',
+        _id: 'arkan',
         name: 'Arkan Lumen',
         username: 'Arkan Lumen',
         pic: 'img/nao-128.png'};
     $scope.user = {
-        _id: '534b8fb2aa5e7afc1b23e69c',
+        _id: 'person',
         name: 'You',
         username: 'You',
         pic: 'img/person-128.png'};
@@ -31,10 +31,22 @@ angular.module('starter.controllers')
     $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
         $log.info('Stomp connected to', settings.stompUri);
 
-        $scope.client.subscribe('/topic/lumen.arkan.social.chat.sent', function(exchange) {
+        $scope.client.subscribe('/topic/lumen.arkan.social.chat.outbox', function(exchange) {
             var communicateAction = JSON.parse(exchange.body);
             $log.info("Received chat", communicateAction.object);
+
+            // TODO: natively support CommunicateAction
+            communicateAction.toId = $scope.user._id;
+            communicateAction.text = communicateAction.object;
+            communicateAction._id = new Date().getTime() + '_outbox'; // :~)
+            communicateAction.date = new Date();
+            communicateAction.username = $scope.toUser.username;
+            communicateAction.userId = $scope.toUser._id;
+            communicateAction.pic = $scope.toUser.picture;
+
             $scope.messages.push(communicateAction);
+            keepKeyboardOpen();
+            viewScroll.scrollBottom(true);
         });
     }, function(err) {
         $log.error('Stomp error:', err);
@@ -74,7 +86,7 @@ angular.module('starter.controllers')
     });
 
     $scope.$on('$ionicView.beforeLeave', function() {
-      if (!$scope.input.message || $scope.input.message === '') {
+      if (!$scope.form.message || $scope.form.message === '') {
         localStorage.removeItem('userMessage-' + $scope.toUser._id);
       }
     });
@@ -102,7 +114,7 @@ angular.module('starter.controllers')
     $scope.sendMessage = function(sendMessageForm) {
       var message = {
         toId: $scope.toUser._id,
-        text: $scope.input.message
+        text: $scope.form.message
       };
 
       // if you do a web service call this will be needed as well as before the viewScroll calls
@@ -111,7 +123,7 @@ angular.module('starter.controllers')
       keepKeyboardOpen();
 
       //MockService.sendMessage(message).then(function(data) {
-      $scope.input.message = '';
+      $scope.form.message = '';
 
       message._id = new Date().getTime(); // :~)
       message.date = new Date();
@@ -121,13 +133,21 @@ angular.module('starter.controllers')
 
       $scope.messages.push(message);
 
+      var communicateAction = {
+        "@type": "CommunicateAction",
+        "object": message.text
+      };
+      $scope.client.send('/topic/lumen.arkan.social.chat.inbox',
+                         {"reply-to": '/temp-queue/lumen.arkan.social.chat.inbox'},
+                         JSON.stringify(communicateAction));
+
       $timeout(function() {
         keepKeyboardOpen();
         viewScroll.scrollBottom(true);
       }, 0);
 
       $timeout(function() {
-        $scope.messages.push(MockService.getMockMessage());
+//        $scope.messages.push(MockService.getMockMessage());
         keepKeyboardOpen();
         viewScroll.scrollBottom(true);
       }, 2000);
@@ -184,12 +204,11 @@ angular.module('starter.controllers')
     };
 
     // I emit this event from the monospaced.elastic directive, read line 480
-    $scope.$on('taResize', function(e, ta) {
-      console.log('taResize');
+    $scope.$on('elastic:resize', function(e, ta, oldHeight, newHeight) {
       if (!ta) return;
 
-      var taHeight = ta[0].offsetHeight;
-      console.log('taHeight: ' + taHeight);
+      var taHeight = newHeight; // ta[0].offsetHeight;
+      console.debug('taHeight:', taHeight);
 
       if (!footerBar) return;
 
@@ -296,8 +315,15 @@ function onProfilePicError(ele) {
 }
 
 function getMockMessages() {
-  mockMessages = {"messages":[{"_id":"535d625f898df4e80e2a125e","text":"Ionic has changed the game for hybrid app development.","userId":"534b8fb2aa5e7afc1b23e69c","date":"2014-04-27T20:02:39.082Z","read":true,"readDate":"2014-12-01T06:27:37.944Z"},{"_id":"535f13ffee3b2a68112b9fc0","text":"I like Ionic better than ice cream!","userId":"534b8e5aaa5e7afc1b23e69b","date":"2014-04-29T02:52:47.706Z","read":true,"readDate":"2014-12-01T06:27:37.944Z"},{"_id":"546a5843fd4c5d581efa263a","text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.","userId":"534b8fb2aa5e7afc1b23e69c","date":"2014-11-17T20:19:15.289Z","read":true,"readDate":"2014-12-01T06:27:38.328Z"},{"_id":"54764399ab43d1d4113abfd1","text":"Am I dreaming?","userId":"534b8e5aaa5e7afc1b23e69b","date":"2014-11-26T21:18:17.591Z","read":true,"readDate":"2014-12-01T06:27:38.337Z"},{"_id":"547643aeab43d1d4113abfd2","text":"Is this magic?","userId":"534b8fb2aa5e7afc1b23e69c","date":"2014-11-26T21:18:38.549Z","read":true,"readDate":"2014-12-01T06:27:38.338Z"},{"_id":"547815dbab43d1d4113abfef","text":"Gee wiz, this is something special.","userId":"534b8e5aaa5e7afc1b23e69b","date":"2014-11-28T06:27:40.001Z","read":true,"readDate":"2014-12-01T06:27:38.338Z"},{"_id":"54781c69ab43d1d4113abff0","text":"I think I like Ionic more than I like ice cream!","userId":"534b8fb2aa5e7afc1b23e69c","date":"2014-11-28T06:55:37.350Z","read":true,"readDate":"2014-12-01T06:27:38.338Z"},{"_id":"54781ca4ab43d1d4113abff1","text":"Yea, it's pretty sweet","userId":"534b8e5aaa5e7afc1b23e69b","date":"2014-11-28T06:56:36.472Z","read":true,"readDate":"2014-12-01T06:27:38.338Z"},{"_id":"5478df86ab43d1d4113abff4","text":"Wow, this is really something huh?","userId":"534b8fb2aa5e7afc1b23e69c","date":"2014-11-28T20:48:06.572Z","read":true,"readDate":"2014-12-01T06:27:38.339Z"},{"_id":"54781ca4ab43d1d4113abff1","text":"Create amazing apps - ionicframework.com","userId":"534b8e5aaa5e7afc1b23e69b","date":"2014-11-29T06:56:36.472Z","read":true,"readDate":"2014-12-01T06:27:38.338Z"}],"unread":0};
-  return mockMessages;
+  return {"messages": [], "unread": 0};
+//  mockMessages = {"messages":[
+//    {"_id":"535d625f898df4e80e2a125e","text":"Ionic has changed the game for hybrid app development.","userId":"person","date":"2014-04-27T20:02:39.082Z","read":true,"readDate":"2014-12-01T06:27:37.944Z"},
+//    {"_id":"535f13ffee3b2a68112b9fc0","text":"I like Ionic better than ice cream!","userId":"arkan","date":"2014-04-29T02:52:47.706Z","read":true,"readDate":"2014-12-01T06:27:37.944Z"},
+//    {"_id":"546a5843fd4c5d581efa263a","text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.","userId":"person","date":"2014-11-17T20:19:15.289Z","read":true,"readDate":"2014-12-01T06:27:38.328Z"},{"_id":"54764399ab43d1d4113abfd1","text":"Am I dreaming?","userId":"arkan","date":"2014-11-26T21:18:17.591Z","read":true,"readDate":"2014-12-01T06:27:38.337Z"},{"_id":"547643aeab43d1d4113abfd2","text":"Is this magic?","userId":"person","date":"2014-11-26T21:18:38.549Z","read":true,"readDate":"2014-12-01T06:27:38.338Z"},{"_id":"547815dbab43d1d4113abfef","text":"Gee wiz, this is something special.","userId":"arkan","date":"2014-11-28T06:27:40.001Z","read":true,"readDate":"2014-12-01T06:27:38.338Z"},{"_id":"54781c69ab43d1d4113abff0","text":"I think I like Ionic more than I like ice cream!","userId":"person","date":"2014-11-28T06:55:37.350Z","read":true,"readDate":"2014-12-01T06:27:38.338Z"},{"_id":"54781ca4ab43d1d4113abff1","text":"Yea, it's pretty sweet","userId":"arkan","date":"2014-11-28T06:56:36.472Z","read":true,"readDate":"2014-12-01T06:27:38.338Z"},
+//    {"_id":"5478df86ab43d1d4113abff4","text":"Wow, this is really something huh?","userId":"person","date":"2014-11-28T20:48:06.572Z","read":true,"readDate":"2014-12-01T06:27:38.339Z"},
+//    {"_id":"54781ca4ab43d1d4113abff1","text":"Create amazing apps - ionicframework.com","userId":"arkan","date":"2014-11-29T06:56:36.472Z","read":true,"readDate":"2014-12-01T06:27:38.338Z"}
+//    ],"unread":0};
+//  return mockMessages;
 }
 
 // configure moment relative time
