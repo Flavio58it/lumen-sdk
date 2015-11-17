@@ -24,8 +24,11 @@
                 <div class="chat-bubble left">
 
                     <img ng-src="{{message.image.contentUrl}}"
-                         ng-show="message.image.contentUrl"
+                         ng-if="message.image.contentUrl"
                          style="max-width: 100%; max-height: 20em"/>
+                    <audio controls="controls" autoplay="autoplay" ng-if="message.audio.contentUrl">
+                        <source ng-src="{{message.audio.contentUrl}}" />
+                    </audio>
 
                     <div class="message" ng-bind-html="message.text | nl2br" autolinker>
                     </div>

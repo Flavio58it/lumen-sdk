@@ -102,11 +102,11 @@ public class ImageObject {
         this.contentUrl = contentUrl;
     }
 
+    @XmlAttribute
     public String getUrl() {
         return url;
     }
 
-    @XmlAttribute
     public void setUrl(String url) {
         this.url = url;
     }

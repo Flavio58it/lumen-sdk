@@ -1,7 +1,10 @@
 package org.lskk.lumen.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+
+import javax.xml.bind.annotation.XmlAttribute;
 
 /**
  * Audio object both for playing audio and recording audio.
@@ -19,9 +22,12 @@ public class AudioObject implements LumenThing {
     private DateTime dateModified;
     private DateTime datePublished;
     private String contentUrl;
+    private String url;
+    @JsonIgnore
+    private byte[] content;
 
     /**
-     * Supported format is PCM WAV and MP3. Supported schemes:
+     * Supported formats are OGG (recommended), MP3, and PCM WAV. Supported schemes:
      *
      * <ol>
      *     <li>file:// : File must already be in NAO's filesystem.</li>
@@ -37,6 +43,15 @@ public class AudioObject implements LumenThing {
 
     public void setContentUrl(String contentUrl) {
         this.contentUrl = contentUrl;
+    }
+
+    @XmlAttribute
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getName() {
@@ -93,6 +108,18 @@ public class AudioObject implements LumenThing {
 
     public void setDatePublished(DateTime datePublished) {
         this.datePublished = datePublished;
+    }
+
+    /**
+     * Temporary place to put audio content.
+     * @return
+     */
+    public byte[] getContent() {
+        return content;
+    }
+
+    public void setContent(byte[] content) {
+        this.content = content;
     }
 
     @Override

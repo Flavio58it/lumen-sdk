@@ -20,6 +20,7 @@ public class CommunicateAction implements LumenThing {
     private String voiceId;
     private Gender gender;
     private ImageObject image;
+    private AudioObject audio;
 
     public CommunicateAction() {
     }
@@ -124,6 +125,14 @@ public class CommunicateAction implements LumenThing {
 
     public void setImage(ImageObject image) {
         this.image = image;
+    }
+
+    public AudioObject getAudio() {
+        return audio;
+    }
+
+    public void setAudio(AudioObject audio) {
+        this.audio = audio;
     }
 
     @Override
