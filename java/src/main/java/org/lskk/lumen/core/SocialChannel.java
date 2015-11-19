@@ -5,13 +5,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import java.io.Serializable;
+
 /**
  * Created by ceefour on 19/01/15.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@type", defaultImpl = SocialChannel.class)
 @JsonSubTypes(@JsonSubTypes.Type(name = "SocialChannel", value = SocialChannel.class))
-public class SocialChannel {
+public class SocialChannel implements Serializable {
     public String getThingId() {
         return thingId;
     }

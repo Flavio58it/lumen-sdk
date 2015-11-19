@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import java.io.Serializable;
 
 /**
  * Created by ceefour on 19/01/15.
@@ -17,7 +18,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonTypeInfo(use=JsonTypeInfo.Id.NAME, property="@type", defaultImpl=ImageObject.class)
 @JsonSubTypes(@JsonSubTypes.Type(name="ImageObject", value=ImageObject.class))
-public class ImageObject {
+public class ImageObject implements Serializable {
 
     private String name;
     private String contentType;
