@@ -2,7 +2,7 @@ angular.module('starter.services', [])
 
 .factory('Settings', function($q, $log, $window) {
     var defaultSettings = {
-        stompUri: 'http://167.205.66.116:15674/stomp',
+        stompUri: 'http://167.205.66.55:15674/stomp',
         stompUser: 'lumen',
         stompPassword: 'lumen',
         motionAllowed: false,
