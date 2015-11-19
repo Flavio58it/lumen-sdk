@@ -1,0 +1,26 @@
+<ion-view view-title="Visual: Camera">
+  <ion-content>
+      <ion-list>
+        <ion-item>
+			<div id="hog">
+			{{recognized}}
+			</div>
+            <div id="uploadPreview" style="position: relative;">
+                <div ng-repeat="recognized in recognizeds"
+                     style="position: absolute; font-size: 80%; color: yellow; background-color: rgba(0, 0, 0, 0.5);" ng-style="recognized.cssStyle">
+                    <strong>{{recognized.name}}</strong>
+                </div>
+                <div ng-hide="imageObject.contentUrl">
+                    No image.
+                </div>
+                <img style="max-width: 100%"
+                     ng-src="{{imageObject.contentUrl}}" ng-show="imageObject.contentUrl"/>
+
+                <h4>Bottom Camera</strong></h4>
+                <img style="max-width: 100%"
+                     ng-src="{{bottomImageObject.contentUrl}}" ng-show="bottomImageObject.contentUrl"/>
+            </div>
+        </ion-item>
+      </ion-list>
+  </ion-content>
+</ion-view>

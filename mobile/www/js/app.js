@@ -93,6 +93,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services',
       }
     }
   })
+  .state('app.visual-object-recognition', {
+    url: "/visual/object-recognition",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/visual/object-recognition.html",
+        controller: 'ObjectRecognitionCtrl'
+      }
+    }
+  })
   .state('app.face-recognition-cam', {
     url: "/face-recognition-cam",
     views: {
