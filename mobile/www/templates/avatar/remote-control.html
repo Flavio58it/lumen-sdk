@@ -2,6 +2,14 @@
     <ion-content>
 
         <div class="list card">
+            <label class="item item-select item-stacked-label stable-bg">
+                <strong class="input-label">Avatar:</strong>
+                <select ng-model="form.avatarId" ng-options="avatarId for avatarId in avatarIds"
+                    ng-change="switchAvatar()"></select>
+            </label>
+        </div>
+
+        <div class="list card">
             <h2 class="item stable-bg">
                 Speech Synthesis
             </h2>
@@ -24,7 +32,7 @@
         </div>
 
         <ul class="list card">
-            <h2 class="item stable-bg">Audio</h2>
+            <h2 class="item stable-bg">Audio Out</h2>
             <label class="item item-input">
                 <span class="input-label">Content URL</span>
                 <input type="text" ng-model="form.audio.contentUrl"/>
@@ -49,6 +57,17 @@
                     </div>
                 </div>
             </ion-item>
+            <ion-item class="row item-input item-stacked-label">
+                <div class="col">
+                    <audio id="played" controls="controls" style="width: 100%">
+                        <source />
+                    </audio>
+                </div>
+                <div class="col-20">
+                    <button class="button button-block" ng-click="replayPlayed()"><i class="icon ion-play"></i> Audio Out</button>
+                </div>
+            </ion-item>
+            <h2 class="item stable-bg">Audio In</h2>
             <ion-item class="row range">
                 <div class="col">
                     <span class="input-label">
@@ -67,7 +86,7 @@
                     </audio>
                 </div>
                 <div class="col-20">
-                    <button class="button button-block" ng-click="replayRecorded()"><i class="icon ion-play"></i> Replay</button>
+                    <button class="button button-block" ng-click="replayRecorded()"><i class="icon ion-play"></i> Recorded</button>
                 </div>
             </ion-item>
             <li class="item item-icon-left item-text-wrap">

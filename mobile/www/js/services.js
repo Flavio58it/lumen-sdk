@@ -23,4 +23,49 @@ angular.module('starter.services', [])
     };
 })
 
+.factory('LumenStomp', function($q, $log, $window, Settings, ngstomp) {
+    var client = null;
+    var subscriptions = [];
+    return {
+        connect: function(callback) {
+            var settings = Settings.getSettings();
+            $log.info('Stomp connecting to', settings.stompUri);
+            client = ngstomp(settings.stompUri);
+            client.connect(settings.stompUser, settings.stompPassword, function() {
+                $log.info('Stomp connected to', settings.stompUri);
+                callback();
+            }, function(err) {
+                $log.error('Stomp error:', err);
+                client = null;
+            }, '/');
+        },
+        disconnect: function() {
+            this.unsubscribeAll();
+            if (client != null) {
+                $log.info('Disconnecting', client);
+                client.disconnect(function() { $log.info('Disconnected.'); });
+                client = null;
+            }
+        },
+        getClient: function() {
+            return client;
+        },
+        getSubscriptions: function() {
+            return subscriptions;
+        },
+        subscribe: function(topic, headers, body) {
+            var sub = client.subscribe(topic, headers, body);
+            subscriptions.push(sub);
+            return sub;
+        },
+        unsubscribeAll: function() {
+            _.forEach(subscriptions, function(sub) {
+                $log.info('Unsubscribing', sub);
+                sub.unsubscribe();
+            });
+            subscriptions = [];
+        },
+    };
+})
+
 ;
