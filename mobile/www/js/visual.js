@@ -60,11 +60,43 @@ angular.module('starter.controllers')
             $log.debug('Got bottom ImageObject', imageObject);
         });*/
         $scope.client.subscribe('/topic/lumen.visual.hogobj.recognition', function(msg) {
-            var recognized = JSON.parse(msg.body);
-            $scope.recognized = recognized;
+            var recognizeds = JSON.parse(msg.body);
+			$log.debug('Received RecognizedObjects', recognizeds);
+            $scope.recognizeds = recognizeds;
         });
     }, function(err) {
         $log.error('Stomp error:', err);
         $scope.client = null;
     }, '/');
+	
+	$scope.sendMockRecognizedObjects = function() {
+		var recognizedObjects = {
+			"@type": "RecognizedObjects",
+			"hasPosition": true,
+			"hasDistance": false,
+			"hasYaw": false,
+			"trashes": [
+				{
+					"@type": "RecognizedObject",
+					"topPosition": {"@type": "Vector2", "x": 45, "y": 70},
+					"bottomPosition": null
+				},
+				{
+					"@type": "RecognizedObject",
+					"topPosition": null,
+					"bottomPosition": {"@type": "Vector2", "x": 98, "y": 120}
+				}
+			],
+			"trashCans": [
+				{
+					"@type": "RecognizedObject",
+					"topPosition": null,
+					"bottomPosition": {"@type": "Vector2", "x": 118, "y": 20}
+				}
+			]
+		};
+		$log.debug('Sending RecognizedObjects', recognizedObjects);
+		$scope.client.send('/topic/lumen.visual.hogobj.recognition',
+			{}, JSON.stringify(recognizedObjects));
+	};
 });

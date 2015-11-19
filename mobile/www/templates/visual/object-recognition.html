@@ -1,9 +1,36 @@
-<ion-view view-title="Visual: Camera">
+<ion-view view-title="Visual: Object Recognition">
   <ion-content>
       <ion-list>
         <ion-item>
 			<div id="hog">
-			{{recognized}}
+				<div class="row">
+					<p class="col">Position: {{recognizeds.hasPosition}}</p>
+					<p class="col">Distance: {{recognizeds.hasDistance}}</p>
+					<p class="col">Yaw: {{recognizeds.hasYaw}}</p>
+				</div>
+				<div class="list card">
+					<h4 class="item stable-bg">Trashes</h4>
+					<div ng-repeat="recognized in recognizeds.trashes">
+						<div class="item">
+							<p ng-if="recognized.topPosition.x"><strong>Top:</strong> ({{recognized.topPosition.x}}, {{recognized.topPosition.y}}).
+							Dist: {{recognized.topDistance}} m. Yaw: {{recognized.topYawAngle}}°</p>
+							<p ng-if="recognized.bottomPosition.x"><strong>Bottom:</strong> ({{recognized.bottomPosition.x}}, {{recognized.bottomPosition.y}}).
+							Dist: {{recognized.bottomDistance}} m. Yaw: {{recognized.bottomYawAngle}}°</p>
+						</div>
+					</div>
+					<h4 class="item stable-bg">Trash Cans</h4>
+					<div ng-repeat="recognized in recognizeds.trashCans">
+						<div class="item">
+							<p ng-if="recognized.topPosition.x"><strong>Top:</strong> ({{recognized.topPosition.x}}, {{recognized.topPosition.y}}).
+							Dist: {{recognized.topDistance}} m. Yaw: {{recognized.topYawAngle}}°</p>
+							<p ng-if="recognized.bottomPosition.x"><strong>Bottom:</strong> ({{recognized.bottomPosition.x}}, {{recognized.bottomPosition.y}}).
+							Dist: {{recognized.bottomDistance}} m. Yaw: {{recognized.bottomYawAngle}}°</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div>
+				<button class="button button-stable" ng-click="sendMockRecognizedObjects()">Send Mock RecognizedObjects</button>
 			</div>
             <div id="uploadPreview" style="position: relative;">
                 <div ng-repeat="recognized in recognizeds"
