@@ -1,10 +1,13 @@
 package org.lskk.lumen.core;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import java.util.Locale;
 
 /**
  * Audio object both for playing audio and recording audio.
@@ -23,6 +26,10 @@ public class AudioObject implements LumenThing {
     private DateTime datePublished;
     private String contentUrl;
     private String url;
+    private String transcript;
+    private Locale inLanguage;
+    private String category;
+    private MediaLayer mediaLayer;
     @JsonIgnore
     private byte[] content;
 
@@ -108,6 +115,59 @@ public class AudioObject implements LumenThing {
 
     public void setDatePublished(DateTime datePublished) {
         this.datePublished = datePublished;
+    }
+
+    /**
+     * If this MediaObject is an AudioObject or VideoObject, the transcript of that object.
+     * @return
+     */
+    public String getTranscript() {
+        return transcript;
+    }
+
+    public void setTranscript(String transcript) {
+        this.transcript = transcript;
+    }
+
+    /**
+     * Language of the {@link #getTranscript()}.
+     * @return
+     */
+    public Locale getInLanguage() {
+        return inLanguage;
+    }
+
+    @JsonGetter("inLanguage")
+    public String getInLanguageAsString() {
+        return inLanguage != null ? inLanguage.toLanguageTag() : null;
+    }
+
+    public void setInLanguage(Locale inLanguage) {
+        this.inLanguage = inLanguage;
+    }
+
+    @JsonSetter
+    public void setInLanguage(String inLanguage) {
+        this.inLanguage = inLanguage != null ? Locale.forLanguageTag(inLanguage) : null;
+    }
+    /**
+     * A category for the item. Greater signs or slashes can be used to informally indicate a category hierarchy.
+     * @return
+     */
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public MediaLayer getMediaLayer() {
+        return mediaLayer;
+    }
+
+    public void setMediaLayer(MediaLayer mediaLayer) {
+        this.mediaLayer = mediaLayer;
     }
 
     /**

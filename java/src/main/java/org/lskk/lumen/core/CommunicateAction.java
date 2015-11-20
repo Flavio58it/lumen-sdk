@@ -39,10 +39,6 @@ public class CommunicateAction implements LumenThing {
         this.actionStatus = actionStatus;
     }
 
-    /**
-     *
-     * @return
-     */
     public Locale getInLanguage() {
         return inLanguage;
     }
