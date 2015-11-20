@@ -8,23 +8,24 @@ angular.module('starter.controllers')
     $scope.avatarIds = ['nao1', 'nao2',
         'anime1', 'anime2', 'anime3', 'anime4', 'anime5', 'anime6', 'anime7', 'anime8', 'anime9', 'anime10'];
     $scope.form = {
-        avatarId: 'nao1'
+        avatarId: 'nao1',
+        agentId: 'arkan'
     };
 
     // Avatar
     $scope.switchAvatar = function() {
         LumenStomp.unsubscribeAll();
-        LumenStomp.subscribe('/topic/avatar.' + avatarId + '.camera.main', function(msg) {
+        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.camera.main', function(msg) {
             var imageObject = JSON.parse(msg.body);
             $scope.imageObject = imageObject;
             $log.debug('Got main ImageObject', imageObject);
         });
-        LumenStomp.subscribe('/topic/avatar.' + avatarId + '.camera.bottom', function(msg) {
+        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.camera.bottom', function(msg) {
             var imageObject = JSON.parse(msg.body);
             $scope.bottomImageObject = imageObject;
             $log.debug('Got bottom ImageObject', imageObject);
         });
-        LumenStomp.subscribe('/topic/lumen.arkan.face.recognition', function(msg) {
+        LumenStomp.subscribe('/topic/lumen.' + $scope.form.agentId + '.face.recognition', function(msg) {
             var recognized = JSON.parse(msg.body);
             if (recognized.index == 0) {
                 $scope.recognizeds = [];
@@ -57,18 +58,19 @@ angular.module('starter.controllers')
     $scope.avatarIds = ['nao1', 'nao2',
         'anime1', 'anime2', 'anime3', 'anime4', 'anime5', 'anime6', 'anime7', 'anime8', 'anime9', 'anime10'];
     $scope.form = {
-        avatarId: 'nao1'
+        avatarId: 'nao1',
+        agentId: 'arkan'
     };
 
     // Avatar
     $scope.switchAvatar = function() {
         LumenStomp.unsubscribeAll();
-        /*LumenStomp.subscribe('/topic/avatar.' + avatarId + '.camera.main', function(msg) {
+        /*LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.camera.main', function(msg) {
             var imageObject = JSON.parse(msg.body);
             $scope.imageObject = imageObject;
             $log.debug('Got main ImageObject', imageObject);
         });
-        LumenStomp.subscribe('/topic/avatar.' + avatarId + '.camera.bottom', function(msg) {
+        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.camera.bottom', function(msg) {
             var imageObject = JSON.parse(msg.body);
             $scope.bottomImageObject = imageObject;
             $log.debug('Got bottom ImageObject', imageObject);

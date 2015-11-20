@@ -58,10 +58,10 @@
 
     # go to directory git/lumen-sdk/mobile
     cd git\lumen-sdk\mobile
-    ionic serve
+    ionic serve -a
 
 **Linux:** Use command prompt, to `mobile` directory, and run: `ionic serve`, e.g.
 
     # go to directory git/lumen-sdk/mobile
     cd git/lumen-sdk/mobile
-    ionic serve
+    ionic serve -a
