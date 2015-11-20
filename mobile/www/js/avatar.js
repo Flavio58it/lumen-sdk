@@ -1,9 +1,10 @@
 angular.module('starter.controllers')
 
-.controller('AvatarRemoteControlCtrl', function($scope, $stateParams, $log, ngstomp, $window, Settings,
+.controller('AvatarRemoteControlCtrl', function($scope, $stateParams, $log, $window, Settings,
         LumenStomp) {
     var settings = Settings.getSettings();
 
+    $scope.client = null;
     $scope.avatarIds = ['nao1', 'nao2',
         'anime1', 'anime2', 'anime3', 'anime4', 'anime5', 'anime6', 'anime7', 'anime8', 'anime9', 'anime10'];
     $scope.motionAllowed = settings.motionAllowed || false;
@@ -129,7 +130,6 @@ angular.module('starter.controllers')
         $log.info('Subscriptions:', LumenStomp.getSubscriptions());
     };
 
-    $scope.client = null;
     $scope.$on('$ionicView.enter', function() {
         LumenStomp.connect(function() {
             $scope.client = LumenStomp.getClient();

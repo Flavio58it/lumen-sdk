@@ -1,13 +1,9 @@
 <ion-view view-title="Avatar : Remote Control">
     <ion-content>
-
-        <div class="list card">
-            <label class="item item-select item-stacked-label stable-bg">
-                <strong class="input-label">Avatar:</strong>
-                <select ng-model="form.avatarId" ng-options="avatarId for avatarId in avatarIds"
+        <ion-nav-buttons side="secondary">
+            <select ng-model="form.avatarId" ng-options="avatarId for avatarId in avatarIds"
                     ng-change="switchAvatar()"></select>
-            </label>
-        </div>
+        </ion-nav-buttons>
 
         <div class="list card">
             <h2 class="item stable-bg">
