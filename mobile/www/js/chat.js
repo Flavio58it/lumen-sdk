@@ -32,7 +32,8 @@ angular.module('starter.controllers')
     // Avatar
     $scope.switchAvatar = function() {
         LumenStomp.unsubscribeAll();
-        LumenStomp.subscribe('/topic/lumen.arkan.social.chat.outbox', function(exchange) {
+        $scope.messages = [];
+        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.chat.outbox', function(exchange) {
             var communicateAction = JSON.parse(exchange.body);
             $log.info("Received chat", communicateAction.object);
 
@@ -142,8 +143,8 @@ angular.module('starter.controllers')
         "@type": "CommunicateAction",
         "object": message.text
       };
-      $scope.client.send('/topic/lumen.arkan.social.chat.inbox',
-                         {"reply-to": '/temp-queue/lumen.arkan.social.chat.inbox'},
+      $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.chat.inbox',
+                         {"reply-to": '/topic/avatar.' + $scope.form.avatarId + '.chat.inbox'},
                          JSON.stringify(communicateAction));
 
       $timeout(function() {

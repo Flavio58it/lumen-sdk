@@ -162,6 +162,7 @@ public class AudioObject implements LumenThing {
         this.category = category;
     }
 
+    @XmlAttribute
     public MediaLayer getMediaLayer() {
         return mediaLayer;
     }

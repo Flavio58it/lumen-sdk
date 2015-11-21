@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import javax.annotation.Nullable;
 import java.io.Serializable;
 
 /**
@@ -17,6 +18,21 @@ public class SimpleTruthValue implements Serializable {
     private Float strength;
     private Float confidence;
     private Integer count;
+
+    public SimpleTruthValue() {
+    }
+
+    public SimpleTruthValue(Float strength, Float confidence, Integer count) {
+        this.strength = strength;
+        this.confidence = confidence;
+        this.count = count;
+    }
+
+    public SimpleTruthValue(@Nullable float[] truthValue) {
+        this.strength = truthValue != null && truthValue.length >= 1 ? truthValue[0] : null;
+        this.confidence = truthValue != null && truthValue.length >= 2 ? truthValue[1] : null;
+        this.count = truthValue != null && truthValue.length >= 3 ? (int)truthValue[2] : null;
+    }
 
     /**
      * A floating-point value ranging from 0 to 1, with 0 denoting the classical Boolean false, and 1.0 denoting true.
