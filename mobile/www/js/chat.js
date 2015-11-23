@@ -8,7 +8,7 @@ Requires bower packages:
 
 angular.module('starter.controllers')
 
-.controller('SocialChatCtrl', function($scope, $stateParams, $log, ngstomp, $window, Settings,
+.controller('SocialChatCtrl', function($scope, $stateParams, $log, LumenStomp, $window, Settings,
         $rootScope, $state, $stateParams, MockService,
         $ionicActionSheet,
         $ionicPopup, $ionicScrollDelegate, $timeout, $interval) {
@@ -23,15 +23,17 @@ angular.module('starter.controllers')
         name: 'You',
         username: 'You',
         pic: 'img/person-128.png'};
-    $scope.form = {};
+    $scope.avatarIds = ['nao1', 'nao2',
+        'anime1', 'anime2', 'anime3', 'anime4', 'anime5', 'anime6', 'anime7', 'anime8', 'anime9', 'anime10'];
+    $scope.form = {
+        avatarId: 'nao1'
+    };
 
-    var settings = Settings.getSettings();
-    $log.info('Stomp connecting to', settings.stompUri);
-    $scope.client = ngstomp(settings.stompUri);
-    $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
-        $log.info('Stomp connected to', settings.stompUri);
-
-        $scope.client.subscribe('/topic/lumen.arkan.social.chat.outbox', function(exchange) {
+    // Avatar
+    $scope.switchAvatar = function() {
+        LumenStomp.unsubscribeAll();
+        $scope.messages = [];
+        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.chat.outbox', function(exchange) {
             var communicateAction = JSON.parse(exchange.body);
             $log.info("Received chat", communicateAction.object);
 
@@ -48,10 +50,8 @@ angular.module('starter.controllers')
             keepKeyboardOpen();
             viewScroll.scrollBottom(true);
         });
-    }, function(err) {
-        $log.error('Stomp error:', err);
-        $scope.client = null;
-    }, '/');
+        $log.info('Subscriptions:', LumenStomp.getSubscriptions());
+    };
 
     var messageCheckTimer;
 
@@ -74,10 +74,16 @@ angular.module('starter.controllers')
       messageCheckTimer = $interval(function() {
         // here you could check for new messages if your app doesn't use push notifications or user disabled them
       }, 20000);
+
+        LumenStomp.connect(function() {
+            $scope.client = LumenStomp.getClient();
+            $scope.switchAvatar();
+        });
     });
 
     $scope.$on('$ionicView.leave', function() {
       console.log('leaving UserMessages view, destroying interval');
+      LumenStomp.disconnect();
       // Make sure that the interval is destroyed
       if (angular.isDefined(messageCheckTimer)) {
         $interval.cancel(messageCheckTimer);
@@ -137,8 +143,8 @@ angular.module('starter.controllers')
         "@type": "CommunicateAction",
         "object": message.text
       };
-      $scope.client.send('/topic/lumen.arkan.social.chat.inbox',
-                         {"reply-to": '/temp-queue/lumen.arkan.social.chat.inbox'},
+      $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.chat.inbox',
+                         {"reply-to": '/topic/avatar.' + $scope.form.avatarId + '.chat.inbox'},
                          JSON.stringify(communicateAction));
 
       $timeout(function() {

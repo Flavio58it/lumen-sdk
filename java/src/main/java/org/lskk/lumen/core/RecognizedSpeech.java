@@ -10,9 +10,18 @@ import java.util.List;
  * Created by ceefour on 05/10/2015.
  */
 public class RecognizedSpeech implements LumenThing {
+    private String avatarId;
     @JsonProperty("result")
     private List<SpeechResult> results = new ArrayList<>();
     private DateTime dateCreated;
+
+    public String getAvatarId() {
+        return avatarId;
+    }
+
+    public void setAvatarId(String avatarId) {
+        this.avatarId = avatarId;
+    }
 
     public List<SpeechResult> getResults() {
         return results;
@@ -34,6 +43,7 @@ public class RecognizedSpeech implements LumenThing {
     public String toString() {
         return "RecognizedSpeech{" +
                 "results=" + results +
+                ", avatarId=" + avatarId +
                 ", dateCreated=" + dateCreated +
                 '}';
     }

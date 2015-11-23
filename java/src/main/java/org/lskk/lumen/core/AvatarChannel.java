@@ -1,5 +1,7 @@
 package org.lskk.lumen.core;
 
+import com.google.common.base.Splitter;
+
 /**
  * All avatar channels are using the following (Stomp) pattern:
  * <p/>
@@ -22,6 +24,8 @@ public enum AvatarChannel {
     POSTURE("posture"),
     CAMERA("camera"),
     CAMERA_MAIN("camera.stream"),
+    CHAT_INBOX("chat.inbox"),
+    CHAT_OUTBOX("chat.outbox"),
     BATTERY("battery"),
     SENSORS("sensors"),
     SONAR("sonar"),
@@ -42,6 +46,10 @@ public enum AvatarChannel {
         return "avatar." + avatarId + "." + keySuffix;
     }
 
+    public String wildcard() {
+        return "avatar.*." + keySuffix;
+    }
+
     @Override
     public String toString() {
         return keySuffix;
@@ -56,4 +64,8 @@ public enum AvatarChannel {
     }
 
     private String keySuffix;
+
+    public static String getAvatarId(String topic) {
+        return Splitter.on('.').splitToList(topic).get(1);
+    }
 }

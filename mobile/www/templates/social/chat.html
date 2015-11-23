@@ -3,6 +3,10 @@
 <ion-view id="userMessagesView"
           cache-view="false"
           view-title="{{toUser.name}}">
+    <ion-nav-buttons side="secondary">
+        <select ng-model="form.avatarId" ng-options="avatarId for avatarId in avatarIds"
+                ng-change="switchAvatar()"></select>
+    </ion-nav-buttons>
 
     <div class="loader-center" ng-if="!doneLoading">
         <div class="loader">
