@@ -38,9 +38,14 @@ angular.module('starter.controllers')
         LumenStomp.unsubscribeAll();
     };
 
-    LumenStomp.connect(function() {
-        $scope.client = LumenStomp.getClient();
-        $scope.switchAgent();
+    $scope.$on('$ionicView.enter', function() {
+        LumenStomp.connect(function() {
+            $scope.client = LumenStomp.getClient();
+            $scope.switchAgent();
+        });
+    });
+    $scope.$on('$ionicView.leave', function() {
+        LumenStomp.disconnect();
     });
 
     $scope.submit = function() {

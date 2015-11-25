@@ -358,18 +358,9 @@ angular.module('starter.controllers')
     $scope.form = {
         avatarId: 'nao1'
     };
-
     $scope.client = null;
-    $scope.$on('$ionicView.enter', function() {
-        LumenStomp.connect(function() {
-            $scope.client = LumenStomp.getClient();
-            $scope.switchAvatar();
-        });
-    });
-    $scope.$on('$ionicView.leave', function() {
-        LumenStomp.disconnect();
-    });
 
+    // Avatar
     $scope.switchAvatar = function() {
         LumenStomp.unsubscribeAll();
 
@@ -414,4 +405,15 @@ angular.module('starter.controllers')
             $scope.battery = exchange;
         });
     };
+
+    $scope.$on('$ionicView.enter', function() {
+        LumenStomp.connect(function() {
+            $scope.client = LumenStomp.getClient();
+            $scope.switchAvatar();
+        });
+    });
+    $scope.$on('$ionicView.leave', function() {
+        LumenStomp.disconnect();
+    });
+
 });

@@ -1,6 +1,6 @@
 angular.module('starter.controllers')
 
-.controller('VisualCameraCtrl', function($scope, $stateParams, $log, ngstomp, Settings, LumenStomp) {
+.controller('VisualCameraCtrl', function($scope, $stateParams, $log, Settings, LumenStomp) {
     $scope.imageObject = null;
     $scope.bottomImageObject = null;
     $scope.recognizeds = [];
@@ -50,7 +50,7 @@ angular.module('starter.controllers')
     });
 })
 
-.controller('ObjectRecognitionCtrl', function($scope, $stateParams, $log, ngstomp, Settings, LumenStomp) {
+.controller('ObjectRecognitionCtrl', function($scope, $stateParams, $log, Settings, LumenStomp) {
     $scope.imageObject = null;
     $scope.bottomImageObject = null;
     $scope.recognizeds = [];
