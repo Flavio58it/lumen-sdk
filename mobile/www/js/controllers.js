@@ -554,61 +554,6 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('SocialMonitorCtrl', function($scope, $stateParams, $log, $ionicScrollDelegate, ngstomp, Settings) {
-    $scope.posts = [];
-
-//    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
-    var settings = Settings.getSettings();
-    $log.info('Stomp connecting to', settings.stompUri);
-    $scope.client = ngstomp(settings.stompUri);
-    $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
-        $log.info('Stomp connected to', settings.stompUri);
-        $scope.client.subscribe('/topic/lumen.*.social.perception', function(msg) {
-            var post = JSON.parse(msg.body);
-            $scope.posts.push(post);
-            $ionicScrollDelegate.scrollBottom(true);
-        });
-    }, function(err) {
-        $log.error('Stomp error:', err);
-        $scope.client = null;
-    }, '/');
-})
-
-.controller('SocialExpressCtrl', function($scope, $stateParams, $log, ngstomp, Settings) {
-    $scope.posts = [];
-    $scope.networks = [
-        {'id': 'facebook', 'name': 'Facebook'},
-        {'id': 'twitter', 'name': 'Twitter'}
-    ];
-    $scope.post = {network: $scope.networks[0]};
-
-//    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
-    var settings = Settings.getSettings();
-    $log.info('Stomp connecting to', settings.stompUri);
-    $scope.client = ngstomp(settings.stompUri);
-    $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
-        $log.info('Stomp connected to', settings.stompUri);
-//        $scope.client.subscribe('/topic/lumen.arkan.social.perception', function(msg) {
-//            var post = JSON.parse(msg.body);
-//            $scope.posts.push(post);
-//            $ionicScrollDelegate.scrollBottom(true);
-//        });
-    }, function(err) {
-        $log.error('Stomp error:', err);
-        $scope.client = null;
-    }, '/');
-
-    $scope.submit = function() {
-        $scope.statusUpdate = {
-            '@type': 'StatusUpdate',
-            message: $scope.post.message,
-            channel: $scope.post.network
-        };
-        $log.info('Posting...', JSON.stringify($scope.statusUpdate));
-        $scope.client.send('/topic/lumen.arkan.social.expression', {}, JSON.stringify($scope.statusUpdate));
-    };
-})
-
 .controller('SettingsCtrl', function($scope, $log, $window, Settings) {
     $scope.settings = Settings.getSettings();
     $scope.save = function() {

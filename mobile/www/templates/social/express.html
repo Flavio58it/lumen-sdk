@@ -1,4 +1,9 @@
 <ion-view view-title="Social: Express">
+    <ion-nav-buttons side="secondary">
+        <select ng-model="form.agentId" ng-options="agentId for agentId in agentIds"
+                ng-change="switchAgent()"></select>
+    </ion-nav-buttons>
+
     <ion-content>
         <label class="item item-input">
             <input type="text" ng-model="post.message" placeholder="Message..."/>
