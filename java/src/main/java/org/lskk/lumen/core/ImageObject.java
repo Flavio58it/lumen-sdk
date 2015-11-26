@@ -38,6 +38,8 @@ public class ImageObject implements Serializable {
     private String url;
     @JsonIgnore
     private byte[] content;
+    @JsonIgnore
+    private String destinationTopic;
 
     public String getName() {
         return name;
@@ -122,6 +124,18 @@ public class ImageObject implements Serializable {
 
     public void setContent(byte[] content) {
         this.content = content;
+    }
+
+    /**
+     * Used internally for Camel routing.
+     * @return
+     */
+    public String getDestinationTopic() {
+        return destinationTopic;
+    }
+
+    public void setDestinationTopic(String destinationTopic) {
+        this.destinationTopic = destinationTopic;
     }
 
     @Override
