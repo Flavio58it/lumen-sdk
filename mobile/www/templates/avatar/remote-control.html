@@ -116,7 +116,7 @@
             </li>
         </ul>
 
-        <ion-list class="card">
+        <ul class="list card">
             <h2 class="item stable-bg">LEDs</h2>
             <label class="item item-select item-stacked-label">
                 <span class="input-label">LED Group/Name:</span>
@@ -156,9 +156,9 @@
                     <div class="col"><button class="button button-energized button-block" ng-click="ledsRasta()">Rasta</button></div>
                 </div>
             </ion-item>
-        </ion-list>
+        </ul>
 
-        <ion-list class="card">
+        <ul class="list card">
             <h2 class="item stable-bg">Actor</h2>
             <label class="item item-select item-stacked-label">
                 <span class="input-label">Acting Script:</span>
@@ -167,9 +167,9 @@
             <div class="item">
                 <button class="button button-energized button-block" ng-click="act()"><i class="icon ion-ios-videocam"></i> Act!</button>
             </div>
-        </ion-list>
+        </ul>
 
-        <ion-list class="card">
+        <ul class="list card">
             <h2 class="item stable-bg">Posture</h2>
             <label class="item range item-stacked-label" ng-show="motionAllowed">
                 <span class="input-label">
@@ -188,9 +188,9 @@
                 <button class="button button-default button-block" ng-click="changePosture('Sit')">Sit</button>
                 <button class="button button-default button-block" ng-click="changePosture('SitRelax')">Sit Relax</button>
             </ion-item>
-        </ion-list>
+        </ul>
 
-        <ion-list class="card" ng-show="motionAllowed">
+        <ul class="list card" ng-show="motionAllowed">
             <h2 class="item stable-bg">Move To (walking)</h2>
             <label class="item range item-stacked-label">
                 <span class="input-label">Back distance: <strong>{{form.moveTo.backDistance}}</strong> m</span>
@@ -207,9 +207,9 @@
             <ion-item>
                 <button class="button button-positive button-block" ng-click="moveTo()">Move To</button>
             </ion-item>
-        </ion-list>
+        </ul>
 
-        <ion-list class="card" ng-show="motionAllowed">
+        <ul class="list card" ng-show="motionAllowed">
             <h2 class="item stable-bg">Joint: Interpolate Angle</h2>
             <label class="item item-select item-stacked-label">
                 <span class="input-label">Joint</span>
@@ -226,7 +226,7 @@
             <ion-item>
                 <button class="button button-positive button-block" ng-click="jointInterpolateAngle()">Joint: Interpolate Angle</button>
             </ion-item>
-        </ion-list>
+        </ul>
 
     </ion-content>
 </ion-view>
