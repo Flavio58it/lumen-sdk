@@ -77,6 +77,7 @@ angular.module('starter.controllers')
         },
         // Audio
         audio: {
+            inLanguage: $scope.locales[0],
             contentUrl: 'file:///home/nao/gangnam.mp3',
             recordDuration: 5.0,
         },
@@ -199,13 +200,39 @@ angular.module('starter.controllers')
         };
         reader.readAsDataURL(audioFile);
     };
-    $scope.recordAudio = function() {
+    $scope.recordAudioFromAvatar = function() {
         var msg = {
             '@type': 'RecordAudio',
             duration: $scope.form.audio.recordDuration,
+            inLanguage: $scope.form.audio.inLanguage.id
         };
         $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.audio',
             {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.audio'}, JSON.stringify(msg));
+    };
+    $scope.sendRecordedMic = function() {
+        var recordedFileEl = document.getElementById('recordedMic');
+        var recordedFile = recordedFileEl.files[0];
+        $log.debug('Reading...', recordedFileEl, recordedFileEl.files, recordedFile, JSON.stringify(recordedFile));
+        var reader = new FileReader();
+        reader.onloadend = function() {
+            $scope.$apply(function() {
+                var audioObject = {
+                    '@type': 'AudioObject',
+                    inLanguage: $scope.form.audio.inLanguage.id,
+                    name: recordedFile.name,
+                    contentType: recordedFile.type,
+                    contentSize: recordedFile.size,
+                    dateModified: recordedFile.lastModifiedDate,
+                    contentUrl: reader.result
+                    //duration: $scope.form.audio.recordDuration,
+                };
+                $log.info('AudioObject', audioObject, JSON.stringify(audioObject));
+                $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.audio.in',
+                    {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.audio.in'},
+                    JSON.stringify(audioObject));
+            });
+        };
+        reader.readAsDataURL(recordedFile);
     };
     $scope.replayRecorded = function() {
         var recordedEl = document.getElementById('recorded');

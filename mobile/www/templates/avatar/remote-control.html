@@ -62,7 +62,23 @@
                     <button class="button button-block" ng-click="replayPlayed()"><i class="icon ion-play"></i> Audio Out</button>
                 </div>
             </ion-item>
-            <h2 class="item stable-bg">Audio In</h2>
+            <div class="row item range">
+                <label class="col item-stacked-label">
+                    <span class="input-label">
+                        Audio Volume: <strong>{{form.audioVolume * 100}}%</strong>
+                    </span>
+                    <input type="range" ng-model="form.audioVolume" min="0.0" max="1.0" step="0.1" style="width: 80%"/>
+                </label>
+                <div class="col-20">
+                    <button class="button button-default button-block" ng-click="changeVolume()"><i class="icon ion-volume-medium"></i> Set</button>
+                </div>
+            </div>
+        </ul>
+        <ul class="list card">
+            <ion-item class="item stable-bg item-stacked-label">
+                <h2 class="input-label"><strong>Audio In</strong></h2>
+                <select ng-model="form.audio.inLanguage" ng-options="locale.name for locale in locales"></select>
+            </ion-item>
             <ion-item class="row range">
                 <div class="col">
                     <span class="input-label">
@@ -71,8 +87,15 @@
                     <input type="range" ng-model="form.audio.recordDuration" min="1.0" max="30.0" step="1.0" style="width: 80%"/>
                 </div>
                 <div class="col-20">
-                    <button class="button button-assertive button-block" ng-click="recordAudio()"><i class="icon ion-record"></i> Record!</button>
+                    <button class="button button-assertive button-block" ng-click="recordAudioFromAvatar()"><i class="icon ion-record"></i> Record Avatar!</button>
                 </div>
+            </ion-item>
+            <ion-item class="">
+                <span class="input-label">
+                    Record from Device:
+                </span>
+                <input id="recordedMic" type="file" accept="audio/*;capture=microphone"
+                    onchange="angular.element(this).scope().sendRecordedMic()"/>
             </ion-item>
             <ion-item class="row item-input item-stacked-label">
                 <div class="col">
@@ -91,17 +114,6 @@
                 <i class="icon ion-chatbubble-working"></i> {{recognizedSpeech.result[0].alternative[0].transcript || '(no input from speech recognition yet)'}}
                 <span class="badge badge-calm" ng-show="recognizedSpeech.result[0]">{{recognizedSpeech.result[0].alternative[0].confidence * 100 | number:0}}%</span>
             </li>
-            <div class="row item range">
-                <label class="col item-stacked-label">
-                    <span class="input-label">
-                        Audio Volume: <strong>{{form.audioVolume * 100}}%</strong>
-                    </span>
-                    <input type="range" ng-model="form.audioVolume" min="0.0" max="1.0" step="0.1" style="width: 80%"/>
-                </label>
-                <div class="col-20">
-                    <button class="button button-default button-block" ng-click="changeVolume()"><i class="icon ion-volume-medium"></i> Set</button>
-                </div>
-            </div>
         </ul>
 
         <ion-list class="card">
