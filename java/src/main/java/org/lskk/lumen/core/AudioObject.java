@@ -30,6 +30,7 @@ public class AudioObject implements LumenThing {
     private Locale inLanguage;
     private String category;
     private MediaLayer mediaLayer;
+    private Boolean usedForChat;
     @JsonIgnore
     private byte[] content;
 
@@ -169,6 +170,18 @@ public class AudioObject implements LumenThing {
 
     public void setMediaLayer(MediaLayer mediaLayer) {
         this.mediaLayer = mediaLayer;
+    }
+
+    /**
+     * If true, then speech recognition module will send a {@link CommunicateAction} to {@link AvatarChannel#CHAT_INBOX}.
+     * @return
+     */
+    public Boolean getUsedForChat() {
+        return usedForChat;
+    }
+
+    public void setUsedForChat(Boolean usedForChat) {
+        this.usedForChat = usedForChat;
     }
 
     /**

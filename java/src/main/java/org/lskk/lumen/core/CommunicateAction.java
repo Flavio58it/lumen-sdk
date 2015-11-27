@@ -14,6 +14,7 @@ import java.util.Optional;
 public class CommunicateAction implements LumenThing {
     private Locale inLanguage;
     private String object;
+    private float[] speechTruthValue;
     private ActionStatusType actionStatus;
     private String avatarId;
     private EmotionKind emotionKind;
@@ -68,6 +69,23 @@ public class CommunicateAction implements LumenThing {
 
     public void setObject(String object) {
         this.object = object;
+    }
+
+    /**
+     * 3-element {@link SimpleTruthValue} of speech recognition.
+     * <ol>
+     *  <li>Strength: How strong the speaker says the utterance.</li>
+     *  <li>Confidence: Confidence of speech recognizer.</li>
+     *  <li>Count: Count (unused).</li>
+     * </ol>
+     * @return
+     */
+    public float[] getSpeechTruthValue() {
+        return speechTruthValue;
+    }
+
+    public void setSpeechTruthValue(float[] speechTruthValue) {
+        this.speechTruthValue = speechTruthValue;
     }
 
     /**

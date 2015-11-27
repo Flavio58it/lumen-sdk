@@ -80,6 +80,7 @@ angular.module('starter.controllers')
             inLanguage: $scope.locales[0],
             contentUrl: 'file:///home/nao/gangnam.mp3',
             recordDuration: 5.0,
+            usedForChat: true
         },
         // Actor
         actor: {

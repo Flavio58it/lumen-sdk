@@ -96,6 +96,7 @@
                 </span>
                 <input id="recordedMic" type="file" accept="audio/*;capture=microphone"
                     onchange="angular.element(this).scope().sendRecordedMic()"/>
+                <label><input type="checkbox" ng-model="form.audio.usedForChat"/> Used for Chat</label>
             </ion-item>
             <ion-item class="row item-input item-stacked-label">
                 <div class="col">
