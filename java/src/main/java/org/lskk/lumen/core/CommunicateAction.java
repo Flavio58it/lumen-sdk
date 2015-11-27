@@ -20,6 +20,7 @@ public class CommunicateAction implements LumenThing {
     private EmotionKind emotionKind;
     private String voiceId;
     private Gender gender;
+    private Boolean usedForSynthesis;
     private ImageObject image;
     private AudioObject audio;
 
@@ -131,6 +132,19 @@ public class CommunicateAction implements LumenThing {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    /**
+     * If {@code true} and sent to {@link AvatarChannel#CHAT_OUTBOX}, speech-synthesis module will synthesize
+     * the {@link CommunicateAction#getObject()} to {@link AvatarChannel#AUDIO_OUT}.
+     * @return
+     */
+    public Boolean getUsedForSynthesis() {
+        return usedForSynthesis;
+    }
+
+    public void setUsedForSynthesis(Boolean usedForSynthesis) {
+        this.usedForSynthesis = usedForSynthesis;
     }
 
     public ImageObject getImage() {
