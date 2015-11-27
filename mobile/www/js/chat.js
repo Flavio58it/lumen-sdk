@@ -60,6 +60,7 @@ angular.module('starter.controllers')
             keepKeyboardOpen();
             viewScroll.scrollBottom(true);
         });
+        // avatar.{avatarId}.chat.outbox
         LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.chat.outbox', function(exchange) {
             var communicateAction = JSON.parse(exchange.body);
             $log.info("Received outbox", communicateAction.object);
@@ -76,6 +77,13 @@ angular.module('starter.controllers')
             $scope.messages.push(communicateAction);
             keepKeyboardOpen();
             viewScroll.scrollBottom(true);
+        });
+        // audio.out: AudioObject
+        $scope.client.subscribe('/topic/avatar.*.audio.out', function(exchange) {
+            var msg = JSON.parse(exchange.body);
+            $log.info("Received audio", msg.name, msg.contentType, msg.contentSize, 'bytes');
+            document.getElementById('played').src = msg.contentUrl;
+            $scope.replayPlayed();
         });
         $log.info('Subscriptions:', LumenStomp.getSubscriptions());
     };
@@ -254,6 +262,11 @@ angular.module('starter.controllers')
       scroller.style.bottom = newFooterHeight + 'px';
     });
 
+    $scope.replayPlayed = function() {
+        var playedEl = document.getElementById('played');
+        $log.info('Playing played ', playedEl, 'seconds ...');
+        playedEl.play();
+    };
 })
 
 // services

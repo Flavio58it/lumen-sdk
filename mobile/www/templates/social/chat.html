@@ -4,6 +4,10 @@
           cache-view="false"
           view-title="{{toUser.name}}">
     <ion-nav-buttons side="secondary">
+        <audio id="played" controls="controls" style="width: 100%">
+            <source />
+        </audio>
+        <button class="button" ng-click="replayPlayed()"><i class="icon ion-play"></i></button>
         <select ng-model="form.avatarId" ng-options="avatarId for avatarId in avatarIds"
                 ng-change="switchAvatar()"></select>
     </ion-nav-buttons>

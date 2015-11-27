@@ -143,14 +143,26 @@ angular.module('starter.controllers')
     });
 
     // Speech Synthesis
-    $scope.communicateAction = function() {
+    $scope.communicateSynthesis = function() {
         var msg = {'@type': 'CommunicateAction', avatarId: $scope.form.avatarId,
             inLanguage: $scope.form.speech.synthesis.inLanguage.id,
             emotionKind: $scope.form.speech.synthesis.emotionKind.id,
-            object: $scope.form.speech.synthesis.object};
+            object: $scope.form.speech.synthesis.object,
+            usedForSynthesis: true};
         $log.info('Speech Synthesis', msg, JSON.stringify(msg));
         $scope.client.send('/topic/lumen.speech.synthesis',
             {"reply-to": '/temp-queue/lumen.speech.synthesis'}, JSON.stringify(msg));
+    };
+    $scope.communicateChat = function() {
+        var msg = {'@type': 'CommunicateAction', avatarId: $scope.form.avatarId,
+            inLanguage: $scope.form.speech.synthesis.inLanguage.id,
+            emotionKind: $scope.form.speech.synthesis.emotionKind.id,
+            object: $scope.form.speech.synthesis.object,
+            usedForSynthesis: true};
+        $log.info('chat.outbox+synthesis', msg, JSON.stringify(msg));
+        $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.chat.outbox',
+            {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.chat.outbox'},
+            JSON.stringify(msg));
     };
 
     // Audio
@@ -183,21 +195,17 @@ angular.module('starter.controllers')
         // ImageObject: name, contentType, contentUrl, contentSize, width, height, uploadDate, dateCreated, dateModified, datePublished
         var reader = new FileReader();
         reader.onloadend = function() {
-            if (audioFile.size > 128 * 1024) {
-                $window.alert('Audio file too large! Must be < 128 KB for JavaScript');
-            } else {
-                var msg = {
-                    '@type': 'AudioObject',
-                    name: audioFile.name,
-                    contentType: audioFile.type,
-                    contentSize: audioFile.size,
-                    dateModified: audioFile.lastModifiedDate,
-                    contentUrl: reader.result
-                };
-                $log.info('Playing audio', msg.name, '(', msg.contentSize, 'bytes)');
-                $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.audio.out',
-                    {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.audio.out'}, JSON.stringify(msg));
-            }
+            var msg = {
+                '@type': 'AudioObject',
+                name: audioFile.name,
+                contentType: audioFile.type,
+                contentSize: audioFile.size,
+                dateModified: audioFile.lastModifiedDate,
+                contentUrl: reader.result
+            };
+            $log.info('Playing audio', msg.name, '(', msg.contentSize, 'bytes)');
+            $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.audio.out',
+                {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.audio.out'}, JSON.stringify(msg));
         };
         reader.readAsDataURL(audioFile);
     };
