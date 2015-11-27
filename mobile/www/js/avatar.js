@@ -205,7 +205,8 @@ angular.module('starter.controllers')
         var msg = {
             '@type': 'RecordAudio',
             duration: $scope.form.audio.recordDuration,
-            inLanguage: $scope.form.audio.inLanguage.id
+            inLanguage: $scope.form.audio.inLanguage.id,
+            usedForChat: $scope.form.audio.usedForChat
         };
         $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.audio',
             {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.audio'}, JSON.stringify(msg));
@@ -224,8 +225,8 @@ angular.module('starter.controllers')
                     contentType: recordedFile.type,
                     contentSize: recordedFile.size,
                     dateModified: recordedFile.lastModifiedDate,
-                    contentUrl: reader.result
-                    //duration: $scope.form.audio.recordDuration,
+                    contentUrl: reader.result,
+                    usedForChat: $scope.form.audio.usedForChat
                 };
                 $log.info('AudioObject', audioObject, JSON.stringify(audioObject));
                 $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.audio.in',
