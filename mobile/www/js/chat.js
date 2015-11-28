@@ -35,7 +35,7 @@ angular.module('starter.controllers')
         $scope.messages = [];
         LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.chat.inbox', function(exchange) {
             var communicateAction = JSON.parse(exchange.body);
-            $log.info("Received inbox", communicateAction.object);
+            $log.info("Received inbox", communicateAction.object, communicateAction);
 
             $log.debug('map', _.map($scope.messages, function(m) { return m._id; }));
             var already = _.find($scope.messages, function(m) { return m._id == communicateAction['@id']; }) || false;
@@ -63,7 +63,7 @@ angular.module('starter.controllers')
         // avatar.{avatarId}.chat.outbox
         LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.chat.outbox', function(exchange) {
             var communicateAction = JSON.parse(exchange.body);
-            $log.info("Received outbox", communicateAction.object);
+            $log.info("Received outbox", communicateAction.object, communicateAction);
 
             // TODO: natively support CommunicateAction
             communicateAction.toId = $scope.user._id;
@@ -81,7 +81,7 @@ angular.module('starter.controllers')
         // audio.out: AudioObject
         $scope.client.subscribe('/topic/avatar.*.audio.out', function(exchange) {
             var msg = JSON.parse(exchange.body);
-            $log.info("Received audio", msg.name, msg.contentType, msg.contentSize, 'bytes');
+            $log.info("Received audio", msg.name, msg.contentType, msg.contentSize, 'bytes', msg);
             document.getElementById('played').src = msg.contentUrl;
             $scope.replayPlayed();
         });
