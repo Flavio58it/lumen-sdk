@@ -34,6 +34,27 @@ at the bottom as the textarea resizes */
   bottom: 0;
 }
 
+.voicenote-btn-wrap {
+  position: relative;
+  height: 100%;
+  width: 2em;
+  top: 7px;
+}
+.voicenote-btn {
+  position: absolute !important;
+  bottom: 0;
+  height: 2em;
+  line-height: 2em;
+  width: 100%;
+}
+.voicenote-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.voicenote-input::before {
+  content: "\1F3A4";
+  /*-webkit-user-select: none;*/
+}
+
 img.profile-pic {
   width: 40px;
   height: 40px;

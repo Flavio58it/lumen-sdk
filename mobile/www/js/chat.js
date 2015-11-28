@@ -25,8 +25,19 @@ angular.module('starter.controllers')
         pic: 'img/person-128.png'};
     $scope.avatarIds = ['nao1', 'nao2',
         'anime1', 'anime2', 'anime3', 'anime4', 'anime5', 'anime6', 'anime7', 'anime8', 'anime9', 'anime10'];
+    $scope.locales = [
+        {id: 'en-US', name: 'English (US)'},
+        {id: 'en-UK', name: 'English (UK)'},
+        {id: 'en-AU', name: 'English (Australia)'},
+        {id: 'id-ID', name: 'Indonesian'},
+        {id: 'ar-SA', name: 'Arabic'}
+    ];
     $scope.form = {
-        avatarId: 'nao1'
+        avatarId: 'nao1',
+        audio: {
+            inLanguage: $scope.locales[0],
+            usedForChat: true
+        }
     };
 
     // Avatar
@@ -266,6 +277,32 @@ angular.module('starter.controllers')
         var playedEl = document.getElementById('played');
         $log.info('Playing played ', playedEl, 'seconds ...');
         playedEl.play();
+    };
+
+    $scope.sendRecordedMic = function() {
+        var recordedFileEl = document.getElementById('recordedMic');
+        var recordedFile = recordedFileEl.files[0];
+        $log.debug('Reading...', recordedFileEl, recordedFileEl.files, recordedFile, JSON.stringify(recordedFile));
+        var reader = new FileReader();
+        reader.onloadend = function() {
+            $scope.$apply(function() {
+                var audioObject = {
+                    '@type': 'AudioObject',
+                    inLanguage: $scope.form.audio.inLanguage.id,
+                    name: recordedFile.name,
+                    contentType: recordedFile.type,
+                    contentSize: recordedFile.size,
+                    dateModified: recordedFile.lastModifiedDate,
+                    contentUrl: reader.result,
+                    usedForChat: $scope.form.audio.usedForChat
+                };
+                $log.info('AudioObject', audioObject, JSON.stringify(audioObject));
+                $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.audio.in',
+                    {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.audio.in'},
+                    JSON.stringify(audioObject));
+            });
+        };
+        reader.readAsDataURL(recordedFile);
     };
 })
 
