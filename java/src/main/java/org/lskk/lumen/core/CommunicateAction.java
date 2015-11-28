@@ -14,11 +14,13 @@ import java.util.Optional;
 public class CommunicateAction implements LumenThing {
     private Locale inLanguage;
     private String object;
+    private float[] speechTruthValue;
     private ActionStatusType actionStatus;
     private String avatarId;
     private EmotionKind emotionKind;
     private String voiceId;
     private Gender gender;
+    private Boolean usedForSynthesis;
     private ImageObject image;
     private AudioObject audio;
 
@@ -71,6 +73,23 @@ public class CommunicateAction implements LumenThing {
     }
 
     /**
+     * 3-element {@link SimpleTruthValue} of speech recognition.
+     * <ol>
+     *  <li>Strength: How strong the speaker says the utterance.</li>
+     *  <li>Confidence: Confidence of speech recognizer.</li>
+     *  <li>Count: Count (unused).</li>
+     * </ol>
+     * @return
+     */
+    public float[] getSpeechTruthValue() {
+        return speechTruthValue;
+    }
+
+    public void setSpeechTruthValue(float[] speechTruthValue) {
+        this.speechTruthValue = speechTruthValue;
+    }
+
+    /**
      * Destination avatar ID.
      * @return
      */
@@ -113,6 +132,19 @@ public class CommunicateAction implements LumenThing {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    /**
+     * If {@code true} and sent to {@link AvatarChannel#CHAT_OUTBOX}, speech-synthesis module will synthesize
+     * the {@link CommunicateAction#getObject()} to {@link AvatarChannel#AUDIO_OUT}.
+     * @return
+     */
+    public Boolean getUsedForSynthesis() {
+        return usedForSynthesis;
+    }
+
+    public void setUsedForSynthesis(Boolean usedForSynthesis) {
+        this.usedForSynthesis = usedForSynthesis;
     }
 
     public ImageObject getImage() {

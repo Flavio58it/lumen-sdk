@@ -36,6 +36,7 @@ import java.io.Serializable;
         @JsonSubTypes.Type(name="VisualDetection", value=VisualDetection.class),
         @JsonSubTypes.Type(name="PhysicalEntity", value=PhysicalEntity.class),
         @JsonSubTypes.Type(name="Scene", value=Scene.class),
+        @JsonSubTypes.Type(name="Animation", value=Animation.class),
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public interface LumenThing extends Serializable {

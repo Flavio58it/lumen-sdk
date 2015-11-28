@@ -1,6 +1,6 @@
 angular.module('starter.controllers')
 
-.controller('AudioMonitorCtrl', function($scope, $stateParams, $log, ngstomp, $window, Settings, LumenStomp) {
+.controller('AudioMonitorCtrl', function($scope, $stateParams, $log, $window, Settings, LumenStomp) {
     $scope.form = {
     };
 

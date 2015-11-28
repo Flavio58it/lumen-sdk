@@ -17,13 +17,23 @@ import com.google.common.base.Splitter;
  * Created by ceefour on 19/01/15.
  */
 public enum AvatarChannel {
+    /**
+     * Sequential animation of commands, usually motion ({@link JointInterpolateAngle}) but can also use {@link ActingPerformance},
+     * {@link CommunicateAction}, etc.
+     */
+    ANIMATION("animation"),
     AUDIO("audio"),
     AUDIO_IN("audio.in"),
     AUDIO_OUT("audio.out"),
+    DATA_BATTERY("data.battery"),
+    DATA_SONAR("data.sonar"),
+    DATA_JOINT("data.joint"),
+    DATA_TACTILE("data.tactile"),
     MOTION("motion"),
     POSTURE("posture"),
     CAMERA("camera"),
-    CAMERA_MAIN("camera.stream"),
+    CAMERA_MAIN("camera.main"),
+    CAMERA_BOTTOM("camera.bottom"),
     CHAT_INBOX("chat.inbox"),
     CHAT_OUTBOX("chat.outbox"),
     BATTERY("battery"),
@@ -36,7 +46,14 @@ public enum AvatarChannel {
     FACE_RECOGNITION("face.recognition"),
     ACTION_RECOGNITION("action.recognition"),
     SOCIAL_EXPRESSION("social.expression"),
-    SOCIAL_PERCEPTION("social.perception");
+    SOCIAL_PERCEPTION("social.perception"),
+    LEDS("leds"),
+    /**
+     * For {@link ActingPerformance}.
+     */
+    ACTING("acting"),
+    @Deprecated
+    COMMAND("command");
 
     AvatarChannel(String keySuffix) {
         this.keySuffix = keySuffix;

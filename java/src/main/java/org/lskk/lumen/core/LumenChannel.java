@@ -24,7 +24,8 @@ public enum LumenChannel {
     FACE_RECOGNITION("face.recognition"),
     ACTION_RECOGNITION("action.recognition"),
     SOCIAL_EXPRESSION("social.expression"),
-    SOCIAL_PERCEPTION("social.perception");
+    SOCIAL_PERCEPTION("social.perception"),
+    FACEBOOK_TIMELINE_OUT("facebook.timeline.out");
 
     LumenChannel(String keySuffix) {
         this.keySuffix = keySuffix;
@@ -32,6 +33,10 @@ public enum LumenChannel {
 
     public String key() {
         return "lumen." + keySuffix;
+    }
+
+    public String key(String agentId) {
+        return "lumen." + agentId + "." + keySuffix;
     }
 
     @Override

@@ -1,10 +1,9 @@
 <ion-view view-title="Avatar : Remote Control">
+    <ion-nav-buttons side="secondary">
+        <select ng-model="form.avatarId" ng-options="avatarId for avatarId in avatarIds"
+                ng-change="switchAvatar()"></select>
+    </ion-nav-buttons>
     <ion-content>
-        <ion-nav-buttons side="secondary">
-            <select ng-model="form.avatarId" ng-options="avatarId for avatarId in avatarIds"
-                    ng-change="switchAvatar()"></select>
-        </ion-nav-buttons>
-
         <div class="list card">
             <h2 class="item stable-bg">
                 Speech Synthesis
@@ -21,8 +20,11 @@
                 <div class="col">
                     <textarea type="text" ng-model="form.speech.synthesis.object" rows="3"></textarea>
                 </div>
-                <div class="col-20">
-                    <button class="button button-positive button-block" ng-click="communicateAction()"><i class="icon ion-chatbubble-working"></i> Say!</button>
+                <div class="col-15">
+                    <button class="button button-positive button-block" ng-click="communicateSynthesis()"><i class="icon ion-chatbubble-working"></i> Say!</button>
+                </div>
+                <div class="col-15">
+                    <button class="button button-positive button-block" ng-click="communicateChat()"><i class="icon ion-chatbubble-working"></i> Chat!</button>
                 </div>
             </div>
         </div>
@@ -63,7 +65,23 @@
                     <button class="button button-block" ng-click="replayPlayed()"><i class="icon ion-play"></i> Audio Out</button>
                 </div>
             </ion-item>
-            <h2 class="item stable-bg">Audio In</h2>
+            <div class="row item range">
+                <label class="col item-stacked-label">
+                    <span class="input-label">
+                        Audio Volume: <strong>{{form.audioVolume * 100}}%</strong>
+                    </span>
+                    <input type="range" ng-model="form.audioVolume" min="0.0" max="1.0" step="0.1" style="width: 80%"/>
+                </label>
+                <div class="col-20">
+                    <button class="button button-default button-block" ng-click="changeVolume()"><i class="icon ion-volume-medium"></i> Set</button>
+                </div>
+            </div>
+        </ul>
+        <ul class="list card">
+            <ion-item class="item stable-bg item-stacked-label">
+                <h2 class="input-label"><strong>Audio In</strong></h2>
+                <select ng-model="form.audio.inLanguage" ng-options="locale.name for locale in locales"></select>
+            </ion-item>
             <ion-item class="row range">
                 <div class="col">
                     <span class="input-label">
@@ -72,8 +90,16 @@
                     <input type="range" ng-model="form.audio.recordDuration" min="1.0" max="30.0" step="1.0" style="width: 80%"/>
                 </div>
                 <div class="col-20">
-                    <button class="button button-assertive button-block" ng-click="recordAudio()"><i class="icon ion-record"></i> Record!</button>
+                    <button class="button button-assertive button-block" ng-click="recordAudioFromAvatar()"><i class="icon ion-record"></i> Record Avatar!</button>
                 </div>
+            </ion-item>
+            <ion-item class="">
+                <span class="input-label">
+                    Record from Device:
+                </span>
+                <input id="recordedMic" type="file" accept="audio/*;capture=microphone"
+                    onchange="angular.element(this).scope().sendRecordedMic()"/>
+                <label><input type="checkbox" ng-model="form.audio.usedForChat"/> Used for Chat</label>
             </ion-item>
             <ion-item class="row item-input item-stacked-label">
                 <div class="col">
@@ -92,20 +118,9 @@
                 <i class="icon ion-chatbubble-working"></i> {{recognizedSpeech.result[0].alternative[0].transcript || '(no input from speech recognition yet)'}}
                 <span class="badge badge-calm" ng-show="recognizedSpeech.result[0]">{{recognizedSpeech.result[0].alternative[0].confidence * 100 | number:0}}%</span>
             </li>
-            <div class="row item range">
-                <label class="col item-stacked-label">
-                    <span class="input-label">
-                        Audio Volume: <strong>{{form.audioVolume * 100}}%</strong>
-                    </span>
-                    <input type="range" ng-model="form.audioVolume" min="0.0" max="1.0" step="0.1" style="width: 80%"/>
-                </label>
-                <div class="col-20">
-                    <button class="button button-default button-block" ng-click="changeVolume()"><i class="icon ion-volume-medium"></i> Set</button>
-                </div>
-            </div>
         </ul>
 
-        <ion-list class="card">
+        <ul class="list card">
             <h2 class="item stable-bg">LEDs</h2>
             <label class="item item-select item-stacked-label">
                 <span class="input-label">LED Group/Name:</span>
@@ -145,9 +160,9 @@
                     <div class="col"><button class="button button-energized button-block" ng-click="ledsRasta()">Rasta</button></div>
                 </div>
             </ion-item>
-        </ion-list>
+        </ul>
 
-        <ion-list class="card">
+        <ul class="list card">
             <h2 class="item stable-bg">Actor</h2>
             <label class="item item-select item-stacked-label">
                 <span class="input-label">Acting Script:</span>
@@ -156,9 +171,9 @@
             <div class="item">
                 <button class="button button-energized button-block" ng-click="act()"><i class="icon ion-ios-videocam"></i> Act!</button>
             </div>
-        </ion-list>
+        </ul>
 
-        <ion-list class="card">
+        <ul class="list card">
             <h2 class="item stable-bg">Posture</h2>
             <label class="item range item-stacked-label" ng-show="motionAllowed">
                 <span class="input-label">
@@ -177,9 +192,9 @@
                 <button class="button button-default button-block" ng-click="changePosture('Sit')">Sit</button>
                 <button class="button button-default button-block" ng-click="changePosture('SitRelax')">Sit Relax</button>
             </ion-item>
-        </ion-list>
+        </ul>
 
-        <ion-list class="card" ng-show="motionAllowed">
+        <ul class="list card" ng-show="motionAllowed">
             <h2 class="item stable-bg">Move To (walking)</h2>
             <label class="item range item-stacked-label">
                 <span class="input-label">Back distance: <strong>{{form.moveTo.backDistance}}</strong> m</span>
@@ -196,9 +211,9 @@
             <ion-item>
                 <button class="button button-positive button-block" ng-click="moveTo()">Move To</button>
             </ion-item>
-        </ion-list>
+        </ul>
 
-        <ion-list class="card" ng-show="motionAllowed">
+        <ul class="list card" ng-show="motionAllowed">
             <h2 class="item stable-bg">Joint: Interpolate Angle</h2>
             <label class="item item-select item-stacked-label">
                 <span class="input-label">Joint</span>
@@ -215,7 +230,7 @@
             <ion-item>
                 <button class="button button-positive button-block" ng-click="jointInterpolateAngle()">Joint: Interpolate Angle</button>
             </ion-item>
-        </ion-list>
+        </ul>
 
     </ion-content>
 </ion-view>

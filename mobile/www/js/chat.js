@@ -33,9 +33,37 @@ angular.module('starter.controllers')
     $scope.switchAvatar = function() {
         LumenStomp.unsubscribeAll();
         $scope.messages = [];
+        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.chat.inbox', function(exchange) {
+            var communicateAction = JSON.parse(exchange.body);
+            $log.info("Received inbox", communicateAction.object, communicateAction);
+
+            $log.debug('map', _.map($scope.messages, function(m) { return m._id; }));
+            var already = _.find($scope.messages, function(m) { return m._id == communicateAction['@id']; }) || false;
+            $log.debug('contains', typeof communicateAction['@id'] === 'undefined', communicateAction['@id'], already);
+            if ((typeof communicateAction['@id'] === 'undefined') || !already) {
+
+                // TODO: natively support CommunicateAction
+                communicateAction.toId = $scope.user._id;
+                communicateAction.text = communicateAction.object;
+                if (typeof communicateAction['@id'] === undefined) {
+                    communicateAction['@id'] = new Date().getTime(); // :~)
+                    communicateAction._id = new Date().getTime(); // :~)
+                }
+                communicateAction.date = new Date();
+                communicateAction.username = $scope.user.username;
+                communicateAction.userId = $scope.user._id;
+                communicateAction.pic = $scope.user.picture;
+
+                $scope.messages.push(communicateAction);
+            }
+
+            keepKeyboardOpen();
+            viewScroll.scrollBottom(true);
+        });
+        // avatar.{avatarId}.chat.outbox
         LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.chat.outbox', function(exchange) {
             var communicateAction = JSON.parse(exchange.body);
-            $log.info("Received chat", communicateAction.object);
+            $log.info("Received outbox", communicateAction.object, communicateAction);
 
             // TODO: natively support CommunicateAction
             communicateAction.toId = $scope.user._id;
@@ -49,6 +77,13 @@ angular.module('starter.controllers')
             $scope.messages.push(communicateAction);
             keepKeyboardOpen();
             viewScroll.scrollBottom(true);
+        });
+        // audio.out: AudioObject
+        $scope.client.subscribe('/topic/avatar.*.audio.out', function(exchange) {
+            var msg = JSON.parse(exchange.body);
+            $log.info("Received audio", msg.name, msg.contentType, msg.contentSize, 'bytes', msg);
+            document.getElementById('played').src = msg.contentUrl;
+            $scope.replayPlayed();
         });
         $log.info('Subscriptions:', LumenStomp.getSubscriptions());
     };
@@ -131,7 +166,8 @@ angular.module('starter.controllers')
       //MockService.sendMessage(message).then(function(data) {
       $scope.form.message = '';
 
-      message._id = new Date().getTime(); // :~)
+      message._id = 'chat:' + new Date().getTime(); // :~)
+      message['@id'] = message._id;
       message.date = new Date();
       message.username = $scope.user.username;
       message.userId = $scope.user._id;
@@ -141,6 +177,7 @@ angular.module('starter.controllers')
 
       var communicateAction = {
         "@type": "CommunicateAction",
+        "@id": message._id,
         "object": message.text
       };
       $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.chat.inbox',
@@ -225,6 +262,11 @@ angular.module('starter.controllers')
       scroller.style.bottom = newFooterHeight + 'px';
     });
 
+    $scope.replayPlayed = function() {
+        var playedEl = document.getElementById('played');
+        $log.info('Playing played ', playedEl, 'seconds ...');
+        playedEl.play();
+    };
 })
 
 // services

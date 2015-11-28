@@ -77,8 +77,10 @@ angular.module('starter.controllers')
         },
         // Audio
         audio: {
+            inLanguage: $scope.locales[0],
             contentUrl: 'file:///home/nao/gangnam.mp3',
             recordDuration: 5.0,
+            usedForChat: true
         },
         // Actor
         actor: {
@@ -141,14 +143,26 @@ angular.module('starter.controllers')
     });
 
     // Speech Synthesis
-    $scope.communicateAction = function() {
+    $scope.communicateSynthesis = function() {
         var msg = {'@type': 'CommunicateAction', avatarId: $scope.form.avatarId,
             inLanguage: $scope.form.speech.synthesis.inLanguage.id,
             emotionKind: $scope.form.speech.synthesis.emotionKind.id,
-            object: $scope.form.speech.synthesis.object};
+            object: $scope.form.speech.synthesis.object,
+            usedForSynthesis: true};
         $log.info('Speech Synthesis', msg, JSON.stringify(msg));
         $scope.client.send('/topic/lumen.speech.synthesis',
             {"reply-to": '/temp-queue/lumen.speech.synthesis'}, JSON.stringify(msg));
+    };
+    $scope.communicateChat = function() {
+        var msg = {'@type': 'CommunicateAction', avatarId: $scope.form.avatarId,
+            inLanguage: $scope.form.speech.synthesis.inLanguage.id,
+            emotionKind: $scope.form.speech.synthesis.emotionKind.id,
+            object: $scope.form.speech.synthesis.object,
+            usedForSynthesis: true};
+        $log.info('chat.outbox+synthesis', msg, JSON.stringify(msg));
+        $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.chat.outbox',
+            {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.chat.outbox'},
+            JSON.stringify(msg));
     };
 
     // Audio
@@ -181,31 +195,54 @@ angular.module('starter.controllers')
         // ImageObject: name, contentType, contentUrl, contentSize, width, height, uploadDate, dateCreated, dateModified, datePublished
         var reader = new FileReader();
         reader.onloadend = function() {
-            if (audioFile.size > 128 * 1024) {
-                $window.alert('Audio file too large! Must be < 128 KB for JavaScript');
-            } else {
-                var msg = {
-                    '@type': 'AudioObject',
-                    name: audioFile.name,
-                    contentType: audioFile.type,
-                    contentSize: audioFile.size,
-                    dateModified: audioFile.lastModifiedDate,
-                    contentUrl: reader.result
-                };
-                $log.info('Playing audio', msg.name, '(', msg.contentSize, 'bytes)');
-                $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.audio.out',
-                    {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.audio.out'}, JSON.stringify(msg));
-            }
+            var msg = {
+                '@type': 'AudioObject',
+                name: audioFile.name,
+                contentType: audioFile.type,
+                contentSize: audioFile.size,
+                dateModified: audioFile.lastModifiedDate,
+                contentUrl: reader.result
+            };
+            $log.info('Playing audio', msg.name, '(', msg.contentSize, 'bytes)');
+            $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.audio.out',
+                {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.audio.out'}, JSON.stringify(msg));
         };
         reader.readAsDataURL(audioFile);
     };
-    $scope.recordAudio = function() {
+    $scope.recordAudioFromAvatar = function() {
         var msg = {
             '@type': 'RecordAudio',
             duration: $scope.form.audio.recordDuration,
+            inLanguage: $scope.form.audio.inLanguage.id,
+            usedForChat: $scope.form.audio.usedForChat
         };
         $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.audio',
             {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.audio'}, JSON.stringify(msg));
+    };
+    $scope.sendRecordedMic = function() {
+        var recordedFileEl = document.getElementById('recordedMic');
+        var recordedFile = recordedFileEl.files[0];
+        $log.debug('Reading...', recordedFileEl, recordedFileEl.files, recordedFile, JSON.stringify(recordedFile));
+        var reader = new FileReader();
+        reader.onloadend = function() {
+            $scope.$apply(function() {
+                var audioObject = {
+                    '@type': 'AudioObject',
+                    inLanguage: $scope.form.audio.inLanguage.id,
+                    name: recordedFile.name,
+                    contentType: recordedFile.type,
+                    contentSize: recordedFile.size,
+                    dateModified: recordedFile.lastModifiedDate,
+                    contentUrl: reader.result,
+                    usedForChat: $scope.form.audio.usedForChat
+                };
+                $log.info('AudioObject', audioObject, JSON.stringify(audioObject));
+                $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.audio.in',
+                    {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.audio.in'},
+                    JSON.stringify(audioObject));
+            });
+        };
+        reader.readAsDataURL(recordedFile);
     };
     $scope.replayRecorded = function() {
         var recordedEl = document.getElementById('recorded');
@@ -358,18 +395,9 @@ angular.module('starter.controllers')
     $scope.form = {
         avatarId: 'nao1'
     };
-
     $scope.client = null;
-    $scope.$on('$ionicView.enter', function() {
-        LumenStomp.connect(function() {
-            $scope.client = LumenStomp.getClient();
-            $scope.switchAvatar();
-        });
-    });
-    $scope.$on('$ionicView.leave', function() {
-        LumenStomp.disconnect();
-    });
 
+    // Avatar
     $scope.switchAvatar = function() {
         LumenStomp.unsubscribeAll();
 
@@ -414,4 +442,15 @@ angular.module('starter.controllers')
             $scope.battery = exchange;
         });
     };
+
+    $scope.$on('$ionicView.enter', function() {
+        LumenStomp.connect(function() {
+            $scope.client = LumenStomp.getClient();
+            $scope.switchAvatar();
+        });
+    });
+    $scope.$on('$ionicView.leave', function() {
+        LumenStomp.disconnect();
+    });
+
 });
