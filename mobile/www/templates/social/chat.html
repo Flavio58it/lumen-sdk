@@ -4,10 +4,10 @@
           cache-view="false"
           view-title="{{toUser.name}}">
     <ion-nav-buttons side="secondary">
-        <audio id="played" controls="controls" style="width: 100%">
+        <select ng-model="form.audio.inLanguage" ng-options="locale.id for locale in locales"></select>
+        <audio id="played" controls="controls" style="max-width: 3em">
             <source />
         </audio>
-        <button class="button" ng-click="replayPlayed()"><i class="icon ion-play"></i></button>
         <select ng-model="form.avatarId" ng-options="avatarId for avatarId in avatarIds"
                 ng-change="switchAvatar()"></select>
     </ion-nav-buttons>
@@ -101,6 +101,11 @@
                           style="width: 100%"></textarea>
             </label>
 
+            <div class="voicenote-btn-wrap">
+                <input id="recordedMic" type="file" accept="audio/*;capture=microphone"
+                       onchange="angular.element(this).scope().sendRecordedMic()"
+                        class="voicenote-btn voicenote-input"/>
+            </div>
             <div class="footer-btn-wrap">
                 <button class="button button-icon icon ion-android-send footer-btn" type="submit"
                         ng-disabled="!form.message || form.message === ''">
