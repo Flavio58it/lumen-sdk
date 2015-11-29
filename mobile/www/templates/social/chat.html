@@ -37,7 +37,7 @@
                              style="max-width: 100%; max-height: 20em"/>
                     </p>
                     <p>
-                        <audio controls="controls" autoplay="autoplay" ng-if="message.audio.contentUrl"
+                        <audio id="audio_{{message['@id']}}" controls="controls" ng-if="message.audio.contentUrl"
                                style="display: block">
                             <source ng-src="{{message.audio.contentUrl}}" />
                         </audio>
@@ -68,7 +68,7 @@
                              style="max-width: 100%; max-height: 20em"/>
                     </p>
                     <p>
-                        <audio controls="controls" autoplay="autoplay" ng-if="message.audio.contentUrl"
+                        <audio id="audio_{{message['@id']}}" controls="controls" ng-if="message.audio.contentUrl"
                                style="display: block">
                             <source ng-src="{{message.audio.contentUrl}}" />
                         </audio>
