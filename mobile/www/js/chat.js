@@ -35,7 +35,7 @@ angular.module('starter.controllers')
     $scope.form = {
         avatarId: 'nao1',
         audio: {
-            inLanguage: $scope.locales[0],
+            inLanguage: $scope.locales[3],
             usedForChat: true
         }
     };
