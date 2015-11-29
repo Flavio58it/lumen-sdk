@@ -443,6 +443,16 @@ angular.module('starter.controllers')
         });
     };
 
+      $scope.client.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.robotpose', function(exchange) {
+                var msg = JSON.parse(exchange.body);
+                //$log.debug('battery ', msg, JSON.stringify(msg));
+    //            $scope.messages.push(msg);
+                exchange.body = msg;
+    //            $scope.messages.push(exchange);
+                $scope.robotpose = exchange;
+            });
+        };
+
     $scope.$on('$ionicView.enter', function() {
         LumenStomp.connect(function() {
             $scope.client = LumenStomp.getClient();
