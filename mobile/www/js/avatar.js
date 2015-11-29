@@ -77,7 +77,7 @@ angular.module('starter.controllers')
         },
         // Audio
         audio: {
-            inLanguage: $scope.locales[0],
+            inLanguage: $scope.locales[3],
             contentUrl: 'file:///home/nao/gangnam.mp3',
             recordDuration: 5.0,
             usedForChat: true

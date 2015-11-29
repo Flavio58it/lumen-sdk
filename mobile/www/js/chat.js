@@ -35,10 +35,11 @@ angular.module('starter.controllers')
     $scope.form = {
         avatarId: 'nao1',
         audio: {
-            inLanguage: $scope.locales[0],
+            inLanguage: $scope.locales[3],
             usedForChat: true
         }
     };
+    $scope.audioQueue = []; // queue of IDs of HTMLAudioElement to be played
 
     // Avatar
     $scope.switchAvatar = function() {
@@ -79,7 +80,8 @@ angular.module('starter.controllers')
             // TODO: natively support CommunicateAction
             communicateAction.toId = $scope.user._id;
             communicateAction.text = communicateAction.object;
-            communicateAction._id = new Date().getTime() + '_outbox'; // :~)
+            communicateAction['@id'] = communicateAction['@id'] || (new Date().getTime() + '_outbox'); // :~)
+            communicateAction._id = communicateAction['@id'];
             communicateAction.date = new Date();
             communicateAction.username = $scope.toUser.username;
             communicateAction.userId = $scope.toUser._id;
@@ -88,13 +90,26 @@ angular.module('starter.controllers')
             $scope.messages.push(communicateAction);
             keepKeyboardOpen();
             viewScroll.scrollBottom(true);
+
+            // has audio?
+            if (communicateAction.audio) {
+                var elId = 'audio_' + communicateAction['@id'];
+                //var playedEl = document.getElementById(elId);
+                $log.info('Queueing ', elId, '...');
+                $scope.audioQueue.push(elId);
+                //playedEl.play();
+            }
         });
         // audio.out: AudioObject
         $scope.client.subscribe('/topic/avatar.*.audio.out', function(exchange) {
             var msg = JSON.parse(exchange.body);
             $log.info("Received audio", msg.name, msg.contentType, msg.contentSize, 'bytes', msg);
-            document.getElementById('played').src = msg.contentUrl;
-            $scope.replayPlayed();
+            var playedId = 'played';
+            var playedEl = document.getElementById(playedId);
+            playedEl.src = msg.contentUrl;
+            //$scope.replayPlayed();
+            $log.info('Queueing ', playedId, '...');
+            $scope.audioQueue.push(playedId);
         });
         $log.info('Subscriptions:', LumenStomp.getSubscriptions());
     };
@@ -105,36 +120,57 @@ angular.module('starter.controllers')
     var footerBar; // gets set in $ionicView.enter
     var scroller;
     var txtInput; // ^^^
+    var audioQueueTimer;
 
     $scope.$on('$ionicView.enter', function() {
-      console.log('UserMessages $ionicView.enter');
 
-      getMessages();
+        console.log('UserMessages $ionicView.enter');
 
-      $timeout(function() {
-        footerBar = document.body.querySelector('#userMessagesView .bar-footer');
-        scroller = document.body.querySelector('#userMessagesView .scroll-content');
-        txtInput = angular.element(footerBar.querySelector('textarea'));
-      }, 0);
+        getMessages();
 
-      messageCheckTimer = $interval(function() {
-        // here you could check for new messages if your app doesn't use push notifications or user disabled them
-      }, 20000);
+        $timeout(function() {
+            footerBar = document.body.querySelector('#userMessagesView .bar-footer');
+            scroller = document.body.querySelector('#userMessagesView .scroll-content');
+            txtInput = angular.element(footerBar.querySelector('textarea'));
+        }, 0);
+
+        messageCheckTimer = $interval(function() {
+            // here you could check for new messages if your app doesn't use push notifications or user disabled them
+        }, 20000);
 
         LumenStomp.connect(function() {
             $scope.client = LumenStomp.getClient();
             $scope.switchAvatar();
         });
+
+        audioQueueTimer = $interval(function() {
+            if ($scope.audioQueue.length == 0) {
+                return;
+            }
+            //$log.debug('audioQueue:', $scope.audioQueue);
+            var current = document.getElementById($scope.audioQueue[0]);
+            if (current.paused && !current.ended) {
+                $log.debug('Playing ', current, '...');
+                current.play();
+            } else if (current.ended) {
+                $log.debug('Finished playing', current);
+                $scope.audioQueue.shift();
+            }
+        }, 250);
     });
 
     $scope.$on('$ionicView.leave', function() {
-      console.log('leaving UserMessages view, destroying interval');
-      LumenStomp.disconnect();
-      // Make sure that the interval is destroyed
-      if (angular.isDefined(messageCheckTimer)) {
-        $interval.cancel(messageCheckTimer);
-        messageCheckTimer = undefined;
-      }
+        console.log('leaving UserMessages view, destroying interval');
+        LumenStomp.disconnect();
+        // Make sure that the interval is destroyed
+        if (angular.isDefined(messageCheckTimer)) {
+            $interval.cancel(messageCheckTimer);
+            messageCheckTimer = undefined;
+        }
+        if (angular.isDefined(audioQueueTimer)) {
+            $interval.cancel(audioQueueTimer);
+            audioQueueTimer = undefined;
+        }
     });
 
     $scope.$on('$ionicView.beforeLeave', function() {
