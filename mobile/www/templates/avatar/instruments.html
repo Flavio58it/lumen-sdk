@@ -7,22 +7,30 @@
         <ion-list>
             <div><img ng-src="{{image.body.contentUrl}}"/></div>
             <pre><code>{{joint.body | json}}</code></pre>
-           <!--  <pre><code>{{sonar.body | json}}</code></pre> -->
+            <pre><code>{{sonar.body | json}}</code></pre>
             <pre><code>{{robotpose.body | json}}</code></pre>
             <pre><code>{{tactile.body | json}}</code></pre>
 
             <div class="item">
                 <div class="row">
                     <div class="col">
-                        Battery Charge : {{battery.body.percentage}}%
+                        Actual Date and Time : {{battery.body.dateCreated}}
                     </div>
+                </div>
+
+                <div class="row">
                     <div class="col">
-                        {{battery.body.dateCreated}}
+                        Battery Charge : {{battery.body.percentage}}%
                     </div>
                 </div>
             </div>
 
             <div class="item">
+                <div class="row">
+                    <div class="col">
+                        Data Sensor Sonar :
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col">
                         Left Sensor : {{sonar.body.leftSensor}}
@@ -36,10 +44,10 @@
             <div class="item">
                 <div class="row">
                     <div class="col">
-                        Pose Name : {{robotpose.body.setactualPoseName}}
+                        Pose Name : {{robotpose.body.actualPoseName}}
                     </div>
                     <div class="col">
-                        Pose Time : {{robotPose.body.actualPoseTime}}
+                        Pose Time : {{robotpose.body.actualPoseTime}}
                     </div>
                 </div>
             </div>
