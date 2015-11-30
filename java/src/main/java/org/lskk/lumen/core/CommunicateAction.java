@@ -171,6 +171,7 @@ public class CommunicateAction implements LumenThing {
                 ", actionStatus=" + actionStatus +
                 ", avatarId='" + avatarId + '\'' +
                 ", emotionKind=" + emotionKind +
+                ", usedForSynthesis=" + usedForSynthesis +
                 ", gender=" + gender +
                 ", image=" + image +
                 '}';
