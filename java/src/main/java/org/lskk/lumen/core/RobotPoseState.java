@@ -8,25 +8,35 @@ import java.util.List;
  */
 public class RobotPoseState implements LumenThing {
     private List<String> poseNames = new ArrayList<>();
-    private String actualPoseAndTime;
+    private String actualPoseName;
+    private Float actualPoseTime;
 
     public List<String> getPoseNames() {
         return poseNames;
-    }
-
-    public String getActualPoseAndTime() {
-        return actualPoseAndTime;
-    }
-
-    public void setActualPoseAndTime(String actualPoseAndTime) {
-        this.actualPoseAndTime = actualPoseAndTime;
     }
 
     @Override
     public String toString() {
         return "RobotPoseState{" +
                 "poseNames=" + poseNames +
-                ", actualPoseAndTime='" + actualPoseAndTime + '\'' +
+                ", actualPoseName='" + actualPoseName + '\'' +
+                ", actualPoseTime=" + actualPoseTime +
                 '}';
+    }
+
+    public String getActualPoseName() {
+        return actualPoseName;
+    }
+
+    public void setActualPoseName(String actualPoseName) {
+        this.actualPoseName = actualPoseName;
+    }
+
+    public Float getActualPoseTime() {
+        return actualPoseTime;
+    }
+
+    public void setActualPoseTime(Float actualPoseTime) {
+        this.actualPoseTime = actualPoseTime;
     }
 }

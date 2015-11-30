@@ -425,6 +425,16 @@ angular.module('starter.controllers')
 //            $scope.messages.push(exchange);
             $scope.sonar = exchange;
         });
+
+        $scope.client.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.robotpose', function(exchange) {
+                    var msg = JSON.parse(exchange.body);
+                    //$log.debug('robotpose ', msg, JSON.stringify(msg));
+        //            $scope.messages.push(msg);
+                    exchange.body = msg;
+        //            $scope.messages.push(exchange);
+                    $scope.robotpose = exchange;
+                });
+
         $scope.client.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.tactile', function(exchange) {
             var msg = JSON.parse(exchange.body);
             //$log.debug('tactile ', msg, JSON.stringify(msg));
@@ -442,6 +452,9 @@ angular.module('starter.controllers')
             $scope.battery = exchange;
         });
     };
+
+
+
 
     $scope.$on('$ionicView.enter', function() {
         LumenStomp.connect(function() {
