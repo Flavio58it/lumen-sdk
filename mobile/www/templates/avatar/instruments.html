@@ -42,13 +42,26 @@
             <div class="item">
                 <div class="row">
                     <div class="col">
-                        Pose Name : {{robotpose.body.actualPoseName}}
+                        Pose Name  : {{robotpose.body.actualPoseName}}
                     </div>
                     <div class="col">
                         Pose Time : {{robotpose.body.actualPoseTime}}
                     </div>
                 </div>
             </div>
+
+
+            <div class="item">
+                <div class="row">
+                    <div class="col">
+                        Angle : {{motion.body.angle}}
+                    </div>
+                    <div class="col">
+                        Radius : {{robotpose.body.radius}}
+                    </div>
+                </div>
+            </div>
+
 
             <ion-item ng-repeat="msg in messages" class="text-wrap">
                 <small>{{msg.headers.destination}}</small>
