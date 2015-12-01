@@ -426,6 +426,15 @@ angular.module('starter.controllers')
             $scope.sonar = exchange;
         });
 
+        $scope.client.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.motion', function(exchange) {
+                    var msg = JSON.parse(exchange.body);
+                    //$log.debug('motion ', msg, JSON.stringify(msg));
+        //            $scope.messages.push(msg);
+                    exchange.body = msg;
+        //            $scope.messages.push(exchange);
+                    $scope.motion = exchange;
+                });
+
         $scope.client.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.robotpose', function(exchange) {
                     var msg = JSON.parse(exchange.body);
                     //$log.debug('robotpose ', msg, JSON.stringify(msg));
