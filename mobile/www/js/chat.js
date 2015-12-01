@@ -225,7 +225,8 @@ angular.module('starter.controllers')
       var communicateAction = {
         "@type": "CommunicateAction",
         "@id": message._id,
-        "object": message.text
+        "object": message.text,
+        "speechTruthValue": [1.0, 1.0, 0] // to get speech synthesis for reply
       };
       $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.chat.inbox',
                          {"reply-to": '/topic/avatar.' + $scope.form.avatarId + '.chat.inbox'},

@@ -2,7 +2,7 @@
 <!-- <i class='icon ion-chatbubble user-messages-top-icon'></i> <div class='msg-header-username'>{{toUser.name}}</div> -->
 <ion-view id="userMessagesView"
           cache-view="false"
-          view-title="{{toUser.name}}">
+          view-title="Chat">
     <ion-nav-buttons side="secondary">
         <select ng-model="form.audio.inLanguage" ng-options="locale.id for locale in locales"></select>
         <audio id="played" controls="controls" style="max-width: 3em">
