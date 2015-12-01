@@ -36,7 +36,8 @@ angular.module('starter.controllers')
         avatarId: 'nao1',
         audio: {
             inLanguage: $scope.locales[3],
-            usedForChat: true
+            usedForChat: true,
+            muted: false
         }
     };
     $scope.audioQueue = []; // queue of IDs of HTMLAudioElement to be played
@@ -95,8 +96,10 @@ angular.module('starter.controllers')
             if (communicateAction.audio) {
                 var elId = 'audio_' + communicateAction['@id'];
                 //var playedEl = document.getElementById(elId);
-                $log.info('Queueing ', elId, '...');
-                $scope.audioQueue.push(elId);
+                if (!$scope.form.audio.muted) {
+                    $log.info('Queueing ', elId, '...');
+                    $scope.audioQueue.push(elId);
+                }
                 //playedEl.play();
             }
         });
@@ -108,8 +111,10 @@ angular.module('starter.controllers')
             var playedEl = document.getElementById(playedId);
             playedEl.src = msg.contentUrl;
             //$scope.replayPlayed();
-            $log.info('Queueing ', playedId, '...');
-            $scope.audioQueue.push(playedId);
+            if (!$scope.form.audio.muted) {
+                $log.info('Queueing ', playedId, '...');
+                $scope.audioQueue.push(playedId);
+            }
         });
         $log.info('Subscriptions:', LumenStomp.getSubscriptions());
     };
@@ -340,6 +345,10 @@ angular.module('starter.controllers')
             });
         };
         reader.readAsDataURL(recordedFile);
+    };
+
+    $scope.toggleMuted = function() {
+        $scope.form.audio.muted = !$scope.form.audio.muted;
     };
 })
 

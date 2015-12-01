@@ -28,7 +28,6 @@ at the bottom as the textarea resizes */
   width: 50px;
   top: 7px;
 }
-
 .footer-btn {
   position: absolute !important;
   bottom: 0;
@@ -53,6 +52,19 @@ at the bottom as the textarea resizes */
 .voicenote-input::before {
   content: "\1F3A4";
   /*-webkit-user-select: none;*/
+}
+.mute-btn-wrap {
+  position: relative;
+  height: 100%;
+  width: 2em;
+  top: 7px;
+  margin-right: 1.5em;
+}
+.mute-btn {
+  position: absolute !important;
+  bottom: 0;
+/*  height: 2em;
+  width: 100%;*/
 }
 
 img.profile-pic {

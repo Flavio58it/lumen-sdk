@@ -101,6 +101,11 @@
                           style="width: 100%"></textarea>
             </label>
 
+            <div class="mute-btn-wrap">
+                <a class="mute-btn button button-light" ng-click="toggleMuted()" title="Mute/Unmute">
+                    <i class="icon" ng-class="{'ion-volume-high': !form.audio.muted, 'ion-volume-mute': form.audio.muted}"></i>
+                </a>
+            </div>
             <div class="voicenote-btn-wrap">
                 <input id="recordedMic" type="file" accept="audio/*;capture=microphone"
                        onchange="angular.element(this).scope().sendRecordedMic()"
