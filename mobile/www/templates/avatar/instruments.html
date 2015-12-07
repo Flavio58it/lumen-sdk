@@ -45,23 +45,19 @@
                         Pose Name  : {{robotpose.body.actualPoseName}}
                     </div>
                     <div class="col">
-                        Pose Time : {{robotpose.body.actualPoseTime}}
+                        Actual Pose : {{robotpose.body.actualPoseTime}}
                     </div>
                 </div>
             </div>
 
-
-            <div class="item"> 
-                <div class="row">
-                    <div class="col">
-                        Angle : {{motion.body.angle}}
-                    </div>
-                    <div class="col">
-                        Radius : {{robotpose.body.radius}}
-                    </div>
-                </div>
+            <div class="item">
+                <table width = "100%" ng-repeat="angle in motion.body.angles">
+                   <tr>
+                         <td width= "50%" >{{angle.name}}</td>
+                         <td>{{angle.angle}}</td>
+                   </tr>
+                </table>
             </div>
-
 
             <ion-item ng-repeat="msg in messages" class="text-wrap">
                 <small>{{msg.headers.destination}}</small>
