@@ -104,7 +104,7 @@ angular.module('starter.controllers')
             }
         });
         // audio.out: AudioObject
-        $scope.client.subscribe('/topic/avatar.*.audio.out', function(exchange) {
+        LumenStomp.subscribe('/topic/avatar.*.audio.out', function(exchange) {
             var msg = JSON.parse(exchange.body);
             $log.info("Received audio", msg.name, msg.contentType, msg.contentSize, 'bytes', msg);
             var playedId = 'played';

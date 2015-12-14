@@ -123,7 +123,7 @@ angular.module('starter.controllers')
             $scope.recognizedSpeech = msg;
         });
         // audio.out: AudioObject
-        $scope.client.subscribe('/topic/avatar.' + $scope.form.avatarId + '.audio.out', function(exchange) {
+        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.audio.out', function(exchange) {
             var msg = JSON.parse(exchange.body);
             $log.info("Received audio", msg.name, msg.contentType, msg.contentSize, 'bytes');
             document.getElementById('played').src = msg.contentUrl;
@@ -391,7 +391,8 @@ angular.module('starter.controllers')
 
 })
 .controller('AvatarInstrumentsCtrl', function($scope, $stateParams, $log, LumenStomp, Settings) {
-    $scope.messages = [];
+    $scope.avatarIds = ['nao1', 'nao2',
+        'anime1', 'anime2', 'anime3', 'anime4', 'anime5', 'anime6', 'anime7', 'anime8', 'anime9', 'anime10'];
     $scope.form = {
         avatarId: 'nao1'
     };
@@ -400,8 +401,15 @@ angular.module('starter.controllers')
     // Avatar
     $scope.switchAvatar = function() {
         LumenStomp.unsubscribeAll();
+        // reset all previous values
+        $scope.joint = {};
+        $scope.sonar = {};
+        $scope.motion = {};
+        $scope.robotpose = {};
+        $scope.tactile = {};
+        $scope.battery = {};
 
-        /*$scope.client.subscribe('/topic/avatar.' + $scope.form.avatarId + '.camera.main', function(exchange) {
+        /*LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.camera.main', function(exchange) {
             var msg = JSON.parse(exchange.body);
             //$log.debug('joint ', msg, JSON.stringify(msg));
 //            $scope.messages.push(msg);
@@ -409,7 +417,7 @@ angular.module('starter.controllers')
 //            $scope.messages.push(exchange);
             $scope.image = exchange;
         });*/
-        $scope.client.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.joint', function(exchange) {
+        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.joint', function(exchange) {
             var msg = JSON.parse(exchange.body);
             //$log.debug('joint ', msg, JSON.stringify(msg));
 //            $scope.messages.push(msg);
@@ -417,7 +425,7 @@ angular.module('starter.controllers')
 //            $scope.messages.push(exchange);
             $scope.joint = exchange;
         });
-        $scope.client.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.sonar', function(exchange) {
+        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.sonar', function(exchange) {
             var msg = JSON.parse(exchange.body);
             //$log.debug('sonar ', msg, JSON.stringify(msg));
 //            $scope.messages.push(msg);
@@ -426,7 +434,7 @@ angular.module('starter.controllers')
             $scope.sonar = exchange;
         });
 
-        $scope.client.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.motion', function(exchange) {
+        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.motion', function(exchange) {
                     var msg = JSON.parse(exchange.body);
                     //$log.debug('motion ', msg, JSON.stringify(msg));
         //            $scope.messages.push(msg);
@@ -435,7 +443,7 @@ angular.module('starter.controllers')
                     $scope.motion = exchange;
                 });
 
-        $scope.client.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.robotpose', function(exchange) {
+        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.robotpose', function(exchange) {
                     var msg = JSON.parse(exchange.body);
                     //$log.debug('robotpose ', msg, JSON.stringify(msg));
         //            $scope.messages.push(msg);
@@ -444,7 +452,7 @@ angular.module('starter.controllers')
                     $scope.robotpose = exchange;
                 });
 
-        $scope.client.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.tactile', function(exchange) {
+        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.tactile', function(exchange) {
             var msg = JSON.parse(exchange.body);
             //$log.debug('tactile ', msg, JSON.stringify(msg));
 //            $scope.messages.push(msg);
@@ -452,7 +460,7 @@ angular.module('starter.controllers')
 //            $scope.messages.push(exchange);
             $scope.tactile = exchange;
         });
-        $scope.client.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.battery', function(exchange) {
+        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.battery', function(exchange) {
             var msg = JSON.parse(exchange.body);
             //$log.debug('battery ', msg, JSON.stringify(msg));
 //            $scope.messages.push(msg);
@@ -461,9 +469,6 @@ angular.module('starter.controllers')
             $scope.battery = exchange;
         });
     };
-
-
-
 
     $scope.$on('$ionicView.enter', function() {
         LumenStomp.connect(function() {

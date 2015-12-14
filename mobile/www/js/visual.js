@@ -15,6 +15,8 @@ angular.module('starter.controllers')
     // Avatar
     $scope.switchAvatar = function() {
         LumenStomp.unsubscribeAll();
+        $scope.imageObject = null;
+        $scope.bottomImageObject = null;
         LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.camera.main', function(msg) {
             var imageObject = JSON.parse(msg.body);
             $scope.imageObject = imageObject;
@@ -75,7 +77,7 @@ angular.module('starter.controllers')
             $scope.bottomImageObject = imageObject;
             $log.debug('Got bottom ImageObject', imageObject);
         });*/
-        $scope.client.subscribe('/topic/lumen.visual.hogobj.recognition', function(msg) {
+        LumenStomp.subscribe('/topic/lumen.visual.hogobj.recognition', function(msg) {
             var recognizeds = JSON.parse(msg.body);
 			$log.debug('Received RecognizedObjects', recognizeds);
             $scope.recognizeds = recognizeds;
@@ -135,7 +137,7 @@ angular.module('starter.controllers')
     $scope.client = ngstomp(settings.stompUri);
     $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
         $log.info('Stomp connected to', settings.stompUri);
-        $scope.client.subscribe('/topic/lumen.arkan.face.recognition', function(msg) {
+        LumenStomp.subscribe('/topic/lumen.arkan.face.recognition', function(msg) {
             var recognized = JSON.parse(msg.body);
             recognized.cssStyle = {
                 left: recognized.minPoint.x + 'px',
@@ -204,7 +206,7 @@ angular.module('starter.controllers')
     $scope.client = ngstomp(settings.stompUri);
     $scope.client.connect(settings.stompUser, settings.stompPassword, function() {
         $log.info('Stomp connected to', settings.stompUri);
-        $scope.client.subscribe('/topic/lumen.arkan.face.recognition', function(msg) {
+        LumenStomp.subscribe('/topic/lumen.arkan.face.recognition', function(msg) {
             var recognized = JSON.parse(msg.body);
             recognized.cssStyle = {
                 left: recognized.minPoint.x + 'px',
@@ -212,7 +214,7 @@ angular.module('starter.controllers')
             };
             $scope.recognizeds.push(recognized);
         });
-        $scope.client.subscribe('/topic/lumen.arkan.human.detection', function(msg) {
+        LumenStomp.subscribe('/topic/lumen.arkan.human.detection', function(msg) {
             var humanChanges = JSON.parse(msg.body);
             var humanThings = humanChanges.humanDetecteds.concat(humanChanges.humanMovings);
             _.each(humanThings, function(e) {

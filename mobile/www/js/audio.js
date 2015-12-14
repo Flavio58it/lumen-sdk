@@ -9,7 +9,7 @@ angular.module('starter.controllers')
         LumenStomp.connect(function() {
             $scope.client = LumenStomp.getClient();
             // audio.out: AudioObject
-            $scope.client.subscribe('/topic/avatar.*.audio.out', function(exchange) {
+            LumenStomp.subscribe('/topic/avatar.*.audio.out', function(exchange) {
                 var msg = JSON.parse(exchange.body);
                 $log.info("Received audio", msg.name, msg.contentType, msg.contentSize, 'bytes');
                 document.getElementById('played').src = msg.contentUrl;
