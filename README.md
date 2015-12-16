@@ -4,7 +4,7 @@ Lumen Social Robot API, AngularJS SDK, and Client
 
 ## Jekyll - Local Setup
 
-    git clone https://github.com/lumenitb/lumen-sdk.git
+    git clone https://github.com/lumenrobot/lumen-sdk.git
     cd lumen-sdk
     git checkout gh-pages
 
