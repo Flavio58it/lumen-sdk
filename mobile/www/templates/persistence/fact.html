@@ -1,0 +1,46 @@
+<ion-view view-title="Persistence: Query - Cypher">
+    <ion-content>
+        <label class="item item-input">
+            <div class="input-label">Label</div>
+            <input type="text" ng-model="form.matchRequest.upLabel"/>
+        </label>
+        <label class="item item-input item-select">
+            <div class="input-label">Language</div>
+            <select ng-model="form.matchRequest.inLanguage"
+                    ng-options="locale.name for locale in locales">
+            </select>
+        </label>
+        <label class="item item-input">
+            <div class="input-label">Contexts (TODO)</div>
+        </label>
+        <button class="button button-positive button-block" ng-click="matchBtn()">Match</button>
+
+        <ion-list>
+            <ion-item class="item-text-wrap" ng-repeat="row in resources.content">
+                <ul ng-repeat="cell in row.cells">
+                    <li>
+                        <div ng-if="cell.value['@type'] == 'Neo4jRelationship'" style="color: green;">
+                            <em style="font-style: italic">{{cell.name}}</em>: <strong title="{{cell.value.id}}" style="text-decoration: underline">{{cell.value.relTypeName}}</strong> {{cell.value.properties}}
+                        </div>
+                        <div ng-if="cell.value['@type'] == 'Neo4jNode'" style="color: blue;">
+                            <div ng-if="cell.value.labels.indexOf('ImageObject') >= 0">
+                                <div><em style="font-style: italic">{{cell.name}}</em>: <small>{{cell.value.properties.contentType}}</small> <strong>{{cell.value.properties.name}}</strong></div>
+                                <div><img ng-src="{{cell.value.properties.contentUrl | trusted}}"/></div>
+                            </div>
+                            <div ng-if="cell.value.labels.indexOf('AudioObject') >= 0">
+                                <div><em style="font-style: italic">{{cell.name}}</em>: <small>{{cell.value.properties.contentType}}</small> <strong>{{cell.value.properties.name}}</strong></div>
+                                <div><audio controls ng-src="{{cell.value.properties.contentUrl | trusted}}"/></div>
+                            </div>
+                            <span ng-if="!(cell.value.labels.indexOf('AudioObject') >= 0 || cell.value.labels.indexOf('ImageObject') >= 0)">
+                                <em style="font-style: italic">{{cell.name}}</em>: <strong title="{{cell.value.id}}">{{cell.value.labels}}</strong> {{cell.value.properties}}
+                            </span>
+                        </div>
+                        <div ng-if="!(cell.value['@type'] == 'Neo4jNode' || cell.value['@type'] == 'Neo4jRelationship')">
+                            <strong style="font-style: italic">{{cell.name}}</strong>: {{cell.value}}
+                        </div>
+                    </li>
+                </ul>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

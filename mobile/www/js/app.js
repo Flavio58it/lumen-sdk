@@ -124,6 +124,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services',
   })
 
   // Persistence
+  .state('app.persistence-fact', {
+    url: "/persistence/fact",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/persistence/fact.html",
+        controller: 'PersistenceFactCtrl'
+      }
+    }
+  })
   .state('app.persistence-query-find-all', {
     url: "/persistence/query-find-all",
     views: {
