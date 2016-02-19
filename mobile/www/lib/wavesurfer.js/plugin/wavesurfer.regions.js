@@ -226,7 +226,7 @@ WaveSurfer.Region = {
                 Math.floor((time % 3600) / 60), // minutes
                 ('00' + Math.floor(time % 60)).slice(-2) // seconds
             ].join(':');
-        }).join('–');
+        }).join('-');
     },
 
     /* Update element's position, width, color. */
@@ -251,47 +251,47 @@ WaveSurfer.Region = {
             this.end = Math.min(this.start + this.maxLength, this.end);
         }
 
-        this.style(this.element, {
-            left: ~~(this.start / dur * width) + 'px',
-            width: ~~((this.end - this.start) / dur * width) + 'px',
-            backgroundColor: this.color,
-            cursor: this.drag ? 'move' : 'default'
-        });
+        if (this.element != null) {
+            this.style(this.element, {
+                left: ~~(this.start / dur * width) + 'px',
+                width: ~~((this.end - this.start) / dur * width) + 'px',
+                backgroundColor: this.color,
+                cursor: this.drag ? 'move' : 'default'
+            });
 
-        for (var attrname in this.attributes) {
-            this.element.setAttribute('data-region-' + attrname, this.attributes[attrname]);
+            for (var attrname in this.attributes) {
+                this.element.setAttribute('data-region-' + attrname, this.attributes[attrname]);
+            }
+
+            this.element.title = this.formatTime(this.start, this.end);
         }
-
-        this.element.title = this.formatTime(this.start, this.end);
     },
 
     /* Bind audio events. */
     bindInOut: function () {
         var my = this;
 
-        var onPlay = function () {
-            my.firedIn = false;
-            my.firedOut = false;
-        };
+        my.firedIn = false;
+        my.firedOut = false;
 
         var onProcess = function (time) {
             if (!my.firedIn && my.start <= time && my.end > time) {
                 my.firedIn = true;
+                my.firedOut = false;
                 my.fireEvent('in');
                 my.wavesurfer.fireEvent('region-in', my);
             }
-            if (!my.firedOut && my.firedIn && my.end <= Math.round(time * 100) / 100) {
+            if (!my.firedOut && my.firedIn && (my.start >= Math.round(time * 100) / 100 || my.end <= Math.round(time * 100) / 100)) {
                 my.firedOut = true;
+                my.firedIn = false;
                 my.fireEvent('out');
                 my.wavesurfer.fireEvent('region-out', my);
             }
         };
 
-        this.wavesurfer.on('play', onPlay);
         this.wavesurfer.backend.on('audioprocess', onProcess);
 
         this.on('remove', function () {
-            my.wavesurfer.un('play', onPlay);
             my.wavesurfer.backend.un('audioprocess', onProcess);
         });
 

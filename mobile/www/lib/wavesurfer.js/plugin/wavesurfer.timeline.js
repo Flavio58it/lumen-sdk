@@ -34,6 +34,10 @@
             this.secondaryFontColor = this.params.secondaryFontColor || '#000';
             this.fontFamily = this.params.fontFamily || 'Arial';
             this.fontSize = this.params.fontSize || 10;
+            this.timeInterval = this.params.timeInterval;
+            this.primaryLabelInterval = this.params.primaryLabelInterval;
+            this.secondaryLabelInterval = this.params.secondaryLabelInterval;
+            this.formatTimeCallback = this.params.formatTimeCallback;
 
             this.createWrapper();
             this.createCanvas();
@@ -115,7 +119,8 @@
         drawTimeCanvas: function() {
             var backend = this.wavesurfer.backend,
                 wsParams = this.wavesurfer.params,
-                duration = backend.getDuration();
+                duration = backend.getDuration(),
+                self = this;
 
             if (wsParams.fillParent && !wsParams.scrollParent) {
                 var width = this.drawer.getWidth();
@@ -129,6 +134,10 @@
                     curSeconds = 0,
                     totalSeconds = parseInt(duration, 10) + 1,
                     formatTime = function(seconds) {
+                        if (typeof self.formatTimeCallback === 'function') {
+                            return self.formatTimeCallback(seconds);
+                        }
+
                         if (seconds/60 > 1) {
                             var minutes = parseInt(seconds / 60),
                                 seconds = parseInt(seconds % 60);
@@ -156,6 +165,10 @@
                     var primaryLabelInterval = 4;
                     var secondaryLabelInterval = 2;
                 }
+
+                timeInterval = this.timeInterval || timeInterval;
+                primaryLabelInterval = this.primaryLabelInterval || primaryLabelInterval;
+                secondaryLabelInterval = this.secondaryLabelInterval || secondaryLabelInterval;
 
                 var height1 = this.height - 4,
                     height2 = (this.height * (this.notchPercentHeight / 100.0)) - 4,
