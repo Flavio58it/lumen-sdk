@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.google.common.base.Throwables;
+import com.google.common.reflect.TypeToken;
 import org.apache.camel.Body;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
@@ -21,6 +22,8 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -60,20 +63,22 @@ public class ToJson extends TypeConverterSupport implements Function<Object, Str
 
     @Override
     public <T> T convertTo(Class<T> type, Exchange exchange, Object value) throws TypeConversionException {
-        if (value instanceof byte[] && Serializable.class.isAssignableFrom(type)) {
+        if (value instanceof byte[] && (Serializable.class.isAssignableFrom(type) || Collection.class.isAssignableFrom(type) ||
+                Map.class.isAssignableFrom(type))) {
             try {
                 return mapper.readValue((byte[]) value, type);
             } catch (Exception e) {
                 throw new TypeConversionException("Cannot deserialize JSON from " + new String((byte[]) value, StandardCharsets.UTF_8),
                         type, e);
             }
-        } else if (value instanceof Serializable && byte[].class == type) {
+        } else if ((value instanceof Serializable || value instanceof Collection || value instanceof Map) && byte[].class == type) {
             try {
                 return (T) mapper.writeValueAsBytes(value);
             } catch (Exception e) {
                 throw new TypeConversionException("Cannot serialize JSON from " + value, type, e);
             }
         } else {
+            log.debug("Not converting {} to {}", value.getClass().getName(), type.getName());
             return null;
         }
     }
