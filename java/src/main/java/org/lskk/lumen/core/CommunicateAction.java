@@ -18,6 +18,7 @@ public class CommunicateAction implements LumenThing {
     private ActionStatusType actionStatus;
     private String avatarId;
     private EmotionKind emotionKind;
+    private ConversationStyle conversationStyle;
     private String voiceId;
     private Gender gender;
     private Boolean usedForSynthesis;
@@ -107,6 +108,14 @@ public class CommunicateAction implements LumenThing {
 
     public void setEmotionKind(EmotionKind emotionKind) {
         this.emotionKind = emotionKind;
+    }
+
+    public ConversationStyle getConversationStyle() {
+        return conversationStyle;
+    }
+
+    public void setConversationStyle(ConversationStyle conversationStyle) {
+        this.conversationStyle = conversationStyle;
     }
 
     /**
