@@ -11,7 +11,8 @@ public enum LumenProperty {
     yago_isPreferredMeaningOf("yago:isPreferredMeaningOf"),
     yago_hasGivenName("yago:hasGivenName"),
     yago_hasFamilyName("yago:hasFamilyName"),
-    yago_hasGloss("yago:hasGloss");
+    yago_hasGloss("yago:hasGloss"),
+    yago_wasBornOnDate("yago:wasBornOnDate");
 
     private String qName;
 
