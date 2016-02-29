@@ -1,12 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="ImportYagoTaxonomy2App" type="Application" factoryName="Application" singleton="true" nameIsGenerated="true">
+  <configuration default="false" name="ImportYagoTaxonomy2Neo4jApp" type="Application" factoryName="Application" singleton="true" nameIsGenerated="true">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
       <pattern>
-        <option name="PATTERN" value="org.lskk.lumen.persistence.neo4j.*" />
+        <option name="PATTERN" value="org.lskk.lumen.persistence.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
-    <option name="MAIN_CLASS_NAME" value="org.lskk.lumen.persistence.ImportYagoTaxonomy2App" />
+    <option name="MAIN_CLASS_NAME" value="org.lskk.lumen.persistence.ImportYagoTaxonomy2Neo4jApp" />
     <option name="VM_PARAMETERS" value="" />
     <option name="PROGRAM_PARAMETERS" value="D:\databank\yago3_work" />
     <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />
