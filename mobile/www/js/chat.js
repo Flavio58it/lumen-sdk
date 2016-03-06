@@ -231,6 +231,7 @@ angular.module('starter.controllers')
         "@type": "CommunicateAction",
         "@id": message._id,
         "object": message.text,
+        "inLanguage": $scope.form.audio.inLanguage.id,
         "speechTruthValue": [1.0, 1.0, 0] // to get speech synthesis for reply
       };
       $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.chat.inbox',
