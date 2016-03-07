@@ -44,14 +44,14 @@ angular.module('starter.controllers', [])
     };
     $scope.resetLocal = function() {
         $scope.settings = {
-            stompUri: 'http://localhost:15674/stomp',
+            stompUri: 'ws://localhost:15674/ws',
             stompUser: 'guest',
             stompPassword: 'guest'
         };
     };
     $scope.resetWindow = function() {
         $scope.settings = {
-            stompUri: 'http://' + $window.location.hostname + ':15674/stomp',
+            stompUri: 'ws://' + $window.location.hostname + ':15674/ws',
             stompUser: 'lumen',
             stompPassword: 'lumen'
         };
