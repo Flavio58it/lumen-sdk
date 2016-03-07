@@ -1,9 +1,9 @@
 package org.lskk.lumen.core;
 
-import com.google.common.base.MoreObjects;
-
 /**
  * Created by ceefour on 29/02/2016.
+ *
+ * @see LumenType
  */
 public enum LumenProperty {
     rdf_type("rdf:type"),
