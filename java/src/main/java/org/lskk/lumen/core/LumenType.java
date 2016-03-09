@@ -7,6 +7,7 @@ package org.lskk.lumen.core;
 public enum LumenType {
     xsd_string("xsd:string"),
     xsd_integer("xsd:integer"),
+    xsd_float("xsd:float"),
     xs_date("xs:date"),
     yago_yagoQuantity("yago:yagoQuantity"),
     yago_wordnet_sex_105006898("yago:wordnet_sex_105006898"),
