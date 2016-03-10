@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+import javax.annotation.Nullable;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.net.Authenticator;
@@ -35,6 +36,26 @@ public class ProxyConfig {
 
     @Inject
     protected Environment env;
+
+    @Nullable
+    public String getHttpProxyHost() {
+        return env.getProperty("http.proxyHost");
+    }
+
+    @Nullable
+    public Integer getHttpProxyPort() {
+        return env.getProperty("http.proxyPort", Integer.class);
+    }
+
+    @Nullable
+    public String getProxyUser() {
+        return env.getProperty("http.proxyUser");
+    }
+
+    @Nullable
+    public String getProxyPassword() {
+        return env.getProperty("http.proxyPassword");
+    }
 
     @PostConstruct
     public void init() {
