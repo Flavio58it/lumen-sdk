@@ -1,3 +1,4 @@
+/// <reference path="../typings/main.d.ts"/>
 /* ----------- Ionic Elastichat: http://codepen.io/rossmartin/pen/XJmpQr ----------
 Requires bower packages:
 1. moment
@@ -8,8 +9,9 @@ Requires bower packages:
 
 angular.module('starter.controllers')
 
-.controller('SocialChatCtrl', function($scope, $stateParams, $log, LumenStomp, $window, Settings,
-        $rootScope, $state, $stateParams, MockService,
+.controller('SocialChatCtrl', function($scope, $stateParams, $log, 
+        LumenStomp, $window, Settings,
+        $rootScope, $state, MockService,
         $ionicActionSheet,
         $ionicPopup, $ionicScrollDelegate, $timeout, $interval) {
     var vm = this;
