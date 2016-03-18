@@ -1,4 +1,4 @@
-///<reference path="../typings/main.d.ts"/>
+/// <reference path="../typings/main.d.ts"/>
 angular.module('starter.controllers')
     .controller('AudioMonitorCtrl', function ($scope, $stateParams, $log, $window, Settings, LumenStomp) {
     $scope.form = {};
