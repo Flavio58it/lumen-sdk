@@ -2,17 +2,18 @@
 <!-- <i class='icon ion-chatbubble user-messages-top-icon'></i> <div class='msg-header-username'>{{toUser.name}}</div> -->
 <ion-view id="userMessagesView"
           cache-view="false"
-          view-title="Chat">
+          view-title="Chat"
+          ng-controller="SocialChatCtrl as vm">
     <ion-nav-buttons side="secondary">
-        <select ng-model="form.audio.inLanguage" ng-options="locale.id for locale in locales"></select>
+        <select ng-model="vm.form.audio.inLanguage" ng-options="locale.id for locale in vm.locales"></select>
         <audio id="played" controls="controls" style="max-width: 3em">
             <source />
         </audio>
-        <select ng-model="form.avatarId" ng-options="avatarId for avatarId in avatarIds"
-                ng-change="switchAvatar()"></select>
+        <select ng-model="vm.form.avatarId" ng-options="avatarId for avatarId in vm.avatarIds"
+                ng-change="vm.switchAvatar()"></select>
     </ion-nav-buttons>
 
-    <div class="loader-center" ng-if="!doneLoading">
+    <div class="loader-center" ng-if="!vm.doneLoading">
         <div class="loader">
             <i class="icon ion-loading-c"></i>
         </div>
@@ -21,13 +22,13 @@
     <ion-content has-bouncing="true" class="has-header has-footer"
                  delegate-handle="userMessageScroll">
 
-        <div ng-repeat="message in messages" class="message-wrapper"
-             on-hold="onMessageHold($event, $index, message)">
+        <div ng-repeat="message in vm.messages" class="message-wrapper"
+             on-hold="vm.onMessageHold($event, $index, message)">
 
             <div ng-if="user._id !== message.userId">
 
                 <img ng-click="viewProfile(message)" class="profile-pic left"
-                     ng-src="{{toUser.pic}}" onerror="onProfilePicError(this)"/>
+                     ng-src="{{vm.toUser.pic}}" onerror="onProfilePicError(this)"/>
 
                 <div class="chat-bubble left">
 
@@ -48,7 +49,7 @@
 
                     <div class="message-detail">
                               <span ng-click="viewProfile(message)"
-                                    class="bold">{{toUser.username}}</span>,
+                                    class="bold">{{vm.toUser.username}}</span>,
                         <span am-time-ago="message.date"></span>
                     </div>
 
@@ -58,7 +59,7 @@
             <div ng-if="user._id === message.userId">
 
                 <img ng-click="viewProfile(message)" class="profile-pic right"
-                     ng-src="{{user.pic}}" onerror="onProfilePicError(this)"/>
+                     ng-src="{{vm.user.pic}}" onerror="onProfilePicError(this)"/>
 
                 <div class="chat-bubble right">
 
@@ -79,7 +80,7 @@
 
                     <div class="message-detail">
                               <span ng-click="viewProfile(message)"
-                                    class="bold">{{user.username}}</span>,
+                                    class="bold">{{vm.user.username}}</span>,
                         <span am-time-ago="message.date"></span>
                     </div>
 
@@ -92,28 +93,28 @@
         </div>
     </ion-content>
 
-    <form name="sendMessageForm" ng-submit="sendMessage(sendMessageForm)" novalidate>
+    <form name="sendMessageForm" ng-submit="vm.sendMessage(sendMessageForm)" novalidate>
         <ion-footer-bar class="bar-stable item-input-inset message-footer" keyboard-attach>
             <label class="item-input-wrapper">
-                <textarea ng-model="form.message" ng-enter="sendMessage(sendMessageForm)"
-                          valueExpression="" placeholder="Send {{toUser.username}} a message..."
+                <textarea ng-model="vm.form.message" ng-enter="vm.sendMessage(sendMessageForm)"
+                          valueExpression="" placeholder="Send {{vm.toUser.username}} a message..."
                           required minlength="1" maxlength="1500" msd-elastic autofocus
                           style="width: 100%"></textarea>
             </label>
 
             <div class="mute-btn-wrap">
-                <a class="mute-btn button button-light" ng-click="toggleMuted()" title="Mute/Unmute">
-                    <i class="icon" ng-class="{'ion-volume-high': !form.audio.muted, 'ion-volume-mute': form.audio.muted}"></i>
+                <a class="mute-btn button button-light" ng-click="vm.toggleMuted()" title="Mute/Unmute">
+                    <i class="icon" ng-class="{'ion-volume-high': !vm.form.audio.muted, 'ion-volume-mute': vm.form.audio.muted}"></i>
                 </a>
             </div>
             <div class="voicenote-btn-wrap">
                 <input id="recordedMic" type="file" accept="audio/*;capture=microphone"
-                       onchange="angular.element(this).scope().sendRecordedMic()"
+                       onchange="angular.element(this).scope().vm.sendRecordedMic()"
                         class="voicenote-btn voicenote-input"/>
             </div>
             <div class="footer-btn-wrap">
                 <button class="button button-icon icon ion-android-send footer-btn" type="submit"
-                        ng-disabled="!form.message || form.message === ''">
+                        ng-disabled="!vm.form.message || vm.form.message === ''">
                 </button>
             </div>
         </ion-footer-bar>

@@ -402,7 +402,6 @@ angular.module('starter.controllers')
 
     // Avatar
     this.switchAvatar = function() {
-    $log.info("HI");
         LumenStomp.unsubscribeAll();
         // reset all previous values
         this.joint = {};

@@ -12,83 +12,84 @@ angular.module('starter.controllers')
         $rootScope, $state, $stateParams, MockService,
         $ionicActionSheet,
         $ionicPopup, $ionicScrollDelegate, $timeout, $interval) {
-    $scope.messages = [];
-    $scope.toUser = {
+    var vm = this;
+    this.messages = [];
+    this.toUser = {
         _id: 'arkan',
         name: 'Arkan Lumen',
         username: 'Arkan Lumen',
         pic: 'img/nao-128.png'};
-    $scope.user = {
+    this.user = {
         _id: 'person',
         name: 'You',
         username: 'You',
         pic: 'img/person-128.png'};
-    $scope.avatarIds = ['nao1', 'nao2',
+    this.avatarIds = ['nao1', 'nao2',
         'anime1', 'anime2', 'anime3', 'anime4', 'anime5', 'anime6', 'anime7', 'anime8', 'anime9', 'anime10'];
-    $scope.locales = [
+    this.locales = [
         {id: 'en-US', name: 'English (US)'},
         {id: 'en-UK', name: 'English (UK)'},
         {id: 'en-AU', name: 'English (Australia)'},
         {id: 'id-ID', name: 'Indonesian'},
         {id: 'ar-SA', name: 'Arabic'}
     ];
-    $scope.form = {
+    this.form = {
         avatarId: 'nao1',
         audio: {
-            inLanguage: $scope.locales[3],
+            inLanguage: this.locales[3],
             usedForChat: true,
             muted: false
         }
     };
-    $scope.audioQueue = []; // queue of IDs of HTMLAudioElement to be played
+    this.audioQueue = []; // queue of IDs of HTMLAudioElement to be played
 
     // Avatar
-    $scope.switchAvatar = function() {
+    this.switchAvatar = function() {
         LumenStomp.unsubscribeAll();
-        $scope.messages = [];
-        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.chat.inbox', function(exchange) {
+        this.messages = [];
+        LumenStomp.subscribe('/topic/avatar.' + vm.form.avatarId + '.chat.inbox', function(exchange) {
             var communicateAction = JSON.parse(exchange.body);
             $log.info("Received inbox", communicateAction.object, communicateAction);
 
-            $log.debug('map', _.map($scope.messages, function(m) { return m._id; }));
-            var already = _.find($scope.messages, function(m) { return m._id == communicateAction['@id']; }) || false;
+            $log.debug('map', _.map(vm.messages, function(m) { return m._id; }));
+            var already = _.find(vm.messages, function(m) { return m._id == communicateAction['@id']; }) || false;
             $log.debug('contains', typeof communicateAction['@id'] === 'undefined', communicateAction['@id'], already);
             if ((typeof communicateAction['@id'] === 'undefined') || !already) {
 
                 // TODO: natively support CommunicateAction
-                communicateAction.toId = $scope.user._id;
+                communicateAction.toId = vm.user._id;
                 communicateAction.text = communicateAction.object;
                 if (typeof communicateAction['@id'] === undefined) {
                     communicateAction['@id'] = new Date().getTime(); // :~)
                     communicateAction._id = new Date().getTime(); // :~)
                 }
                 communicateAction.date = new Date();
-                communicateAction.username = $scope.user.username;
-                communicateAction.userId = $scope.user._id;
-                communicateAction.pic = $scope.user.picture;
+                communicateAction.username = vm.user.username;
+                communicateAction.userId = vm.user._id;
+                communicateAction.pic = vm.user.picture;
 
-                $scope.messages.push(communicateAction);
+                vm.messages.push(communicateAction);
             }
 
             keepKeyboardOpen();
             viewScroll.scrollBottom(true);
         });
         // avatar.{avatarId}.chat.outbox
-        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.chat.outbox', function(exchange) {
+        LumenStomp.subscribe('/topic/avatar.' + vm.form.avatarId + '.chat.outbox', function(exchange) {
             var communicateAction = JSON.parse(exchange.body);
             $log.info("Received outbox", communicateAction.object, communicateAction);
 
             // TODO: natively support CommunicateAction
-            communicateAction.toId = $scope.user._id;
+            communicateAction.toId = vm.user._id;
             communicateAction.text = communicateAction.object;
             communicateAction['@id'] = communicateAction['@id'] || (new Date().getTime() + '_outbox'); // :~)
             communicateAction._id = communicateAction['@id'];
             communicateAction.date = new Date();
-            communicateAction.username = $scope.toUser.username;
-            communicateAction.userId = $scope.toUser._id;
-            communicateAction.pic = $scope.toUser.picture;
+            communicateAction.username = vm.toUser.username;
+            communicateAction.userId = vm.toUser._id;
+            communicateAction.pic = vm.toUser.picture;
 
-            $scope.messages.push(communicateAction);
+            vm.messages.push(communicateAction);
             keepKeyboardOpen();
             viewScroll.scrollBottom(true);
 
@@ -96,9 +97,9 @@ angular.module('starter.controllers')
             if (communicateAction.audio) {
                 var elId = 'audio_' + communicateAction['@id'];
                 //var playedEl = document.getElementById(elId);
-                if (!$scope.form.audio.muted) {
+                if (!vm.form.audio.muted) {
                     $log.info('Queueing ', elId, '...');
-                    $scope.audioQueue.push(elId);
+                    vm.audioQueue.push(elId);
                 }
                 //playedEl.play();
             }
@@ -110,10 +111,10 @@ angular.module('starter.controllers')
             var playedId = 'played';
             var playedEl = document.getElementById(playedId);
             playedEl.src = msg.contentUrl;
-            //$scope.replayPlayed();
-            if (!$scope.form.audio.muted) {
+            //vm.replayPlayed();
+            if (!vm.form.audio.muted) {
                 $log.info('Queueing ', playedId, '...');
-                $scope.audioQueue.push(playedId);
+                vm.audioQueue.push(playedId);
             }
         });
         $log.info('Subscriptions:', LumenStomp.getSubscriptions());
@@ -144,22 +145,22 @@ angular.module('starter.controllers')
         }, 20000);
 
         LumenStomp.connect(function() {
-            $scope.client = LumenStomp.getClient();
-            $scope.switchAvatar();
+            vm.client = LumenStomp.getClient();
+            vm.switchAvatar();
         });
 
         audioQueueTimer = $interval(function() {
-            if ($scope.audioQueue.length == 0) {
+            if (vm.audioQueue.length == 0) {
                 return;
             }
-            //$log.debug('audioQueue:', $scope.audioQueue);
-            var current = document.getElementById($scope.audioQueue[0]);
+            //$log.debug('audioQueue:', vm.audioQueue);
+            var current = document.getElementById(vm.audioQueue[0]);
             if (current.paused && !current.ended) {
                 $log.debug('Playing ', current, '...');
                 current.play();
             } else if (current.ended) {
                 $log.debug('Finished playing', current);
-                $scope.audioQueue.shift();
+                vm.audioQueue.shift();
             }
         }, 250);
     });
@@ -179,18 +180,18 @@ angular.module('starter.controllers')
     });
 
     $scope.$on('$ionicView.beforeLeave', function() {
-      if (!$scope.form.message || $scope.form.message === '') {
-        localStorage.removeItem('userMessage-' + $scope.toUser._id);
+      if (!vm.form.message || vm.form.message === '') {
+        localStorage.removeItem('userMessage-' + vm.toUser._id);
       }
     });
 
     function getMessages() {
       // the service is mock but you would probably pass the toUser's GUID here
       MockService.getUserMessages({
-        toUserId: $scope.toUser._id
+        toUserId: vm.toUser._id
       }).then(function(data) {
-        $scope.doneLoading = true;
-        $scope.messages = data.messages;
+        vm.doneLoading = true;
+        vm.messages = data.messages;
 
         $timeout(function() {
           viewScroll.scrollBottom();
@@ -199,15 +200,15 @@ angular.module('starter.controllers')
     }
 
     $scope.$watch('input.message', function(newValue, oldValue) {
-      console.log('input.message $watch, newValue ' + newValue);
+      $log.debug('input.message $watch, newValue ' + newValue);
       if (!newValue) newValue = '';
-      localStorage['userMessage-' + $scope.toUser._id] = newValue;
+      localStorage['userMessage-' + vm.toUser._id] = newValue;
     });
 
-    $scope.sendMessage = function(sendMessageForm) {
+    this.sendMessage = function(sendMessageForm) {
       var message = {
-        toId: $scope.toUser._id,
-        text: $scope.form.message
+        toId: vm.toUser._id,
+        text: vm.form.message
       };
 
       // if you do a web service call this will be needed as well as before the viewScroll calls
@@ -216,26 +217,26 @@ angular.module('starter.controllers')
       keepKeyboardOpen();
 
       //MockService.sendMessage(message).then(function(data) {
-      $scope.form.message = '';
+      vm.form.message = '';
 
       message._id = 'chat:' + new Date().getTime(); // :~)
       message['@id'] = message._id;
       message.date = new Date();
-      message.username = $scope.user.username;
-      message.userId = $scope.user._id;
-      message.pic = $scope.user.picture;
+      message.username = vm.user.username;
+      message.userId = vm.user._id;
+      message.pic = vm.user.picture;
 
-      $scope.messages.push(message);
+      vm.messages.push(message);
 
       var communicateAction = {
         "@type": "CommunicateAction",
         "@id": message._id,
         "object": message.text,
-        "inLanguage": $scope.form.audio.inLanguage.id,
+        "inLanguage": vm.form.audio.inLanguage.id,
         "speechTruthValue": [1.0, 1.0, 0] // to get speech synthesis for reply
       };
-      $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.chat.inbox',
-                         {"reply-to": '/topic/avatar.' + $scope.form.avatarId + '.chat.inbox'},
+      vm.client.send('/topic/avatar.' + vm.form.avatarId + '.chat.inbox',
+                         {"reply-to": '/topic/avatar.' + vm.form.avatarId + '.chat.inbox'},
                          JSON.stringify(communicateAction));
 
       $timeout(function() {
@@ -244,7 +245,7 @@ angular.module('starter.controllers')
       }, 0);
 
       $timeout(function() {
-//        $scope.messages.push(MockService.getMockMessage());
+//        vm.messages.push(MockService.getMockMessage());
         keepKeyboardOpen();
         viewScroll.scrollBottom(true);
       }, 2000);
@@ -261,7 +262,7 @@ angular.module('starter.controllers')
       });
     }
 
-    $scope.onMessageHold = function(e, itemIndex, message) {
+    this.onMessageHold = function(e, itemIndex, message) {
       console.log('onMessageHold');
       console.log('message: ' + JSON.stringify(message, null, 2));
       $ionicActionSheet.show({
@@ -278,7 +279,7 @@ angular.module('starter.controllers')
               break;
             case 1: // Delete
               // no server side secrets here :~)
-              $scope.messages.splice(itemIndex, 1);
+              vm.messages.splice(itemIndex, 1);
               $timeout(function() {
                 viewScroll.resize();
               }, 0);
@@ -292,8 +293,8 @@ angular.module('starter.controllers')
     };
 
     // this prob seems weird here but I have reasons for this in my app, secret!
-    $scope.viewProfile = function(msg) {
-      if (msg.userId === $scope.user._id) {
+    this.viewProfile = function(msg) {
+      if (msg.userId === vm.user._id) {
         // go to your profile
       } else {
         // go to other users profile
@@ -316,13 +317,13 @@ angular.module('starter.controllers')
       scroller.style.bottom = newFooterHeight + 'px';
     });
 
-    $scope.replayPlayed = function() {
+    this.replayPlayed = function() {
         var playedEl = document.getElementById('played');
         $log.info('Playing played ', playedEl, 'seconds ...');
         playedEl.play();
     };
 
-    $scope.sendRecordedMic = function() {
+    this.sendRecordedMic = function() {
         var recordedFileEl = document.getElementById('recordedMic');
         var recordedFile = recordedFileEl.files[0];
         $log.debug('Reading...', recordedFileEl, recordedFileEl.files, recordedFile, JSON.stringify(recordedFile));
@@ -331,25 +332,25 @@ angular.module('starter.controllers')
             $scope.$apply(function() {
                 var audioObject = {
                     '@type': 'AudioObject',
-                    inLanguage: $scope.form.audio.inLanguage.id,
+                    inLanguage: vm.form.audio.inLanguage.id,
                     name: recordedFile.name,
                     contentType: recordedFile.type,
                     contentSize: recordedFile.size,
                     dateModified: recordedFile.lastModifiedDate,
                     contentUrl: reader.result,
-                    usedForChat: $scope.form.audio.usedForChat
+                    usedForChat: vm.form.audio.usedForChat
                 };
                 $log.info('AudioObject', audioObject, JSON.stringify(audioObject));
-                $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.audio.in',
-                    {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.audio.in'},
+                vm.client.send('/topic/avatar.' + vm.form.avatarId + '.audio.in',
+                    {"reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.audio.in'},
                     JSON.stringify(audioObject));
             });
         };
         reader.readAsDataURL(recordedFile);
     };
 
-    $scope.toggleMuted = function() {
-        $scope.form.audio.muted = !$scope.form.audio.muted;
+    this.toggleMuted = function() {
+        vm.form.audio.muted = !vm.form.audio.muted;
     };
 })
 
