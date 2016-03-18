@@ -57,8 +57,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services',
       url: "/avatar/remote-control",
       views: {
         'menuContent': {
-          templateUrl: "templates/avatar/remote-control.html",
-          controller: 'AvatarRemoteControlCtrl'
+          templateUrl: "templates/avatar/remote-control.html"
         }
       }
     })
