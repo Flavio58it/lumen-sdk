@@ -21,9 +21,40 @@ class MockService {
     getUserMessages: any;
     getMockMessage: any;
 }
-angular.module('starter.controllers')
 
-.controller('SocialChatCtrl', function($scope, $stateParams, $log, 
+class ChatUser {
+    _id: string;
+    name: string;
+    username: string;
+    pic: string;
+}
+
+class Locale {
+    id: string;
+    name: string;
+}
+
+class SocialChatCtrl {
+    messages: ChatMessage[];
+    form: any;
+    toUser: ChatUser;
+    user: ChatUser;
+    avatarIds: string[];
+    locales: Locale[];
+    /**
+     * queue of IDs of HTMLAudioElement to be played
+     */
+    audioQueue: string[];
+    switchAvatar: any;
+    client: any;
+    doneLoading: boolean;
+    onMessageHold: any;
+    sendMessage: any;
+    viewProfile: any;
+    replayPlayed: any;
+    sendRecordedMic: any;
+    
+    constructor($scope, $stateParams, $log, 
         LumenStomp, $window, Settings,
         $rootScope, $state, MockService,
         $ionicActionSheet,
@@ -57,7 +88,7 @@ angular.module('starter.controllers')
             muted: false
         }
     };
-    this.audioQueue = []; // queue of IDs of HTMLAudioElement to be played
+    this.audioQueue = [];
 
     // Avatar
     this.switchAvatar = function() {
@@ -82,7 +113,7 @@ angular.module('starter.controllers')
                 communicateAction.date = new Date();
                 communicateAction.username = vm.user.username;
                 communicateAction.userId = vm.user._id;
-                communicateAction.pic = vm.user.picture;
+                communicateAction.pic = vm.user.pic;
 
                 vm.messages.push(communicateAction);
             }
@@ -103,7 +134,7 @@ angular.module('starter.controllers')
             communicateAction.date = new Date();
             communicateAction.username = vm.toUser.username;
             communicateAction.userId = vm.toUser._id;
-            communicateAction.pic = vm.toUser.picture;
+            communicateAction.pic = vm.toUser.pic;
 
             vm.messages.push(communicateAction);
             keepKeyboardOpen();
@@ -240,7 +271,7 @@ angular.module('starter.controllers')
       message.date = new Date();
       message.username = vm.user.username;
       message.userId = vm.user._id;
-      message.pic = vm.user.picture;
+      message.pic = vm.user.pic;
 
       vm.messages.push(message);
 
@@ -364,12 +395,15 @@ angular.module('starter.controllers')
         };
         reader.readAsDataURL(recordedFile);
     };
+  }
+  
+  toggleMuted() {
+      this.form.audio.muted = !this.form.audio.muted;
+  }
+}
 
-    this.toggleMuted = function() {
-        vm.form.audio.muted = !vm.form.audio.muted;
-    };
-})
-
+angular.module('starter.controllers')
+.controller('SocialChatCtrl', SocialChatCtrl)
 // services
 .factory('MockService', ['$http', '$q',
   function($http, $q) {

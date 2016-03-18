@@ -11,302 +11,316 @@ var MockService = (function () {
     }
     return MockService;
 }());
-angular.module('starter.controllers')
-    .controller('SocialChatCtrl', function ($scope, $stateParams, $log, LumenStomp, $window, Settings, $rootScope, $state, MockService, $ionicActionSheet, $ionicPopup, $ionicScrollDelegate, $timeout, $interval) {
-    var vm = this;
-    this.messages = [];
-    this.toUser = {
-        _id: 'arkan',
-        name: 'Arkan Lumen',
-        username: 'Arkan Lumen',
-        pic: 'img/nao-128.png' };
-    this.user = {
-        _id: 'person',
-        name: 'You',
-        username: 'You',
-        pic: 'img/person-128.png' };
-    this.avatarIds = ['nao1', 'nao2',
-        'anime1', 'anime2', 'anime3', 'anime4', 'anime5', 'anime6', 'anime7', 'anime8', 'anime9', 'anime10'];
-    this.locales = [
-        { id: 'en-US', name: 'English (US)' },
-        { id: 'en-UK', name: 'English (UK)' },
-        { id: 'en-AU', name: 'English (Australia)' },
-        { id: 'id-ID', name: 'Indonesian' },
-        { id: 'ar-SA', name: 'Arabic' }
-    ];
-    this.form = {
-        avatarId: 'nao1',
-        audio: {
-            inLanguage: this.locales[3],
-            usedForChat: true,
-            muted: false
-        }
-    };
-    this.audioQueue = []; // queue of IDs of HTMLAudioElement to be played
-    // Avatar
-    this.switchAvatar = function () {
-        LumenStomp.unsubscribeAll();
+var ChatUser = (function () {
+    function ChatUser() {
+    }
+    return ChatUser;
+}());
+var Locale = (function () {
+    function Locale() {
+    }
+    return Locale;
+}());
+var SocialChatCtrl = (function () {
+    function SocialChatCtrl($scope, $stateParams, $log, LumenStomp, $window, Settings, $rootScope, $state, MockService, $ionicActionSheet, $ionicPopup, $ionicScrollDelegate, $timeout, $interval) {
+        var vm = this;
         this.messages = [];
-        LumenStomp.subscribe('/topic/avatar.' + vm.form.avatarId + '.chat.inbox', function (exchange) {
-            var communicateAction = JSON.parse(exchange.body);
-            $log.info("Received inbox", communicateAction.object, communicateAction);
-            $log.debug('map', _.map(vm.messages, function (m) { return m._id; }));
-            var already = _.find(vm.messages, function (m) { return m._id == communicateAction['@id']; }) || false;
-            $log.debug('contains', typeof communicateAction['@id'] === 'undefined', communicateAction['@id'], already);
-            if ((typeof communicateAction['@id'] === 'undefined') || !already) {
+        this.toUser = {
+            _id: 'arkan',
+            name: 'Arkan Lumen',
+            username: 'Arkan Lumen',
+            pic: 'img/nao-128.png' };
+        this.user = {
+            _id: 'person',
+            name: 'You',
+            username: 'You',
+            pic: 'img/person-128.png' };
+        this.avatarIds = ['nao1', 'nao2',
+            'anime1', 'anime2', 'anime3', 'anime4', 'anime5', 'anime6', 'anime7', 'anime8', 'anime9', 'anime10'];
+        this.locales = [
+            { id: 'en-US', name: 'English (US)' },
+            { id: 'en-UK', name: 'English (UK)' },
+            { id: 'en-AU', name: 'English (Australia)' },
+            { id: 'id-ID', name: 'Indonesian' },
+            { id: 'ar-SA', name: 'Arabic' }
+        ];
+        this.form = {
+            avatarId: 'nao1',
+            audio: {
+                inLanguage: this.locales[3],
+                usedForChat: true,
+                muted: false
+            }
+        };
+        this.audioQueue = [];
+        // Avatar
+        this.switchAvatar = function () {
+            LumenStomp.unsubscribeAll();
+            this.messages = [];
+            LumenStomp.subscribe('/topic/avatar.' + vm.form.avatarId + '.chat.inbox', function (exchange) {
+                var communicateAction = JSON.parse(exchange.body);
+                $log.info("Received inbox", communicateAction.object, communicateAction);
+                $log.debug('map', _.map(vm.messages, function (m) { return m._id; }));
+                var already = _.find(vm.messages, function (m) { return m._id == communicateAction['@id']; }) || false;
+                $log.debug('contains', typeof communicateAction['@id'] === 'undefined', communicateAction['@id'], already);
+                if ((typeof communicateAction['@id'] === 'undefined') || !already) {
+                    // TODO: natively support CommunicateAction
+                    communicateAction.toId = vm.user._id;
+                    communicateAction.text = communicateAction.object;
+                    if (typeof communicateAction['@id'] === undefined) {
+                        communicateAction['@id'] = new Date().getTime(); // :~)
+                        communicateAction._id = new Date().getTime(); // :~)
+                    }
+                    communicateAction.date = new Date();
+                    communicateAction.username = vm.user.username;
+                    communicateAction.userId = vm.user._id;
+                    communicateAction.pic = vm.user.pic;
+                    vm.messages.push(communicateAction);
+                }
+                keepKeyboardOpen();
+                viewScroll.scrollBottom(true);
+            });
+            // avatar.{avatarId}.chat.outbox
+            LumenStomp.subscribe('/topic/avatar.' + vm.form.avatarId + '.chat.outbox', function (exchange) {
+                var communicateAction = JSON.parse(exchange.body);
+                $log.info("Received outbox", communicateAction.object, communicateAction);
                 // TODO: natively support CommunicateAction
                 communicateAction.toId = vm.user._id;
                 communicateAction.text = communicateAction.object;
-                if (typeof communicateAction['@id'] === undefined) {
-                    communicateAction['@id'] = new Date().getTime(); // :~)
-                    communicateAction._id = new Date().getTime(); // :~)
-                }
+                communicateAction['@id'] = communicateAction['@id'] || (new Date().getTime() + '_outbox'); // :~)
+                communicateAction._id = communicateAction['@id'];
                 communicateAction.date = new Date();
-                communicateAction.username = vm.user.username;
-                communicateAction.userId = vm.user._id;
-                communicateAction.pic = vm.user.picture;
+                communicateAction.username = vm.toUser.username;
+                communicateAction.userId = vm.toUser._id;
+                communicateAction.pic = vm.toUser.pic;
                 vm.messages.push(communicateAction);
-            }
-            keepKeyboardOpen();
-            viewScroll.scrollBottom(true);
-        });
-        // avatar.{avatarId}.chat.outbox
-        LumenStomp.subscribe('/topic/avatar.' + vm.form.avatarId + '.chat.outbox', function (exchange) {
-            var communicateAction = JSON.parse(exchange.body);
-            $log.info("Received outbox", communicateAction.object, communicateAction);
-            // TODO: natively support CommunicateAction
-            communicateAction.toId = vm.user._id;
-            communicateAction.text = communicateAction.object;
-            communicateAction['@id'] = communicateAction['@id'] || (new Date().getTime() + '_outbox'); // :~)
-            communicateAction._id = communicateAction['@id'];
-            communicateAction.date = new Date();
-            communicateAction.username = vm.toUser.username;
-            communicateAction.userId = vm.toUser._id;
-            communicateAction.pic = vm.toUser.picture;
-            vm.messages.push(communicateAction);
-            keepKeyboardOpen();
-            viewScroll.scrollBottom(true);
-            // has audio?
-            if (communicateAction.audio) {
-                var elId = 'audio_' + communicateAction['@id'];
-                //var playedEl = document.getElementById(elId);
+                keepKeyboardOpen();
+                viewScroll.scrollBottom(true);
+                // has audio?
+                if (communicateAction.audio) {
+                    var elId = 'audio_' + communicateAction['@id'];
+                    //var playedEl = document.getElementById(elId);
+                    if (!vm.form.audio.muted) {
+                        $log.info('Queueing ', elId, '...');
+                        vm.audioQueue.push(elId);
+                    }
+                }
+            });
+            // audio.out: AudioObject
+            LumenStomp.subscribe('/topic/avatar.*.audio.out', function (exchange) {
+                var msg = JSON.parse(exchange.body);
+                $log.info("Received audio", msg.name, msg.contentType, msg.contentSize, 'bytes', msg);
+                var playedId = 'played';
+                var playedEl = document.getElementById(playedId);
+                playedEl.src = msg.contentUrl;
+                //vm.replayPlayed();
                 if (!vm.form.audio.muted) {
-                    $log.info('Queueing ', elId, '...');
-                    vm.audioQueue.push(elId);
+                    $log.info('Queueing ', playedId, '...');
+                    vm.audioQueue.push(playedId);
                 }
-            }
-        });
-        // audio.out: AudioObject
-        LumenStomp.subscribe('/topic/avatar.*.audio.out', function (exchange) {
-            var msg = JSON.parse(exchange.body);
-            $log.info("Received audio", msg.name, msg.contentType, msg.contentSize, 'bytes', msg);
-            var playedId = 'played';
-            var playedEl = document.getElementById(playedId);
-            playedEl.src = msg.contentUrl;
-            //vm.replayPlayed();
-            if (!vm.form.audio.muted) {
-                $log.info('Queueing ', playedId, '...');
-                vm.audioQueue.push(playedId);
-            }
-        });
-        $log.info('Subscriptions:', LumenStomp.getSubscriptions());
-    };
-    var messageCheckTimer;
-    var viewScroll = $ionicScrollDelegate.$getByHandle('userMessageScroll');
-    var footerBar; // gets set in $ionicView.enter
-    var scroller;
-    var txtInput; // ^^^
-    var audioQueueTimer;
-    $scope.$on('$ionicView.enter', function () {
-        console.log('UserMessages $ionicView.enter');
-        getMessages();
-        $timeout(function () {
-            footerBar = document.body.querySelector('#userMessagesView .bar-footer');
-            scroller = document.body.querySelector('#userMessagesView .scroll-content');
-            txtInput = angular.element(footerBar.querySelector('textarea'));
-        }, 0);
-        messageCheckTimer = $interval(function () {
-            // here you could check for new messages if your app doesn't use push notifications or user disabled them
-        }, 20000);
-        LumenStomp.connect(function () {
-            vm.client = LumenStomp.getClient();
-            vm.switchAvatar();
-        });
-        audioQueueTimer = $interval(function () {
-            if (vm.audioQueue.length == 0) {
-                return;
-            }
-            //$log.debug('audioQueue:', vm.audioQueue);
-            var current = document.getElementById(vm.audioQueue[0]);
-            if (current.paused && !current.ended) {
-                $log.debug('Playing ', current, '...');
-                current.play();
-            }
-            else if (current.ended) {
-                $log.debug('Finished playing', current);
-                vm.audioQueue.shift();
-            }
-        }, 250);
-    });
-    $scope.$on('$ionicView.beforeLeave', function () {
-        console.log('leaving UserMessages view, destroying interval');
-        LumenStomp.disconnect();
-        // Make sure that the interval is destroyed
-        if (angular.isDefined(messageCheckTimer)) {
-            $interval.cancel(messageCheckTimer);
-            messageCheckTimer = undefined;
-        }
-        if (angular.isDefined(audioQueueTimer)) {
-            $interval.cancel(audioQueueTimer);
-            audioQueueTimer = undefined;
-        }
-    });
-    $scope.$on('$ionicView.beforeLeave', function () {
-        if (!vm.form.message || vm.form.message === '') {
-            localStorage.removeItem('userMessage-' + vm.toUser._id);
-        }
-    });
-    function getMessages() {
-        // the service is mock but you would probably pass the toUser's GUID here
-        MockService.getUserMessages({
-            toUserId: vm.toUser._id
-        }).then(function (data) {
-            vm.doneLoading = true;
-            vm.messages = data.messages;
+            });
+            $log.info('Subscriptions:', LumenStomp.getSubscriptions());
+        };
+        var messageCheckTimer;
+        var viewScroll = $ionicScrollDelegate.$getByHandle('userMessageScroll');
+        var footerBar; // gets set in $ionicView.enter
+        var scroller;
+        var txtInput; // ^^^
+        var audioQueueTimer;
+        $scope.$on('$ionicView.enter', function () {
+            console.log('UserMessages $ionicView.enter');
+            getMessages();
             $timeout(function () {
-                viewScroll.scrollBottom();
+                footerBar = document.body.querySelector('#userMessagesView .bar-footer');
+                scroller = document.body.querySelector('#userMessagesView .scroll-content');
+                txtInput = angular.element(footerBar.querySelector('textarea'));
             }, 0);
-        });
-    }
-    $scope.$watch('input.message', function (newValue, oldValue) {
-        $log.debug('input.message $watch, newValue ' + newValue);
-        if (!newValue)
-            newValue = '';
-        localStorage['userMessage-' + vm.toUser._id] = newValue;
-    });
-    this.sendMessage = function (sendMessageForm) {
-        var message = {
-            toId: vm.toUser._id,
-            text: vm.form.message
-        };
-        // if you do a web service call this will be needed as well as before the viewScroll calls
-        // you can't see the effect of this in the browser it needs to be used on a real device
-        // for some reason the one time blur event is not firing in the browser but does on devices
-        keepKeyboardOpen();
-        //MockService.sendMessage(message).then(function(data) {
-        vm.form.message = '';
-        message._id = 'chat:' + new Date().getTime(); // :~)
-        message['@id'] = message._id;
-        message.date = new Date();
-        message.username = vm.user.username;
-        message.userId = vm.user._id;
-        message.pic = vm.user.picture;
-        vm.messages.push(message);
-        var communicateAction = {
-            "@type": "CommunicateAction",
-            "@id": message._id,
-            "object": message.text,
-            "inLanguage": vm.form.audio.inLanguage.id,
-            "speechTruthValue": [1.0, 1.0, 0] // to get speech synthesis for reply
-        };
-        vm.client.send('/topic/avatar.' + vm.form.avatarId + '.chat.inbox', { "reply-to": '/topic/avatar.' + vm.form.avatarId + '.chat.inbox' }, JSON.stringify(communicateAction));
-        $timeout(function () {
-            keepKeyboardOpen();
-            viewScroll.scrollBottom(true);
-        }, 0);
-        $timeout(function () {
-            //        vm.messages.push(MockService.getMockMessage());
-            keepKeyboardOpen();
-            viewScroll.scrollBottom(true);
-        }, 2000);
-        //});
-    };
-    // this keeps the keyboard open on a device only after sending a message, it is non obtrusive
-    function keepKeyboardOpen() {
-        console.log('keepKeyboardOpen');
-        txtInput.one('blur', function () {
-            console.log('textarea blur, focus back on it');
-            txtInput[0].focus();
-        });
-    }
-    this.onMessageHold = function (e, itemIndex, message) {
-        console.log('onMessageHold');
-        console.log('message: ' + JSON.stringify(message, null, 2));
-        $ionicActionSheet.show({
-            buttons: [{
-                    text: 'Copy Text'
-                }, {
-                    text: 'Delete Message'
-                }],
-            buttonClicked: function (index) {
-                switch (index) {
-                    case 0:
-                        //cordova.plugins.clipboard.copy(message.text);
-                        break;
-                    case 1:
-                        // no server side secrets here :~)
-                        vm.messages.splice(itemIndex, 1);
-                        $timeout(function () {
-                            viewScroll.resize();
-                        }, 0);
-                        break;
+            messageCheckTimer = $interval(function () {
+                // here you could check for new messages if your app doesn't use push notifications or user disabled them
+            }, 20000);
+            LumenStomp.connect(function () {
+                vm.client = LumenStomp.getClient();
+                vm.switchAvatar();
+            });
+            audioQueueTimer = $interval(function () {
+                if (vm.audioQueue.length == 0) {
+                    return;
                 }
-                return true;
+                //$log.debug('audioQueue:', vm.audioQueue);
+                var current = document.getElementById(vm.audioQueue[0]);
+                if (current.paused && !current.ended) {
+                    $log.debug('Playing ', current, '...');
+                    current.play();
+                }
+                else if (current.ended) {
+                    $log.debug('Finished playing', current);
+                    vm.audioQueue.shift();
+                }
+            }, 250);
+        });
+        $scope.$on('$ionicView.beforeLeave', function () {
+            console.log('leaving UserMessages view, destroying interval');
+            LumenStomp.disconnect();
+            // Make sure that the interval is destroyed
+            if (angular.isDefined(messageCheckTimer)) {
+                $interval.cancel(messageCheckTimer);
+                messageCheckTimer = undefined;
+            }
+            if (angular.isDefined(audioQueueTimer)) {
+                $interval.cancel(audioQueueTimer);
+                audioQueueTimer = undefined;
             }
         });
-    };
-    // this prob seems weird here but I have reasons for this in my app, secret!
-    this.viewProfile = function (msg) {
-        if (msg.userId === vm.user._id) {
+        $scope.$on('$ionicView.beforeLeave', function () {
+            if (!vm.form.message || vm.form.message === '') {
+                localStorage.removeItem('userMessage-' + vm.toUser._id);
+            }
+        });
+        function getMessages() {
+            // the service is mock but you would probably pass the toUser's GUID here
+            MockService.getUserMessages({
+                toUserId: vm.toUser._id
+            }).then(function (data) {
+                vm.doneLoading = true;
+                vm.messages = data.messages;
+                $timeout(function () {
+                    viewScroll.scrollBottom();
+                }, 0);
+            });
         }
-        else {
+        $scope.$watch('input.message', function (newValue, oldValue) {
+            $log.debug('input.message $watch, newValue ' + newValue);
+            if (!newValue)
+                newValue = '';
+            localStorage['userMessage-' + vm.toUser._id] = newValue;
+        });
+        this.sendMessage = function (sendMessageForm) {
+            var message = {
+                toId: vm.toUser._id,
+                text: vm.form.message
+            };
+            // if you do a web service call this will be needed as well as before the viewScroll calls
+            // you can't see the effect of this in the browser it needs to be used on a real device
+            // for some reason the one time blur event is not firing in the browser but does on devices
+            keepKeyboardOpen();
+            //MockService.sendMessage(message).then(function(data) {
+            vm.form.message = '';
+            message._id = 'chat:' + new Date().getTime(); // :~)
+            message['@id'] = message._id;
+            message.date = new Date();
+            message.username = vm.user.username;
+            message.userId = vm.user._id;
+            message.pic = vm.user.pic;
+            vm.messages.push(message);
+            var communicateAction = {
+                "@type": "CommunicateAction",
+                "@id": message._id,
+                "object": message.text,
+                "inLanguage": vm.form.audio.inLanguage.id,
+                "speechTruthValue": [1.0, 1.0, 0] // to get speech synthesis for reply
+            };
+            vm.client.send('/topic/avatar.' + vm.form.avatarId + '.chat.inbox', { "reply-to": '/topic/avatar.' + vm.form.avatarId + '.chat.inbox' }, JSON.stringify(communicateAction));
+            $timeout(function () {
+                keepKeyboardOpen();
+                viewScroll.scrollBottom(true);
+            }, 0);
+            $timeout(function () {
+                //        vm.messages.push(MockService.getMockMessage());
+                keepKeyboardOpen();
+                viewScroll.scrollBottom(true);
+            }, 2000);
+            //});
+        };
+        // this keeps the keyboard open on a device only after sending a message, it is non obtrusive
+        function keepKeyboardOpen() {
+            console.log('keepKeyboardOpen');
+            txtInput.one('blur', function () {
+                console.log('textarea blur, focus back on it');
+                txtInput[0].focus();
+            });
         }
-    };
-    // I emit this event from the monospaced.elastic directive, read line 480
-    $scope.$on('elastic:resize', function (e, ta, oldHeight, newHeight) {
-        if (!ta)
-            return;
-        var taHeight = newHeight; // ta[0].offsetHeight;
-        console.debug('taHeight:', taHeight);
-        if (!footerBar)
-            return;
-        var newFooterHeight = taHeight + 10;
-        newFooterHeight = (newFooterHeight > 44) ? newFooterHeight : 44;
-        footerBar.style.height = newFooterHeight + 'px';
-        scroller.style.bottom = newFooterHeight + 'px';
-    });
-    this.replayPlayed = function () {
-        var playedEl = document.getElementById('played');
-        $log.info('Playing played ', playedEl, 'seconds ...');
-        playedEl.play();
-    };
-    this.sendRecordedMic = function () {
-        var recordedFileEl = document.getElementById('recordedMic');
-        var recordedFile = recordedFileEl.files[0];
-        $log.debug('Reading...', recordedFileEl, recordedFileEl.files, recordedFile, JSON.stringify(recordedFile));
-        var reader = new FileReader();
-        reader.onloadend = function () {
-            $scope.$apply(function () {
-                var audioObject = {
-                    '@type': 'AudioObject',
-                    inLanguage: vm.form.audio.inLanguage.id,
-                    name: recordedFile.name,
-                    contentType: recordedFile.type,
-                    contentSize: recordedFile.size,
-                    dateModified: recordedFile.lastModifiedDate,
-                    contentUrl: reader.result,
-                    usedForChat: vm.form.audio.usedForChat
-                };
-                $log.info('AudioObject', audioObject, JSON.stringify(audioObject));
-                vm.client.send('/topic/avatar.' + vm.form.avatarId + '.audio.in', { "reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.audio.in' }, JSON.stringify(audioObject));
+        this.onMessageHold = function (e, itemIndex, message) {
+            console.log('onMessageHold');
+            console.log('message: ' + JSON.stringify(message, null, 2));
+            $ionicActionSheet.show({
+                buttons: [{
+                        text: 'Copy Text'
+                    }, {
+                        text: 'Delete Message'
+                    }],
+                buttonClicked: function (index) {
+                    switch (index) {
+                        case 0:
+                            //cordova.plugins.clipboard.copy(message.text);
+                            break;
+                        case 1:
+                            // no server side secrets here :~)
+                            vm.messages.splice(itemIndex, 1);
+                            $timeout(function () {
+                                viewScroll.resize();
+                            }, 0);
+                            break;
+                    }
+                    return true;
+                }
             });
         };
-        reader.readAsDataURL(recordedFile);
+        // this prob seems weird here but I have reasons for this in my app, secret!
+        this.viewProfile = function (msg) {
+            if (msg.userId === vm.user._id) {
+            }
+            else {
+            }
+        };
+        // I emit this event from the monospaced.elastic directive, read line 480
+        $scope.$on('elastic:resize', function (e, ta, oldHeight, newHeight) {
+            if (!ta)
+                return;
+            var taHeight = newHeight; // ta[0].offsetHeight;
+            console.debug('taHeight:', taHeight);
+            if (!footerBar)
+                return;
+            var newFooterHeight = taHeight + 10;
+            newFooterHeight = (newFooterHeight > 44) ? newFooterHeight : 44;
+            footerBar.style.height = newFooterHeight + 'px';
+            scroller.style.bottom = newFooterHeight + 'px';
+        });
+        this.replayPlayed = function () {
+            var playedEl = document.getElementById('played');
+            $log.info('Playing played ', playedEl, 'seconds ...');
+            playedEl.play();
+        };
+        this.sendRecordedMic = function () {
+            var recordedFileEl = document.getElementById('recordedMic');
+            var recordedFile = recordedFileEl.files[0];
+            $log.debug('Reading...', recordedFileEl, recordedFileEl.files, recordedFile, JSON.stringify(recordedFile));
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                $scope.$apply(function () {
+                    var audioObject = {
+                        '@type': 'AudioObject',
+                        inLanguage: vm.form.audio.inLanguage.id,
+                        name: recordedFile.name,
+                        contentType: recordedFile.type,
+                        contentSize: recordedFile.size,
+                        dateModified: recordedFile.lastModifiedDate,
+                        contentUrl: reader.result,
+                        usedForChat: vm.form.audio.usedForChat
+                    };
+                    $log.info('AudioObject', audioObject, JSON.stringify(audioObject));
+                    vm.client.send('/topic/avatar.' + vm.form.avatarId + '.audio.in', { "reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.audio.in' }, JSON.stringify(audioObject));
+                });
+            };
+            reader.readAsDataURL(recordedFile);
+        };
+    }
+    SocialChatCtrl.prototype.toggleMuted = function () {
+        this.form.audio.muted = !this.form.audio.muted;
     };
-    this.toggleMuted = function () {
-        vm.form.audio.muted = !vm.form.audio.muted;
-    };
-})
+    return SocialChatCtrl;
+}());
+angular.module('starter.controllers')
+    .controller('SocialChatCtrl', SocialChatCtrl)
     .factory('MockService', ['$http', '$q',
     function ($http, $q) {
         var me = new MockService();
