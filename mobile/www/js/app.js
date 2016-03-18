@@ -65,8 +65,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services',
       url: "/avatar/instruments",
       views: {
         'menuContent': {
-          templateUrl: "templates/avatar/instruments.html",
-          controller: 'AvatarInstrumentsCtrl'
+          templateUrl: "templates/avatar/instruments.html"
         }
       }
     })

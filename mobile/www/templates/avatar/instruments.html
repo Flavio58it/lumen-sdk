@@ -1,24 +1,24 @@
-<ion-view view-title="Avatar » Instruments">
+<ion-view view-title="Avatar » Instruments" ng-controller="AvatarInstrumentsCtrl as vm">
     <ion-nav-buttons side="secondary">
-        <select ng-model="form.avatarId" ng-options="avatarId for avatarId in avatarIds"
-                ng-change="switchAvatar()"></select>
+        <select ng-model="vm.form.avatarId" ng-options="avatarId for avatarId in vm.avatarIds"
+                ng-change="vm.switchAvatar()"></select>
     </ion-nav-buttons>
     <ion-content>
         <ion-list>
-            <div><img ng-src="{{image.body.contentUrl}}"/></div>
-            <pre><code>{{joint.body | json}}</code></pre>
-            <pre><code>{{tactile.body | json}}</code></pre>
+            <div><img ng-src="{{vm.image.body.contentUrl}}"/></div>
+            <pre><code>{{vm.joint.body | json}}</code></pre>
+            <pre><code>{{vm.tactile.body | json}}</code></pre>
 
             <div class="item">
                 <div class="row">
                     <div class="col">
-                        Actual Date and Time : {{battery.body.dateCreated}}
+                        Actual Date and Time : {{vm.battery.body.dateCreated}}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col">
-                        Battery Charge : {{battery.body.percentage}}%
+                        Battery Charge : {{vm.battery.body.percentage}}%
                     </div>
                 </div>
             </div>
@@ -31,10 +31,10 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        Left Sensor : {{sonar.body.leftSensor}}
+                        Left Sensor : {{vm.sonar.body.leftSensor}}
                     </div>
                     <div class="col">
-                        Right Sensor : {{sonar.body.rightSensor}}
+                        Right Sensor : {{vm.sonar.body.rightSensor}}
                     </div>
                 </div>
             </div>
@@ -42,10 +42,10 @@
             <div class="item">
                 <div class="row">
                     <div class="col">
-                        Pose Name  : {{robotpose.body.actualPoseName}}
+                        Pose Name  : {{vm.robotpose.body.actualPoseName}}
                     </div>
                     <div class="col">
-                        Actual Pose : {{robotpose.body.actualPoseTime}}
+                        Actual Pose : {{vm.robotpose.body.actualPoseTime}}
                     </div>
                 </div>
             </div>
@@ -62,7 +62,7 @@
             </div>
 
             <div class="item">
-                <table width = "100%" ng-repeat="angle in motion.body.angles">
+                <table width = "100%" ng-repeat="angle in vm.motion.body.angles">
                    <tr>
                          <td width= "50%" >{{angle.name}}</td>
                          <td>{{angle.angle}}</td>
@@ -70,7 +70,7 @@
                 </table>
             </div>
 
-            <ion-item ng-repeat="msg in messages" class="text-wrap">
+            <ion-item ng-repeat="msg in vm.messages" class="text-wrap">
                 <small>{{msg.headers.destination}}</small>
                 <pre><code>{{msg.body | json}}</code></pre>
             </ion-item>

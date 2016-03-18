@@ -108,7 +108,7 @@ angular.module('starter.controllers')
     };
 
     // Avatar
-    vm.switchAvatar = function() {
+    this.switchAvatar = function() {
         LumenStomp.unsubscribeAll();
         // RecordAudio
         LumenStomp.subscribe('/topic/avatar.' + vm.form.avatarId + '.audio.in', function(exchange) {
@@ -392,89 +392,91 @@ angular.module('starter.controllers')
 
 })
 .controller('AvatarInstrumentsCtrl', function($scope, $stateParams, $log, LumenStomp, Settings) {
-    $scope.avatarIds = ['nao1', 'nao2',
+    var vm = this;
+    this.avatarIds = ['nao1', 'nao2',
         'anime1', 'anime2', 'anime3', 'anime4', 'anime5', 'anime6', 'anime7', 'anime8', 'anime9', 'anime10'];
-    $scope.form = {
+    this.form = {
         avatarId: 'nao1'
     };
-    $scope.client = null;
+    this.client = null;
 
     // Avatar
-    $scope.switchAvatar = function() {
+    this.switchAvatar = function() {
+    $log.info("HI");
         LumenStomp.unsubscribeAll();
         // reset all previous values
-        $scope.joint = {};
-        $scope.sonar = {};
-        $scope.motion = {};
-        $scope.robotpose = {};
-        $scope.tactile = {};
-        $scope.battery = {};
+        this.joint = {};
+        this.sonar = {};
+        this.motion = {};
+        this.robotpose = {};
+        this.tactile = {};
+        this.battery = {};
 
-        /*LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.camera.main', function(exchange) {
+        /*LumenStomp.subscribe('/topic/avatar.' + this.form.avatarId + '.camera.main', function(exchange) {
             var msg = JSON.parse(exchange.body);
             //$log.debug('joint ', msg, JSON.stringify(msg));
-//            $scope.messages.push(msg);
+//            this.messages.push(msg);
             exchange.body = msg;
-//            $scope.messages.push(exchange);
-            $scope.image = exchange;
+//            this.messages.push(exchange);
+            this.image = exchange;
         });*/
-        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.joint', function(exchange) {
+        LumenStomp.subscribe('/topic/avatar.' + this.form.avatarId + '.data.joint', function(exchange) {
             var msg = JSON.parse(exchange.body);
             //$log.debug('joint ', msg, JSON.stringify(msg));
-//            $scope.messages.push(msg);
+//            this.messages.push(msg);
             exchange.body = msg;
-//            $scope.messages.push(exchange);
-            $scope.joint = exchange;
+//            this.messages.push(exchange);
+            this.joint = exchange;
         });
-        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.sonar', function(exchange) {
+        LumenStomp.subscribe('/topic/avatar.' + this.form.avatarId + '.data.sonar', function(exchange) {
             var msg = JSON.parse(exchange.body);
             //$log.debug('sonar ', msg, JSON.stringify(msg));
-//            $scope.messages.push(msg);
+//            this.messages.push(msg);
             exchange.body = msg;
-//            $scope.messages.push(exchange);
-            $scope.sonar = exchange;
+//            this.messages.push(exchange);
+            this.sonar = exchange;
         });
 
-        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.motion', function(exchange) {
+        LumenStomp.subscribe('/topic/avatar.' + this.form.avatarId + '.data.motion', function(exchange) {
                     var msg = JSON.parse(exchange.body);
                     //$log.debug('motion ', msg, JSON.stringify(msg));
-        //            $scope.messages.push(msg);
+        //            this.messages.push(msg);
                     exchange.body = msg;
-        //            $scope.messages.push(exchange);
-                    $scope.motion = exchange;
+        //            this.messages.push(exchange);
+                    this.motion = exchange;
                 });
 
-        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.robotpose', function(exchange) {
+        LumenStomp.subscribe('/topic/avatar.' + this.form.avatarId + '.data.robotpose', function(exchange) {
                     var msg = JSON.parse(exchange.body);
                     //$log.debug('robotpose ', msg, JSON.stringify(msg));
-        //            $scope.messages.push(msg);
+        //            this.messages.push(msg);
                     exchange.body = msg;
-        //            $scope.messages.push(exchange);
-                    $scope.robotpose = exchange;
+        //            this.messages.push(exchange);
+                    this.robotpose = exchange;
                 });
 
-        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.tactile', function(exchange) {
+        LumenStomp.subscribe('/topic/avatar.' + this.form.avatarId + '.data.tactile', function(exchange) {
             var msg = JSON.parse(exchange.body);
             //$log.debug('tactile ', msg, JSON.stringify(msg));
-//            $scope.messages.push(msg);
+//            this.messages.push(msg);
             exchange.body = msg;
-//            $scope.messages.push(exchange);
-            $scope.tactile = exchange;
+//            this.messages.push(exchange);
+            this.tactile = exchange;
         });
-        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.battery', function(exchange) {
+        LumenStomp.subscribe('/topic/avatar.' + this.form.avatarId + '.data.battery', function(exchange) {
             var msg = JSON.parse(exchange.body);
             //$log.debug('battery ', msg, JSON.stringify(msg));
-//            $scope.messages.push(msg);
+//            this.messages.push(msg);
             exchange.body = msg;
-//            $scope.messages.push(exchange);
-            $scope.battery = exchange;
+//            this.messages.push(exchange);
+            this.battery = exchange;
         });
     };
 
-    $scope.$on('$ionicView.enter', function() {
+    $scope.$on('$ionicView.enter', function(ev) {
         LumenStomp.connect(function() {
-            $scope.client = LumenStomp.getClient();
-            $scope.switchAvatar();
+            vm.client = LumenStomp.getClient();
+            vm.switchAvatar();
         });
     });
     $scope.$on('$ionicView.leave', function() {
