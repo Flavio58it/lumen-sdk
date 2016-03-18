@@ -7,7 +7,8 @@ var concat = require('gulp-concat');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
-var typescript = require('gulp-tsc');
+var sourcemaps = require('gulp-sourcemaps');
+var ts = require('gulp-typescript');
 
 var paths = {
   sass: ['./scss/**/*.scss'],
@@ -19,7 +20,9 @@ gulp.task('default', ['compile']);
 
 gulp.task('compile', function() {
     gulp.src(paths.src)
-        .pipe(typescript())
+        .pipe(sourcemaps.init())
+        .pipe(ts({sortOutput: true}))
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest('www/js/'));
 });
 
