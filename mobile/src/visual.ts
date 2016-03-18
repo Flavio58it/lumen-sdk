@@ -1,11 +1,18 @@
 /// <reference path="../typings/main.d.ts"/>
-var HumanDetected = (function () {
-    function HumanDetected() {
-    }
-    return HumanDetected;
-}());
+
+class HumanDetected {
+    humanId: string;
+    position: any;
+    rotation: any;
+    imageU: number;
+    imageV: number;
+    imageVH: number;
+    cssStyle: Object;
+}
+
 angular.module('starter.controllers')
-    .controller('VisualCameraCtrl', function ($scope, $stateParams, $log, Settings, LumenStomp) {
+
+.controller('VisualCameraCtrl', function($scope, $stateParams, $log, Settings, LumenStomp) {
     $scope.imageObject = null;
     $scope.bottomImageObject = null;
     $scope.recognizeds = [];
@@ -16,22 +23,23 @@ angular.module('starter.controllers')
         avatarId: 'nao1',
         agentId: 'arkan'
     };
+
     // Avatar
-    $scope.switchAvatar = function () {
+    $scope.switchAvatar = function() {
         LumenStomp.unsubscribeAll();
         $scope.imageObject = null;
         $scope.bottomImageObject = null;
-        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.camera.main', function (msg) {
+        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.camera.main', function(msg) {
             var imageObject = JSON.parse(msg.body);
             $scope.imageObject = imageObject;
             $log.debug('Got main ImageObject', imageObject);
         });
-        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.camera.bottom', function (msg) {
+        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.camera.bottom', function(msg) {
             var imageObject = JSON.parse(msg.body);
             $scope.bottomImageObject = imageObject;
             $log.debug('Got bottom ImageObject', imageObject);
         });
-        LumenStomp.subscribe('/topic/lumen.' + $scope.form.agentId + '.face.recognition', function (msg) {
+        LumenStomp.subscribe('/topic/lumen.' + $scope.form.agentId + '.face.recognition', function(msg) {
             var recognized = JSON.parse(msg.body);
             if (recognized.index == 0) {
                 $scope.recognizeds = [];
@@ -44,17 +52,19 @@ angular.module('starter.controllers')
         });
         $log.info('Subscriptions:', LumenStomp.getSubscriptions());
     };
-    $scope.$on('$ionicView.enter', function () {
-        LumenStomp.connect(function () {
+
+    $scope.$on('$ionicView.enter', function() {
+        LumenStomp.connect(function() {
             $scope.client = LumenStomp.getClient();
             $scope.switchAvatar();
         });
     });
-    $scope.$on('$ionicView.beforeLeave', function () {
+    $scope.$on('$ionicView.beforeLeave', function() {
         LumenStomp.disconnect();
     });
 })
-    .controller('ObjectRecognitionCtrl', function ($scope, $stateParams, $log, Settings, LumenStomp) {
+
+.controller('ObjectRecognitionCtrl', function($scope, $stateParams, $log, Settings, LumenStomp) {
     $scope.imageObject = null;
     $scope.bottomImageObject = null;
     $scope.recognizeds = [];
@@ -65,8 +75,9 @@ angular.module('starter.controllers')
         avatarId: 'nao1',
         agentId: 'arkan'
     };
+
     // Avatar
-    $scope.switchAvatar = function () {
+    $scope.switchAvatar = function() {
         LumenStomp.unsubscribeAll();
         /*LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.camera.main', function(msg) {
             var imageObject = JSON.parse(msg.body);
@@ -78,61 +89,66 @@ angular.module('starter.controllers')
             $scope.bottomImageObject = imageObject;
             $log.debug('Got bottom ImageObject', imageObject);
         });*/
-        LumenStomp.subscribe('/topic/lumen.visual.hogobj.recognition', function (msg) {
+        LumenStomp.subscribe('/topic/lumen.visual.hogobj.recognition', function(msg) {
             var recognizeds = JSON.parse(msg.body);
-            $log.debug('Received RecognizedObjects', recognizeds);
+			$log.debug('Received RecognizedObjects', recognizeds);
             $scope.recognizeds = recognizeds;
         });
         $log.info('Subscriptions:', LumenStomp.getSubscriptions());
     };
-    $scope.$on('$ionicView.enter', function () {
-        LumenStomp.connect(function () {
+
+    $scope.$on('$ionicView.enter', function() {
+        LumenStomp.connect(function() {
             $scope.client = LumenStomp.getClient();
             $scope.switchAvatar();
         });
     });
-    $scope.$on('$ionicView.beforeLeave', function () {
+    $scope.$on('$ionicView.beforeLeave', function() {
         LumenStomp.disconnect();
     });
-    $scope.sendMockRecognizedObjects = function () {
-        var recognizedObjects = {
-            "@type": "RecognizedObjects",
-            "hasPosition": true,
-            "hasDistance": false,
-            "hasYaw": false,
-            "trashes": [
-                {
-                    "@type": "RecognizedObject",
-                    "topPosition": { "@type": "Vector2", "x": 45, "y": 70 },
-                    "bottomPosition": null
-                },
-                {
-                    "@type": "RecognizedObject",
-                    "topPosition": null,
-                    "bottomPosition": { "@type": "Vector2", "x": 98, "y": 120 }
-                }
-            ],
-            "trashCans": [
-                {
-                    "@type": "RecognizedObject",
-                    "topPosition": null,
-                    "bottomPosition": { "@type": "Vector2", "x": 118, "y": 20 }
-                }
-            ]
-        };
-        $log.debug('Sending RecognizedObjects', recognizedObjects);
-        $scope.client.send('/topic/lumen.visual.hogobj.recognition', {}, JSON.stringify(recognizedObjects));
-    };
+
+	$scope.sendMockRecognizedObjects = function() {
+		var recognizedObjects = {
+			"@type": "RecognizedObjects",
+			"hasPosition": true,
+			"hasDistance": false,
+			"hasYaw": false,
+			"trashes": [
+				{
+					"@type": "RecognizedObject",
+					"topPosition": {"@type": "Vector2", "x": 45, "y": 70},
+					"bottomPosition": null
+				},
+				{
+					"@type": "RecognizedObject",
+					"topPosition": null,
+					"bottomPosition": {"@type": "Vector2", "x": 98, "y": 120}
+				}
+			],
+			"trashCans": [
+				{
+					"@type": "RecognizedObject",
+					"topPosition": null,
+					"bottomPosition": {"@type": "Vector2", "x": 118, "y": 20}
+				}
+			]
+		};
+		$log.debug('Sending RecognizedObjects', recognizedObjects);
+		$scope.client.send('/topic/lumen.visual.hogobj.recognition',
+			{}, JSON.stringify(recognizedObjects));
+	};
 })
-    .controller('FaceRecognitionImgCtrl', function ($scope, $stateParams, $log, LumenStomp, Settings) {
+
+.controller('FaceRecognitionImgCtrl', function($scope, $stateParams, $log, LumenStomp, Settings) {
     $scope.imageObject = null;
     $scope.recognizeds = [];
+
     // Avatar
-    $scope.switchAvatar = function () {
+    $scope.switchAvatar = function() {
         LumenStomp.unsubscribeAll();
         $scope.imageObject = null;
         $scope.bottomImageObject = null;
-        LumenStomp.subscribe('/topic/lumen.arkan.face.recognition', function (msg) {
+        LumenStomp.subscribe('/topic/lumen.arkan.face.recognition', function(msg) {
             var recognized = JSON.parse(msg.body);
             recognized.cssStyle = {
                 left: recognized.minPoint.x + 'px',
@@ -142,16 +158,18 @@ angular.module('starter.controllers')
         });
         $log.info('Subscriptions:', LumenStomp.getSubscriptions());
     };
-    $scope.$on('$ionicView.enter', function () {
-        LumenStomp.connect(function () {
+    
+    $scope.$on('$ionicView.enter', function() {
+        LumenStomp.connect(function() {
             $scope.client = LumenStomp.getClient();
             $scope.switchAvatar();
         });
     });
-    $scope.$on('$ionicView.beforeLeave', function () {
+    $scope.$on('$ionicView.beforeLeave', function() {
         LumenStomp.disconnect();
     });
-    $scope.testStomp = function () {
+    
+    $scope.testStomp = function() {
         var imageObject = {
             '@type': 'ImageObject',
             name: 'wajah1_240p.jpg',
@@ -163,16 +181,16 @@ angular.module('starter.controllers')
         $log.info('ImageObject', imageObject, JSON.stringify(imageObject));
         $scope.client.send('/topic/avatar.nao1.camera.main', {}, JSON.stringify(imageObject));
     };
-    $scope.loadImage = function () {
+    $scope.loadImage = function() {
         $scope.recognizeds = [];
-        var imageFileEl = document.getElementById('imageFile');
+        var imageFileEl = document.getElementById('imageFile') as HTMLInputElement;
         // {"webkitRelativePath":"","lastModified":1373040168000,"lastModifiedDate":"2013-07-05T16:02:48.000Z","name":"Sate Tegal Balibul3.jpg","type":"image/jpeg","size":42082}
         var imageFile = imageFileEl.files[0];
         $log.debug('Reading...', imageFileEl, imageFileEl.files, imageFile, JSON.stringify(imageFile));
         // ImageObject: name, contentType, contentUrl, contentSize, width, height, uploadDate, dateCreated, dateModified, datePublished
         var reader = new FileReader();
-        reader.onloadend = function () {
-            $scope.$apply(function () {
+        reader.onloadend = function() {
+            $scope.$apply(function() {
                 $scope.imageObject = {
                     '@type': 'ImageObject',
                     name: imageFile.name,
@@ -186,24 +204,26 @@ angular.module('starter.controllers')
         };
         reader.readAsDataURL(imageFile);
     };
-    $scope.recognize = function () {
+    $scope.recognize = function() {
         $log.info('Recognizing...', $scope.imageObject, JSON.stringify($scope.imageObject));
         $scope.client.send('/topic/avatar.nao1.camera.main', {}, JSON.stringify($scope.imageObject));
     };
 })
-    .controller('FaceRecognitionCamCtrl', function ($scope, $stateParams, $log, $interval, LumenStomp, Settings) {
+.controller('FaceRecognitionCamCtrl', function($scope, $stateParams, $log, $interval, LumenStomp, Settings) {
     'use strict';
+
     $scope.imageObject = null;
     $scope.recognizeds = [];
-    $scope.humanPos = { x: null, y: null, z: null };
+    $scope.humanPos = {x: null, y: null, z: null};
     $scope.markers = {};
-    //    {
-    //        position: {imageU: 10, imageV: 100, imageVH: 50},
-    //        cssStyle: {left: '0px', top: '0px', height: '0px'}}];
+//    {
+//        position: {imageU: 10, imageV: 100, imageVH: 50},
+//        cssStyle: {left: '0px', top: '0px', height: '0px'}}];
+
     // Avatar
-    $scope.switchAvatar = function () {
+    $scope.switchAvatar = function() {
         LumenStomp.unsubscribeAll();
-        LumenStomp.subscribe('/topic/lumen.arkan.face.recognition', function (msg) {
+        LumenStomp.subscribe('/topic/lumen.arkan.face.recognition', function(msg) {
             var recognized = JSON.parse(msg.body);
             recognized.cssStyle = {
                 left: recognized.minPoint.x + 'px',
@@ -211,15 +231,15 @@ angular.module('starter.controllers')
             };
             $scope.recognizeds.push(recognized);
         });
-        LumenStomp.subscribe('/topic/lumen.arkan.human.detection', function (msg) {
+        LumenStomp.subscribe('/topic/lumen.arkan.human.detection', function(msg) {
             var humanChanges = JSON.parse(msg.body);
-            var humanThings = humanChanges.humanDetecteds.concat(humanChanges.humanMovings);
-            _.each(humanThings, function (e) {
+            var humanThings = humanChanges.humanDetecteds.concat(humanChanges.humanMovings) as HumanDetected[];
+            _.each(humanThings, function(e) {
                 $log.debug('human', e.humanId, 'pos', e.position);
                 $scope.humanPos = e.position;
                 $scope.markers[e.humanId] = e;
                 e.cssStyle = {
-                    left: (e.imageU - 2) + 'px',
+                    left: (e.imageU-2) + 'px',
                     top: (e.imageV - e.imageVH) + 'px',
                     width: '5px',
                     height: e.imageVH + 'px'
@@ -228,47 +248,54 @@ angular.module('starter.controllers')
         });
         $log.info('Subscriptions:', LumenStomp.getSubscriptions());
     };
-    $scope.$on('$ionicView.enter', function () {
-        LumenStomp.connect(function () {
+
+    $scope.$on('$ionicView.enter', function() {
+        LumenStomp.connect(function() {
             $scope.client = LumenStomp.getClient();
             $scope.switchAvatar();
         });
     });
-    $scope.$on('$ionicView.beforeLeave', function () {
+    $scope.$on('$ionicView.beforeLeave', function() {
         LumenStomp.disconnect();
     });
+
     var imageContentType = 'image/jpeg'; // stomp.js can't handle big messages yet :(
-    var _video = null, patData = null, dataUri = null;
-    $scope.patOpts = { x: 0, y: 0, w: 320, h: 240 };
+    var _video = null,
+        patData = null,
+        dataUri = null;
+    $scope.patOpts = {x: 0, y: 0, w: 320, h: 240};
     $scope.streamingInterval = 1000;
     $scope.streamer = null;
-    $scope.onStream = function (stream) {
+
+    $scope.onStream = function(stream) {
         // You could do something manually with the stream.
         _video = document.querySelector('.webcam-live');
         $log.debug('onStream', stream, _video);
     };
-    $scope.onAccessDenied = function (err) {
+    $scope.onAccessDenied = function(err) {
         $log.error('Webcam error:', err);
     };
-    $scope.onStreaming = function () {
+    $scope.onStreaming = function() {
         _video = document.querySelector('.webcam-live');
         $log.debug('onStreaming', _video);
         // The video element contains the captured camera data
-        //        $scope.$apply(function() {
-        //            $scope.patOpts.w = _video.width;
-        //            $scope.patOpts.h = _video.height;
-        //        });
+//        $scope.$apply(function() {
+//            $scope.patOpts.w = _video.width;
+//            $scope.patOpts.h = _video.height;
+//        });
     };
-    /* no longer used
-        var getVideoData = function getVideoData(x, y, w, h) {
-            var hiddenCanvas = document.createElement('canvas');
-            hiddenCanvas.width = $scope.patOpts.w;
-            hiddenCanvas.height = $scope.patOpts.h;
-            var ctx = hiddenCanvas.getContext('2d');
-            ctx.drawImage(_video, 0, 0, $scope.patOpts.w, $scope.patOpts.h);
-            return ctx.getImageData(x, y, w, h);
-        };
-        */
+
+/* no longer used
+    var getVideoData = function getVideoData(x, y, w, h) {
+        var hiddenCanvas = document.createElement('canvas');
+        hiddenCanvas.width = $scope.patOpts.w;
+        hiddenCanvas.height = $scope.patOpts.h;
+        var ctx = hiddenCanvas.getContext('2d');
+        ctx.drawImage(_video, 0, 0, $scope.patOpts.w, $scope.patOpts.h);
+        return ctx.getImageData(x, y, w, h);
+    };
+    */
+
     /**
      * This function could be used to send the image data
      * to a backend server that expects base64 encoded images.
@@ -278,22 +305,24 @@ angular.module('starter.controllers')
     var sendSnapshotToServer = function sendSnapshotToServer(imgBase64) {
         $scope.snapshotData = imgBase64;
     };
+
     /**
      * Make a snapshot of the camera data and show it in another canvas.
      */
     $scope.makeSnapshot = function makeSnapshot() {
         if (_video) {
-            var patCanvas = document.querySelector('#snapshot');
-            if (!patCanvas)
-                return;
+            var patCanvas = document.querySelector('#snapshot') as HTMLCanvasElement;
+            if (!patCanvas) return;
+
             patCanvas.width = $scope.patOpts.w;
             patCanvas.height = $scope.patOpts.h;
             var ctxPat = patCanvas.getContext('2d');
-            //            var idata = getVideoData($scope.patOpts.x, $scope.patOpts.y, $scope.patOpts.w, $scope.patOpts.h);
-            //            ctxPat.putImageData(idata, 0, 0);
+
+//            var idata = getVideoData($scope.patOpts.x, $scope.patOpts.y, $scope.patOpts.w, $scope.patOpts.h);
+//            ctxPat.putImageData(idata, 0, 0);
             ctxPat.drawImage(_video, 0, 0, $scope.patOpts.w, $scope.patOpts.h);
             $log.info($scope.markers.length, 'markers', $scope.markers);
-            _.each($scope.markers, function (e, k) {
+            _.each($scope.markers as HumanDetected[], function(e, k) {
                 ctxPat.beginPath();
                 ctxPat.lineWidth = 8;
                 ctxPat.strokeStyle = '#00ff00';
@@ -302,15 +331,18 @@ angular.module('starter.controllers')
                 ctxPat.stroke();
             });
             var idata = ctxPat.getImageData($scope.patOpts.x, $scope.patOpts.y, $scope.patOpts.w, $scope.patOpts.h);
+
             sendSnapshotToServer(patCanvas.toDataURL(imageContentType));
+
             patData = idata;
         }
     };
-    $scope.recognize = function () {
+    $scope.recognize = function() {
         if (!$scope.snapshotData) {
             alert('No $scope.snapshotData!');
             return;
         }
+
         $scope.imageObject = {
             '@type': 'ImageObject',
             name: 'camera.jpg',
@@ -321,12 +353,13 @@ angular.module('starter.controllers')
         };
         $log.info('Recognizing...', $scope.imageObject, JSON.stringify($scope.imageObject));
         $scope.client.send('/topic/avatar.nao1.camera.main', {}, JSON.stringify($scope.imageObject));
-        //        window.alert('Sent: ' + JSON.stringify($scope.imageObject).substr(0, 300));
+//        window.alert('Sent: ' + JSON.stringify($scope.imageObject).substr(0, 300));
     };
-    $scope.makeSnapshotAndRecognize = function () {
+    $scope.makeSnapshotAndRecognize = function() {
         $scope.makeSnapshot();
         $scope.recognize();
     };
+
     /**
      * Redirect the browser to the URL given.
      * Used to download the image by passing a dataURL string
@@ -334,14 +367,17 @@ angular.module('starter.controllers')
     $scope.downloadSnapshot = function downloadSnapshot(dataURL) {
         window.location.href = dataURL;
     };
-    $scope.startStreaming = function () {
-        $scope.streamer = $interval(function () {
+
+    $scope.startStreaming = function() {
+        $scope.streamer = $interval(function() {
             $scope.makeSnapshotAndRecognize();
         }, $scope.streamingInterval);
     };
-    $scope.stopStreaming = function () {
+    $scope.stopStreaming = function() {
         $log.info('Canceling streamer');
         $interval.cancel($scope.streamer);
         $scope.streamer = null;
     };
-});
+})
+
+;
