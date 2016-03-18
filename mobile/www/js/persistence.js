@@ -26,7 +26,7 @@ angular.module('starter.controllers')
             $scope.switchAvatar();
         });
     });
-    $scope.$on('$ionicView.leave', function() {
+    $scope.$on('$ionicView.beforeLeave', function() {
         LumenStomp.disconnect();
     });
 

@@ -126,8 +126,8 @@ var WaveSurfer = {
         });
     },
 
-    startAnimationLoop: function () {        
-        var my = this;        
+    startAnimationLoop: function () {
+        var my = this;
         var requestFrame = window.requestAnimationFrame ||
                            window.webkitRequestAnimationFrame ||
                            window.mozRequestAnimationFrame;
@@ -135,7 +135,7 @@ var WaveSurfer = {
             if (!my.backend.isPaused()) {
                 var percent = my.backend.getPlayedPercents();
                 my.drawer.progress(percent);
-                my.fireEvent('audioprocess', percent);
+                my.fireEvent('audioprocess', my.getCurrentTime());
                 requestFrame(frame);
             }
         };
@@ -364,7 +364,6 @@ var WaveSurfer = {
                 this.fireEvent('error', err);
             }).bind(this))
         );
-
 
         // If no pre-decoded peaks provided, attempt to download the
         // audio file and decode it with Web Audio.

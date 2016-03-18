@@ -165,7 +165,7 @@ angular.module('starter.controllers')
         }, 250);
     });
 
-    $scope.$on('$ionicView.leave', function() {
+    $scope.$on('$ionicView.beforeLeave', function() {
         console.log('leaving UserMessages view, destroying interval');
         LumenStomp.disconnect();
         // Make sure that the interval is destroyed

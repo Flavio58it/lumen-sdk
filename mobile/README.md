@@ -52,6 +52,10 @@
         sudo rabbitmq-plugins enable rabbitmq_web_stomp
         sudo service rabbitmq-server restart
 
+6. TypeScript, gulp, gulp-tsc, gulp-minify-css, gulp-concat, are required:
+
+        npm -V install
+
 ## Serve the App
 
 **Windows:** Use _Node.js command prompt_, to `mobile` directory, and run: `ionic serve`, e.g.

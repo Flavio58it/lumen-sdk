@@ -2,7 +2,8 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var bower = require('bower');
 var concat = require('gulp-concat');
-var sass = require('gulp-sass');
+// disable sass due to gulp-sass requiring node-gyp requiring gyp requiring python < 3.0
+//var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
@@ -13,7 +14,8 @@ var paths = {
   src: ['./src/*.ts']
 };
 
-gulp.task('default', ['sass']);
+//gulp.task('default', ['sass']);
+gulp.task('default', ['compile']);
 
 gulp.task('compile', function() {
     gulp.src(paths.src)
@@ -34,7 +36,7 @@ gulp.task('sass', function(done) {
 });
 
 gulp.task('watch', function() {
-  gulp.watch(paths.sass, ['sass']);
+//  gulp.watch(paths.sass, ['sass']);
   gulp.watch(paths.src, ['compile']);
 });
 

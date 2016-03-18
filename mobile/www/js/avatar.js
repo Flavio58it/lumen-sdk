@@ -139,7 +139,7 @@ angular.module('starter.controllers')
             vm.switchAvatar();
         });
     });
-    $scope.$on('$ionicView.leave', function() {
+    $scope.$on('$ionicView.beforeLeave', function() {
         LumenStomp.disconnect();
     });
 
@@ -478,7 +478,7 @@ angular.module('starter.controllers')
             vm.switchAvatar();
         });
     });
-    $scope.$on('$ionicView.leave', function() {
+    $scope.$on('$ionicView.beforeLeave', function() {
         LumenStomp.disconnect();
     });
 

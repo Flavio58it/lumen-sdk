@@ -1,4 +1,5 @@
 {
   "name": "lumen",
-  "app_id": ""
+  "app_id": "lumen",
+  "gulpStartupTasks": ["compile", "watch"]
 }
