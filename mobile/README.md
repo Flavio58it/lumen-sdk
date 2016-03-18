@@ -54,7 +54,11 @@
 
 6. TypeScript, gulp, gulp-tsc, gulp-minify-css, gulp-concat, are required:
 
-        npm -V install
+        npm install -V
+
+7. You will want [typings](https://www.npmjs.com/package/typings) package:
+
+        npm install -V -g typings
 
 ## Serve the App
 
