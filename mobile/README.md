@@ -56,9 +56,12 @@
 
         npm install -V
 
-7. You will want [typings](https://www.npmjs.com/package/typings) package:
+7. You will want [typings](https://www.npmjs.com/package/typings) package,
+   then install the used typings so you can use it in supported TypeScript IDE
+   such as [Visual Studio Code](https://code.visualstudio.com/).
 
         npm install -V -g typings
+        typings install
 
 ## Serve the App
 
