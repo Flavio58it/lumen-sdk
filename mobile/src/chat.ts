@@ -7,6 +7,20 @@ Requires bower packages:
 4. Autolinker.js
 */
 
+interface ChatMessage {
+    _id?: string,
+    toId?: string,
+    text?: string,
+    date?: Date,
+    username?: string,
+    userId?: string,
+    pic?: string 
+}
+
+class MockService {
+    getUserMessages: any;
+    getMockMessage: any;
+}
 angular.module('starter.controllers')
 
 .controller('SocialChatCtrl', function($scope, $stateParams, $log, 
@@ -53,8 +67,8 @@ angular.module('starter.controllers')
             var communicateAction = JSON.parse(exchange.body);
             $log.info("Received inbox", communicateAction.object, communicateAction);
 
-            $log.debug('map', _.map(vm.messages, function(m) { return m._id; }));
-            var already = _.find(vm.messages, function(m) { return m._id == communicateAction['@id']; }) || false;
+            $log.debug('map', _.map(vm.messages, function(m: ChatMessage) { return m._id; }));
+            var already = _.find(vm.messages, function(m: ChatMessage) { return m._id == communicateAction['@id']; }) || false;
             $log.debug('contains', typeof communicateAction['@id'] === 'undefined', communicateAction['@id'], already);
             if ((typeof communicateAction['@id'] === 'undefined') || !already) {
 
@@ -111,7 +125,7 @@ angular.module('starter.controllers')
             var msg = JSON.parse(exchange.body);
             $log.info("Received audio", msg.name, msg.contentType, msg.contentSize, 'bytes', msg);
             var playedId = 'played';
-            var playedEl = document.getElementById(playedId);
+            var playedEl = document.getElementById(playedId) as HTMLMediaElement;
             playedEl.src = msg.contentUrl;
             //vm.replayPlayed();
             if (!vm.form.audio.muted) {
@@ -156,7 +170,7 @@ angular.module('starter.controllers')
                 return;
             }
             //$log.debug('audioQueue:', vm.audioQueue);
-            var current = document.getElementById(vm.audioQueue[0]);
+            var current = document.getElementById(vm.audioQueue[0]) as HTMLMediaElement;
             if (current.paused && !current.ended) {
                 $log.debug('Playing ', current, '...');
                 current.play();
@@ -208,9 +222,9 @@ angular.module('starter.controllers')
     });
 
     this.sendMessage = function(sendMessageForm) {
-      var message = {
-        toId: vm.toUser._id,
-        text: vm.form.message
+      var message: ChatMessage = {
+        toId: vm.toUser._id as string,
+        text: vm.form.message as string
       };
 
       // if you do a web service call this will be needed as well as before the viewScroll calls
@@ -320,13 +334,13 @@ angular.module('starter.controllers')
     });
 
     this.replayPlayed = function() {
-        var playedEl = document.getElementById('played');
+        var playedEl = document.getElementById('played') as HTMLMediaElement;
         $log.info('Playing played ', playedEl, 'seconds ...');
         playedEl.play();
     };
 
     this.sendRecordedMic = function() {
-        var recordedFileEl = document.getElementById('recordedMic');
+        var recordedFileEl = document.getElementById('recordedMic') as HTMLInputElement;
         var recordedFile = recordedFileEl.files[0];
         $log.debug('Reading...', recordedFileEl, recordedFileEl.files, recordedFile, JSON.stringify(recordedFile));
         var reader = new FileReader();
@@ -359,7 +373,7 @@ angular.module('starter.controllers')
 // services
 .factory('MockService', ['$http', '$q',
   function($http, $q) {
-    var me = {};
+    var me = new MockService();
 
     me.getUserMessages = function(d) {
       /*
@@ -427,7 +441,7 @@ angular.module('starter.controllers')
 
           for (var i = 0; i < autolinks.length; i++) {
             angular.element(autolinks[i]).bind('click', function(e) {
-              var href = e.target.href;
+              var href = (e.target as HTMLAnchorElement).href;
               console.log('autolinkClick, href: ' + href);
 
               if (href) {
@@ -461,6 +475,9 @@ function getMockMessages() {
 //  return mockMessages;
 }
 
+//import momentRef = require('moment');
+//declare var moment: moment.MomentStatic = momentRef;
+declare var moment: any;
 // configure moment relative time
 moment.locale('en', {
   relativeTime: {
