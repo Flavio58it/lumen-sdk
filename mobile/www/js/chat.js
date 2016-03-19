@@ -23,6 +23,7 @@ var Locale = (function () {
 }());
 var SocialChatCtrl = (function () {
     function SocialChatCtrl($scope, $stateParams, $log, LumenStomp, $window, Settings, $rootScope, $state, MockService, $ionicActionSheet, $ionicPopup, $ionicScrollDelegate, $timeout, $interval) {
+        var _this = this;
         this.$scope = $scope;
         this.$stateParams = $stateParams;
         this.$log = $log;
@@ -78,52 +79,51 @@ var SocialChatCtrl = (function () {
         var scroller;
         var audioQueueTimer;
         $scope.$on('$ionicView.enter', function () {
-            console.log('UserMessages $ionicView.enter');
+            _this.$log.debug('UserMessages $ionicView.enter');
             getMessages();
             $timeout(function () {
                 footerBar = document.body.querySelector('#userMessagesView .bar-footer');
                 scroller = document.body.querySelector('#userMessagesView .scroll-content');
-                vm.txtInput = angular.element(footerBar.querySelector('textarea'));
+                _this.txtInput = angular.element(footerBar.querySelector('textarea'));
             }, 0);
             messageCheckTimer = $interval(function () {
                 // here you could check for new messages if your app doesn't use push notifications or user disabled them
             }, 20000);
-            LumenStomp.connect(function () {
-                vm.client = LumenStomp.getClient();
-                vm.switchAvatar();
+            _this.LumenStomp.connect(function () {
+                _this.client = LumenStomp.getClient();
+                _this.switchAvatar();
             });
             audioQueueTimer = $interval(function () {
-                if (vm.audioQueue.length == 0) {
+                if (_this.audioQueue.length == 0) {
                     return;
                 }
                 //$log.debug('audioQueue:', vm.audioQueue);
-                var current = document.getElementById(vm.audioQueue[0]);
+                var current = document.getElementById(_this.audioQueue[0]);
                 if (current.paused && !current.ended) {
-                    $log.debug('Playing ', current, '...');
+                    _this.$log.debug('Playing ', current, '...');
                     current.play();
                 }
                 else if (current.ended) {
-                    $log.debug('Finished playing', current);
-                    vm.audioQueue.shift();
+                    _this.$log.debug('Finished playing', current);
+                    _this.audioQueue.shift();
                 }
             }, 250);
         });
         $scope.$on('$ionicView.beforeLeave', function () {
-            console.log('leaving UserMessages view, destroying interval');
-            LumenStomp.disconnect();
+            _this.$log.debug('leaving UserMessages view, destroying interval');
+            _this.LumenStomp.disconnect();
             // Make sure that the interval is destroyed
             if (angular.isDefined(messageCheckTimer)) {
-                $interval.cancel(messageCheckTimer);
+                _this.$interval.cancel(messageCheckTimer);
                 messageCheckTimer = undefined;
             }
             if (angular.isDefined(audioQueueTimer)) {
-                $interval.cancel(audioQueueTimer);
+                _this.$interval.cancel(audioQueueTimer);
                 audioQueueTimer = undefined;
             }
         });
         $scope.$on('$ionicView.beforeLeave', function () {
-            if (!vm.form.message || vm.form.message === '') {
-                localStorage.removeItem('userMessage-' + vm.toUser._id);
+            if (!_this.form.message || _this.form.message === '') {
             }
         });
         function getMessages() {
@@ -139,10 +139,10 @@ var SocialChatCtrl = (function () {
             });
         }
         $scope.$watch('input.message', function (newValue, oldValue) {
-            $log.debug('input.message $watch, newValue ' + newValue);
+            _this.$log.debug('input.message $watch, newValue ' + newValue);
             if (!newValue)
                 newValue = '';
-            localStorage['userMessage-' + vm.toUser._id] = newValue;
+            //localStorage['userMessage-' + vm.toUser._id] = newValue;
         });
         // I emit this event from the monospaced.elastic directive, read line 480
         $scope.$on('elastic:resize', function (e, ta, oldHeight, newHeight) {

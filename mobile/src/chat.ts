@@ -56,13 +56,14 @@ class SocialChatCtrl {
     txtInput: JQuery;
     viewScroll: ionic.scroll.IonicScrollDelegate;
     
-    constructor(public $scope, public $stateParams, public $log, 
-        public LumenStomp, public $window: Window, public Settings,
-        public $rootScope, public $state, public MockService,
-        public $ionicActionSheet,
+    constructor(public $scope: ng.IScope, public $stateParams: ng.ui.IStateParamsService, 
+        public $log: ng.ILogService, 
+        public LumenStomp, public $window: ng.IWindowService, public Settings,
+        public $rootScope: ng.IRootScopeService, public $state: ng.ui.IState, public MockService,
+        public $ionicActionSheet: ionic.actionSheet.IonicActionSheetService,
         public $ionicPopup: ionic.popup.IonicPopupService,
         public $ionicScrollDelegate: ionic.scroll.IonicScrollDelegate, 
-        public $timeout, public $interval) {
+        public $timeout: ng.ITimeoutService, public $interval: ng.IIntervalService) {
     var vm = this;
     this.messages = [];
     this.toUser = {
@@ -101,60 +102,59 @@ class SocialChatCtrl {
     var scroller;
     var audioQueueTimer;
 
-    $scope.$on('$ionicView.enter', function() {
-
-        console.log('UserMessages $ionicView.enter');
+    $scope.$on('$ionicView.enter', () => {
+        this.$log.debug('UserMessages $ionicView.enter');
 
         getMessages();
 
-        $timeout(function() {
+        $timeout(() => {
             footerBar = document.body.querySelector('#userMessagesView .bar-footer');
             scroller = document.body.querySelector('#userMessagesView .scroll-content');
-            vm.txtInput = angular.element(footerBar.querySelector('textarea'));
+            this.txtInput = angular.element(footerBar.querySelector('textarea'));
         }, 0);
 
-        messageCheckTimer = $interval(function() {
+        messageCheckTimer = $interval(() => {
             // here you could check for new messages if your app doesn't use push notifications or user disabled them
         }, 20000);
 
-        LumenStomp.connect(function() {
-            vm.client = LumenStomp.getClient();
-            vm.switchAvatar();
+        this.LumenStomp.connect(() => {
+            this.client = LumenStomp.getClient();
+            this.switchAvatar();
         });
 
-        audioQueueTimer = $interval(function() {
-            if (vm.audioQueue.length == 0) {
+        audioQueueTimer = $interval(() => {
+            if (this.audioQueue.length == 0) {
                 return;
             }
             //$log.debug('audioQueue:', vm.audioQueue);
-            var current = document.getElementById(vm.audioQueue[0]) as HTMLMediaElement;
+            var current = document.getElementById(this.audioQueue[0]) as HTMLMediaElement;
             if (current.paused && !current.ended) {
-                $log.debug('Playing ', current, '...');
+                this.$log.debug('Playing ', current, '...');
                 current.play();
             } else if (current.ended) {
-                $log.debug('Finished playing', current);
-                vm.audioQueue.shift();
+                this.$log.debug('Finished playing', current);
+                this.audioQueue.shift();
             }
         }, 250);
     });
 
-    $scope.$on('$ionicView.beforeLeave', function() {
-        console.log('leaving UserMessages view, destroying interval');
-        LumenStomp.disconnect();
+    $scope.$on('$ionicView.beforeLeave', () => {
+        this.$log.debug('leaving UserMessages view, destroying interval');
+        this.LumenStomp.disconnect();
         // Make sure that the interval is destroyed
         if (angular.isDefined(messageCheckTimer)) {
-            $interval.cancel(messageCheckTimer);
+            this.$interval.cancel(messageCheckTimer);
             messageCheckTimer = undefined;
         }
         if (angular.isDefined(audioQueueTimer)) {
-            $interval.cancel(audioQueueTimer);
+            this.$interval.cancel(audioQueueTimer);
             audioQueueTimer = undefined;
         }
     });
 
-    $scope.$on('$ionicView.beforeLeave', function() {
-      if (!vm.form.message || vm.form.message === '') {
-        localStorage.removeItem('userMessage-' + vm.toUser._id);
+    $scope.$on('$ionicView.beforeLeave', () => {
+      if (!this.form.message || this.form.message === '') {
+        //localStorage.removeItem('userMessage-' + this.toUser._id);
       }
     });
 
@@ -172,10 +172,10 @@ class SocialChatCtrl {
       });
     }
 
-    $scope.$watch('input.message', function(newValue, oldValue) {
-      $log.debug('input.message $watch, newValue ' + newValue);
+    $scope.$watch('input.message', (newValue, oldValue) => {
+      this.$log.debug('input.message $watch, newValue ' + newValue);
       if (!newValue) newValue = '';
-      localStorage['userMessage-' + vm.toUser._id] = newValue;
+      //localStorage['userMessage-' + vm.toUser._id] = newValue;
     });
 
     // I emit this event from the monospaced.elastic directive, read line 480
