@@ -22,8 +22,8 @@ gulp.task('compile', function() {
     gulp.src(paths.src)
         .pipe(sourcemaps.init())
         .pipe(ts({sortOutput: true}))
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest('www/js/'));
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('www/js'));
 });
 
 gulp.task('sass', function(done) {
