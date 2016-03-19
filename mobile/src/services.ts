@@ -8,7 +8,7 @@ class Settings {
         motionAllowed: false,
     };
 
-    constructor(public $q, public $log, public $window) {
+    constructor(public $log: ng.ILogService, public $window: ng.IWindowService) {
     }
 
     getDefault() {
@@ -31,10 +31,11 @@ class LumenStomp {
     public client = null;
     public subscriptions = [];
     
-    constructor(public $q, public $log, public $window, public Settings: Settings, public ngstomp) {
+    constructor(public $log: ng.ILogService, public $window: ng.IWindowService, 
+        public Settings: Settings, public ngstomp) {
     }
     
-    connect(callback) {
+    connect(callback: () => any) {
         var settings = this.Settings.getSettings();
         this.$log.info('Stomp connecting to', settings.stompUri);
         this.client = this.ngstomp(settings.stompUri);

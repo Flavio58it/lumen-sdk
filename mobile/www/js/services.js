@@ -1,7 +1,6 @@
 /// <reference path="../typings/main.d.ts"/>
 var Settings = (function () {
-    function Settings($q, $log, $window) {
-        this.$q = $q;
+    function Settings($log, $window) {
         this.$log = $log;
         this.$window = $window;
         this.defaultSettings = {
@@ -26,8 +25,7 @@ var Settings = (function () {
     return Settings;
 }());
 var LumenStomp = (function () {
-    function LumenStomp($q, $log, $window, Settings, ngstomp) {
-        this.$q = $q;
+    function LumenStomp($log, $window, Settings, ngstomp) {
         this.$log = $log;
         this.$window = $window;
         this.Settings = Settings;

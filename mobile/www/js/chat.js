@@ -159,75 +159,75 @@ var SocialChatCtrl = (function () {
         });
     }
     SocialChatCtrl.prototype.switchAvatar = function () {
-        var vm = this;
+        var _this = this;
         this.LumenStomp.unsubscribeAll();
         this.messages = [];
         this.LumenStomp.subscribe('/topic/avatar.' + this.form.avatarId + '.chat.inbox', function (exchange) {
             var communicateAction = JSON.parse(exchange.body);
-            vm.$log.info("Received inbox", communicateAction.object, communicateAction);
-            vm.$log.debug('map', _.map(vm.messages, function (m) { return m._id; }));
-            var already = _.find(vm.messages, function (m) { return m._id == communicateAction['@id']; }) || false;
-            vm.$log.debug('contains', typeof communicateAction['@id'] === 'undefined', communicateAction['@id'], already);
+            _this.$log.info("Received inbox", communicateAction.object, communicateAction);
+            _this.$log.debug('map', _.map(_this.messages, function (m) { return m._id; }));
+            var already = _.find(_this.messages, function (m) { return m._id == communicateAction['@id']; }) || false;
+            _this.$log.debug('contains', typeof communicateAction['@id'] === 'undefined', communicateAction['@id'], already);
             if ((typeof communicateAction['@id'] === 'undefined') || !already) {
                 // TODO: natively support CommunicateAction
-                communicateAction.toId = vm.user._id;
+                communicateAction.toId = _this.user._id;
                 communicateAction.text = communicateAction.object;
                 if (typeof communicateAction['@id'] === undefined) {
                     communicateAction['@id'] = new Date().getTime(); // :~)
                     communicateAction._id = new Date().getTime(); // :~)
                 }
                 communicateAction.date = new Date();
-                communicateAction.username = vm.user.username;
-                communicateAction.userId = vm.user._id;
-                communicateAction.pic = vm.user.pic;
-                vm.messages.push(communicateAction);
+                communicateAction.username = _this.user.username;
+                communicateAction.userId = _this.user._id;
+                communicateAction.pic = _this.user.pic;
+                _this.messages.push(communicateAction);
             }
-            vm.keepKeyboardOpen.call(vm);
-            vm.viewScroll.scrollBottom(true);
+            _this.keepKeyboardOpen();
+            _this.viewScroll.scrollBottom(true);
         });
         // avatar.{avatarId}.chat.outbox
-        this.LumenStomp.subscribe('/topic/avatar.' + vm.form.avatarId + '.chat.outbox', function (exchange) {
+        this.LumenStomp.subscribe('/topic/avatar.' + this.form.avatarId + '.chat.outbox', function (exchange) {
             var communicateAction = JSON.parse(exchange.body);
-            vm.$log.info("Received outbox", communicateAction.object, communicateAction);
+            _this.$log.info("Received outbox", communicateAction.object, communicateAction);
             // TODO: natively support CommunicateAction
-            communicateAction.toId = vm.user._id;
+            communicateAction.toId = _this.user._id;
             communicateAction.text = communicateAction.object;
             communicateAction['@id'] = communicateAction['@id'] || (new Date().getTime() + '_outbox'); // :~)
             communicateAction._id = communicateAction['@id'];
             communicateAction.date = new Date();
-            communicateAction.username = vm.toUser.username;
-            communicateAction.userId = vm.toUser._id;
-            communicateAction.pic = vm.toUser.pic;
-            vm.messages.push(communicateAction);
-            vm.keepKeyboardOpen.call(vm);
-            vm.viewScroll.scrollBottom(true);
+            communicateAction.username = _this.toUser.username;
+            communicateAction.userId = _this.toUser._id;
+            communicateAction.pic = _this.toUser.pic;
+            _this.messages.push(communicateAction);
+            _this.keepKeyboardOpen();
+            _this.viewScroll.scrollBottom(true);
             // has audio?
             if (communicateAction.audio) {
                 var elId = 'audio_' + communicateAction['@id'];
                 //var playedEl = document.getElementById(elId);
-                if (!vm.form.audio.muted) {
-                    vm.$log.info('Queueing ', elId, '...');
-                    vm.audioQueue.push(elId);
+                if (!_this.form.audio.muted) {
+                    _this.$log.info('Queueing ', elId, '...');
+                    _this.audioQueue.push(elId);
                 }
             }
         });
         // audio.out: AudioObject
         this.LumenStomp.subscribe('/topic/avatar.*.audio.out', function (exchange) {
             var msg = JSON.parse(exchange.body);
-            vm.$log.info("Received audio", msg.name, msg.contentType, msg.contentSize, 'bytes', msg);
+            _this.$log.info("Received audio", msg.name, msg.contentType, msg.contentSize, 'bytes', msg);
             var playedId = 'played';
             var playedEl = document.getElementById(playedId);
             playedEl.src = msg.contentUrl;
-            //vm.replayPlayed();
-            if (!vm.form.audio.muted) {
-                vm.$log.info('Queueing ', playedId, '...');
-                vm.audioQueue.push(playedId);
+            //this.replayPlayed();
+            if (!_this.form.audio.muted) {
+                _this.$log.info('Queueing ', playedId, '...');
+                _this.audioQueue.push(playedId);
             }
         });
         this.$log.info('Subscriptions:', this.LumenStomp.getSubscriptions());
     };
     SocialChatCtrl.prototype.sendMessage = function (sendMessageForm) {
-        var vm = this;
+        var _this = this;
         var message = {
             toId: this.toUser._id,
             text: this.form.message
@@ -235,7 +235,7 @@ var SocialChatCtrl = (function () {
         // if you do a web service call this will be needed as well as before the viewScroll calls
         // you can't see the effect of this in the browser it needs to be used on a real device
         // for some reason the one time blur event is not firing in the browser but does on devices
-        this.keepKeyboardOpen.call(vm);
+        this.keepKeyboardOpen();
         //MockService.sendMessage(message).then(function(data) {
         this.form.message = '';
         message._id = 'chat:' + new Date().getTime(); // :~)
@@ -254,23 +254,25 @@ var SocialChatCtrl = (function () {
         };
         this.client.send('/topic/avatar.' + this.form.avatarId + '.chat.inbox', { "reply-to": '/topic/avatar.' + this.form.avatarId + '.chat.inbox' }, JSON.stringify(communicateAction));
         this.$timeout(function () {
-            vm.keepKeyboardOpen.call(vm);
-            vm.viewScroll.scrollBottom(true);
+            _this.keepKeyboardOpen();
+            _this.viewScroll.scrollBottom(true);
         }, 0);
         this.$timeout(function () {
             //        vm.messages.push(MockService.getMockMessage());
-            vm.keepKeyboardOpen.call(vm);
-            vm.viewScroll.scrollBottom(true);
+            _this.keepKeyboardOpen();
+            _this.viewScroll.scrollBottom(true);
         }, 2000);
         //});
     };
-    // this keeps the keyboard open on a device only after sending a message, it is non obtrusive
+    /**
+     * this keeps the keyboard open on a device only after sending a message, it is non obtrusive
+     */
     SocialChatCtrl.prototype.keepKeyboardOpen = function () {
-        var vm = this;
-        vm.$log.debug('keepKeyboardOpen', this.txtInput);
-        vm.txtInput.one('blur', function () {
-            vm.$log.debug('textarea blur, focus back on it');
-            vm.txtInput[0].focus();
+        var _this = this;
+        this.$log.debug('keepKeyboardOpen', this.txtInput);
+        this.txtInput.one('blur', function () {
+            _this.$log.debug('textarea blur, focus back on it');
+            _this.txtInput[0].focus();
         });
     };
     SocialChatCtrl.prototype.onMessageHold = function (e, itemIndex, message) {

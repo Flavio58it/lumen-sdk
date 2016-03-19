@@ -197,84 +197,82 @@ class SocialChatCtrl {
   }
   
     switchAvatar() {
-        var vm = this;
         this.LumenStomp.unsubscribeAll();
         this.messages = [];
-        this.LumenStomp.subscribe('/topic/avatar.' + this.form.avatarId + '.chat.inbox', function(exchange) {
+        this.LumenStomp.subscribe('/topic/avatar.' + this.form.avatarId + '.chat.inbox', exchange => {
             var communicateAction = JSON.parse(exchange.body);
-            vm.$log.info("Received inbox", communicateAction.object, communicateAction);
+            this.$log.info("Received inbox", communicateAction.object, communicateAction);
 
-            vm.$log.debug('map', _.map(vm.messages, function(m: ChatMessage) { return m._id; }));
-            var already = _.find(vm.messages, function(m: ChatMessage) { return m._id == communicateAction['@id']; }) || false;
-            vm.$log.debug('contains', typeof communicateAction['@id'] === 'undefined', communicateAction['@id'], already);
+            this.$log.debug('map', _.map(this.messages, function(m: ChatMessage) { return m._id; }));
+            var already = _.find(this.messages, function(m: ChatMessage) { return m._id == communicateAction['@id']; }) || false;
+            this.$log.debug('contains', typeof communicateAction['@id'] === 'undefined', communicateAction['@id'], already);
             if ((typeof communicateAction['@id'] === 'undefined') || !already) {
 
                 // TODO: natively support CommunicateAction
-                communicateAction.toId = vm.user._id;
+                communicateAction.toId = this.user._id;
                 communicateAction.text = communicateAction.object;
                 if (typeof communicateAction['@id'] === undefined) {
                     communicateAction['@id'] = new Date().getTime(); // :~)
                     communicateAction._id = new Date().getTime(); // :~)
                 }
                 communicateAction.date = new Date();
-                communicateAction.username = vm.user.username;
-                communicateAction.userId = vm.user._id;
-                communicateAction.pic = vm.user.pic;
+                communicateAction.username = this.user.username;
+                communicateAction.userId = this.user._id;
+                communicateAction.pic = this.user.pic;
 
-                vm.messages.push(communicateAction);
+                this.messages.push(communicateAction);
             }
 
-            vm.keepKeyboardOpen.call(vm);
-            vm.viewScroll.scrollBottom(true);
+            this.keepKeyboardOpen();
+            this.viewScroll.scrollBottom(true);
         });
         // avatar.{avatarId}.chat.outbox
-        this.LumenStomp.subscribe('/topic/avatar.' + vm.form.avatarId + '.chat.outbox', function(exchange) {
+        this.LumenStomp.subscribe('/topic/avatar.' + this.form.avatarId + '.chat.outbox', exchange => {
             var communicateAction = JSON.parse(exchange.body);
-            vm.$log.info("Received outbox", communicateAction.object, communicateAction);
+            this.$log.info("Received outbox", communicateAction.object, communicateAction);
 
             // TODO: natively support CommunicateAction
-            communicateAction.toId = vm.user._id;
+            communicateAction.toId = this.user._id;
             communicateAction.text = communicateAction.object;
             communicateAction['@id'] = communicateAction['@id'] || (new Date().getTime() + '_outbox'); // :~)
             communicateAction._id = communicateAction['@id'];
             communicateAction.date = new Date();
-            communicateAction.username = vm.toUser.username;
-            communicateAction.userId = vm.toUser._id;
-            communicateAction.pic = vm.toUser.pic;
+            communicateAction.username = this.toUser.username;
+            communicateAction.userId = this.toUser._id;
+            communicateAction.pic = this.toUser.pic;
 
-            vm.messages.push(communicateAction);
-            vm.keepKeyboardOpen.call(vm);
-            vm.viewScroll.scrollBottom(true);
+            this.messages.push(communicateAction);
+            this.keepKeyboardOpen();
+            this.viewScroll.scrollBottom(true);
 
             // has audio?
             if (communicateAction.audio) {
                 var elId = 'audio_' + communicateAction['@id'];
                 //var playedEl = document.getElementById(elId);
-                if (!vm.form.audio.muted) {
-                    vm.$log.info('Queueing ', elId, '...');
-                    vm.audioQueue.push(elId);
+                if (!this.form.audio.muted) {
+                    this.$log.info('Queueing ', elId, '...');
+                    this.audioQueue.push(elId);
                 }
                 //playedEl.play();
             }
         });
         // audio.out: AudioObject
-        this.LumenStomp.subscribe('/topic/avatar.*.audio.out', function(exchange) {
+        this.LumenStomp.subscribe('/topic/avatar.*.audio.out', exchange => {
             var msg = JSON.parse(exchange.body);
-            vm.$log.info("Received audio", msg.name, msg.contentType, msg.contentSize, 'bytes', msg);
+            this.$log.info("Received audio", msg.name, msg.contentType, msg.contentSize, 'bytes', msg);
             var playedId = 'played';
             var playedEl = document.getElementById(playedId) as HTMLMediaElement;
             playedEl.src = msg.contentUrl;
-            //vm.replayPlayed();
-            if (!vm.form.audio.muted) {
-                vm.$log.info('Queueing ', playedId, '...');
-                vm.audioQueue.push(playedId);
+            //this.replayPlayed();
+            if (!this.form.audio.muted) {
+                this.$log.info('Queueing ', playedId, '...');
+                this.audioQueue.push(playedId);
             }
         });
         this.$log.info('Subscriptions:', this.LumenStomp.getSubscriptions());
     }
     
     sendMessage(sendMessageForm) {
-        var vm = this;
       var message: ChatMessage = {
         toId: this.toUser._id as string,
         text: this.form.message as string
@@ -283,7 +281,7 @@ class SocialChatCtrl {
       // if you do a web service call this will be needed as well as before the viewScroll calls
       // you can't see the effect of this in the browser it needs to be used on a real device
       // for some reason the one time blur event is not firing in the browser but does on devices
-      this.keepKeyboardOpen.call(vm);
+      this.keepKeyboardOpen();
 
       //MockService.sendMessage(message).then(function(data) {
       this.form.message = '';
@@ -308,28 +306,29 @@ class SocialChatCtrl {
                          {"reply-to": '/topic/avatar.' + this.form.avatarId + '.chat.inbox'},
                          JSON.stringify(communicateAction));
 
-      this.$timeout(function() {
-        vm.keepKeyboardOpen.call(vm);
-        vm.viewScroll.scrollBottom(true);
+      this.$timeout(() => {
+        this.keepKeyboardOpen();
+        this.viewScroll.scrollBottom(true);
       }, 0);
 
-      this.$timeout(function() {
+      this.$timeout(() => {
 //        vm.messages.push(MockService.getMockMessage());
-        vm.keepKeyboardOpen.call(vm);
-        vm.viewScroll.scrollBottom(true);
+        this.keepKeyboardOpen();
+        this.viewScroll.scrollBottom(true);
       }, 2000);
 
       //});
     }
 
-    // this keeps the keyboard open on a device only after sending a message, it is non obtrusive
+    /**
+     * this keeps the keyboard open on a device only after sending a message, it is non obtrusive
+     */
     keepKeyboardOpen() {
-        var vm = this;
-      vm.$log.debug('keepKeyboardOpen', this.txtInput);
-      vm.txtInput.one('blur', function() {
-        vm.$log.debug('textarea blur, focus back on it');
-        vm.txtInput[0].focus();
-      });
+        this.$log.debug('keepKeyboardOpen', this.txtInput);
+        this.txtInput.one('blur', () => {
+            this.$log.debug('textarea blur, focus back on it');
+            this.txtInput[0].focus();
+        });
     }
 
   onMessageHold(e, itemIndex, message) {
@@ -414,7 +413,7 @@ angular.module('starter.controllers')
 .controller('SocialChatCtrl', SocialChatCtrl)
 // services
 .factory('MockService', ['$http', '$q',
-  function($http, $q) {
+  function($http: ng.IHttpService, $q: ng.IQService) {
     var me = new MockService();
 
     me.getUserMessages = function(d) {
