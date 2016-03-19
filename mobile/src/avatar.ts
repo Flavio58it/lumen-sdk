@@ -1,8 +1,9 @@
 /// <reference path="../typings/main.d.ts"/>
+/// <reference path="services.ts"/>
 angular.module('starter.controllers')
 
 .controller('AvatarRemoteControlCtrl', function($scope, $stateParams, $log, $window, Settings,
-        LumenStomp) {
+        LumenStomp: Services.LumenStomp) {
     var vm = this;
     var settings = Settings.getSettings();
 
@@ -392,7 +393,8 @@ angular.module('starter.controllers')
     };
 
 })
-.controller('AvatarInstrumentsCtrl', function($scope, $stateParams, $log, LumenStomp, Settings) {
+.controller('AvatarInstrumentsCtrl', function($scope, $stateParams, $log, 
+        LumenStomp: Services.LumenStomp, Settings: Services.Settings) {
     var vm = this;
     this.avatarIds = ['nao1', 'nao2',
         'anime1', 'anime2', 'anime3', 'anime4', 'anime5', 'anime6', 'anime7', 'anime8', 'anime9', 'anime10'];

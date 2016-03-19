@@ -1,4 +1,5 @@
 /// <reference path="../typings/main.d.ts"/>
+/// <reference path="services.ts"/>
 angular.module('starter.controllers')
     .controller('SocialMonitorCtrl', function ($scope, $stateParams, $log, $ionicScrollDelegate, ngstomp, Settings) {
     $scope.posts = [];

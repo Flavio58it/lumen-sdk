@@ -1,7 +1,9 @@
 /// <reference path="../typings/main.d.ts"/>
+/// <reference path="services.ts"/>
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope: ng.IScope, $ionicModal: ionic.modal.IonicModalService, 
+    $timeout: ng.ITimeoutService) {
   var ctrl = this;
   // Form data for the login modal
   this.loginData = {};
@@ -35,7 +37,8 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('SettingsCtrl', function($scope, $log, $window, Settings) {
+.controller('SettingsCtrl', function($scope, $log: ng.ILogService, $window: ng.IWindowService, 
+        Settings: Services.Settings) {
     $scope.settings = Settings.getSettings();
     $scope.save = function() {
         Settings.setSettings($scope.settings);
@@ -71,5 +74,5 @@ angular.module('starter.controllers', [])
   ];
 })
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
+.controller('PlaylistCtrl', function($scope, $stateParams: ng.ui.IStateParamsService) {
 });

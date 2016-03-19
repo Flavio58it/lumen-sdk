@@ -1,4 +1,5 @@
 /// <reference path="../typings/main.d.ts"/>
+/// <reference path="services.ts"/>
 /* ----------- Ionic Elastichat: http://codepen.io/rossmartin/pen/XJmpQr ----------
 Requires bower packages:
 1. moment
@@ -22,14 +23,14 @@ var Locale = (function () {
     return Locale;
 }());
 var SocialChatCtrl = (function () {
-    function SocialChatCtrl($scope, $stateParams, $log, LumenStomp, $window, Settings, $rootScope, $state, MockService, $ionicActionSheet, $ionicPopup, $ionicScrollDelegate, $timeout, $interval) {
+    function SocialChatCtrl($scope, $stateParams, $log, LumenStomp, Settings, $window, $rootScope, $state, MockService, $ionicActionSheet, $ionicPopup, $ionicScrollDelegate, $timeout, $interval) {
         var _this = this;
         this.$scope = $scope;
         this.$stateParams = $stateParams;
         this.$log = $log;
         this.LumenStomp = LumenStomp;
-        this.$window = $window;
         this.Settings = Settings;
+        this.$window = $window;
         this.$rootScope = $rootScope;
         this.$state = $state;
         this.MockService = MockService;

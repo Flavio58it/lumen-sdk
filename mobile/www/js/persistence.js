@@ -1,4 +1,5 @@
 /// <reference path="../typings/main.d.ts"/>
+/// <reference path="services.ts"/>
 angular.module('starter.controllers')
     .controller('PersistenceFactCtrl', function ($scope, $stateParams, $log, LumenStomp, Settings, $window) {
     $scope.locales = [

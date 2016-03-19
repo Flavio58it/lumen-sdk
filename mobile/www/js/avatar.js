@@ -1,4 +1,5 @@
 /// <reference path="../typings/main.d.ts"/>
+/// <reference path="services.ts"/>
 angular.module('starter.controllers')
     .controller('AvatarRemoteControlCtrl', function ($scope, $stateParams, $log, $window, Settings, LumenStomp) {
     var vm = this;

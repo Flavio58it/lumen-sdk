@@ -1,4 +1,5 @@
 /// <reference path="../typings/main.d.ts"/>
+/// <reference path="services.ts"/>
 var HumanDetected = (function () {
     function HumanDetected() {
     }
@@ -192,7 +193,6 @@ angular.module('starter.controllers')
     };
 })
     .controller('FaceRecognitionCamCtrl', function ($scope, $stateParams, $log, $interval, LumenStomp, Settings) {
-    'use strict';
     $scope.imageObject = null;
     $scope.recognizeds = [];
     $scope.humanPos = { x: null, y: null, z: null };

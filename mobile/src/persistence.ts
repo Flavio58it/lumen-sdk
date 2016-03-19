@@ -1,7 +1,10 @@
 /// <reference path="../typings/main.d.ts"/>
+/// <reference path="services.ts"/>
 angular.module('starter.controllers')
 
-.controller('PersistenceFactCtrl', function($scope, $stateParams, $log, LumenStomp, Settings, $window) {
+.controller('PersistenceFactCtrl', function($scope, $stateParams: ng.ui.IStateParamsService, 
+    $log: ng.ILogService, LumenStomp: Services.LumenStomp, Settings: Services.Settings, 
+    $window: ng.IWindowService) {
     $scope.locales = [
         {id: 'id-ID', name: 'Indonesian'},
         {id: 'en-US', name: 'English (United States)'}
@@ -45,8 +48,9 @@ angular.module('starter.controllers')
     };
 })
 
-.controller('PersistenceQueryFindAllCtrl', function($scope, $stateParams, $log, ngstomp, Settings,
-        $window) {
+.controller('PersistenceQueryFindAllCtrl', function($scope, $stateParams: ng.ui.IStateParamsService, 
+        $log: ng.ILogService, ngstomp, Settings: Services.Settings,
+        $window: ng.IWindowService) {
     $scope.query = {
         '@type': 'FindAllQuery',
         classRef: null,
@@ -101,7 +105,8 @@ angular.module('starter.controllers')
             {"reply-to": '/temp-queue/persistence.fact'}, JSON.stringify($scope.query));
     };
 })
-.controller('PersistenceQueryCypherCtrl', function($scope, $stateParams, $log, $window, ngstomp, Settings) {
+.controller('PersistenceQueryCypherCtrl', function($scope, $stateParams: ng.ui.IStateParamsService, 
+    $log: ng.ILogService, $window: ng.IWindowService, ngstomp, Settings: Services.Settings) {
     $scope.resources = {content: []};
     $scope.form = {
         '@type': 'CypherQuery',
@@ -140,7 +145,8 @@ angular.module('starter.controllers')
             {"reply-to": tempQueue}, JSON.stringify($scope.form));
     };
 })
-.controller('PersistenceJournalImageCtrl', function($scope, $stateParams, $log, $window, ngstomp, Settings) {
+.controller('PersistenceJournalImageCtrl', function($scope, $stateParams: ng.ui.IStateParamsService,
+        $log: ng.ILogService, $window: ng.IWindowService, ngstomp, Settings: Services.Settings) {
     $scope.resources = {content: []};
     $scope.form = {
         '@type': 'JournalImageQuery',
@@ -179,7 +185,8 @@ angular.module('starter.controllers')
             {"reply-to": tempQueue}, JSON.stringify($scope.form));
     };
 })
-.controller('PersistenceJournalJointCtrl', function($scope, $stateParams, $log, $window, ngstomp, Settings) {
+.controller('PersistenceJournalJointCtrl', function($scope, $stateParams: ng.ui.IStateParamsService,
+        $log: ng.ILogService, $window: ng.IWindowService, ngstomp, Settings: Services.Settings) {
     $scope.resources = {content: []};
     $scope.form = {
         '@type': 'JournalJointQuery',
@@ -257,7 +264,8 @@ angular.module('starter.controllers')
             {"reply-to": tempQueue}, JSON.stringify($scope.form));
     };
 })
-.controller('PersistenceJournalTactileCtrl', function($scope, $stateParams, $log, $window, ngstomp, Settings) {
+.controller('PersistenceJournalTactileCtrl', function($scope, $stateParams: ng.ui.IStateParamsService,
+        $log: ng.ILogService, $window: ng.IWindowService, ngstomp, Settings: Services.Settings) {
     $scope.resources = {content: []};
     $scope.form = {
         '@type': 'JournalTactileQuery',
@@ -296,7 +304,8 @@ angular.module('starter.controllers')
             {"reply-to": tempQueue}, JSON.stringify($scope.form));
     };
 })
-.controller('PersistenceJournalBatteryCtrl', function($scope, $stateParams, $log, $window, ngstomp, Settings) {
+.controller('PersistenceJournalBatteryCtrl', function($scope, $stateParams: ng.ui.IStateParamsService,
+        $log: ng.ILogService, $window: ng.IWindowService, ngstomp, Settings: Services.Settings) {
     $scope.resources = {content: []};
     $scope.form = {
         '@type': 'JournalBatteryQuery',

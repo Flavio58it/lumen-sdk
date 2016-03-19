@@ -1,7 +1,10 @@
 /// <reference path="../typings/main.d.ts"/>
+/// <reference path="services.ts"/>
 angular.module('starter.controllers')
 
-.controller('SocialMonitorCtrl', function($scope, $stateParams, $log, $ionicScrollDelegate, ngstomp, Settings) {
+.controller('SocialMonitorCtrl', function($scope, $stateParams: ng.ui.IStateParamsService, 
+        $log: ng.ILogService, $ionicScrollDelegate: ionic.scroll.IonicScrollDelegate, 
+        ngstomp, Settings: Services.Settings) {
     $scope.posts = [];
 
 //    var stompUri = 'http://' + window.location.hostname + ':15674/stomp';
@@ -21,7 +24,8 @@ angular.module('starter.controllers')
     }, '/');
 })
 
-.controller('SocialExpressCtrl', function($scope, $stateParams, $log, LumenStomp, Settings) {
+.controller('SocialExpressCtrl', function($scope, $stateParams: ng.ui.IStateParamsService, 
+        $log: ng.ILogService, LumenStomp: Services.LumenStomp, Settings: Services.Settings) {
     $scope.agentIds = ['arkan'];
     $scope.form = {
         agentId: 'arkan'

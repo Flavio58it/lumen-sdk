@@ -1,7 +1,9 @@
 /// <reference path="../typings/main.d.ts"/>
+/// <reference path="services.ts"/>
 angular.module('starter.controllers')
 
-.controller('AudioMonitorCtrl', function($scope, $stateParams, $log, $window, Settings, LumenStomp) {
+.controller('AudioMonitorCtrl', function($scope, $stateParams, $log, $window, Settings, 
+    LumenStomp: Services.LumenStomp) {
     $scope.form = {
     };
 

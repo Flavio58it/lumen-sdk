@@ -1,4 +1,5 @@
 /// <reference path="../typings/main.d.ts"/>
+/// <reference path="services.ts"/>
 
 class HumanDetected {
     humanId: string;
@@ -12,7 +13,8 @@ class HumanDetected {
 
 angular.module('starter.controllers')
 
-.controller('VisualCameraCtrl', function($scope, $stateParams, $log, Settings, LumenStomp) {
+.controller('VisualCameraCtrl', function($scope, $stateParams: ng.ui.IStateParamsService, 
+        $log: ng.ILogService, Settings: Services.Settings, LumenStomp: Services.LumenStomp) {
     $scope.imageObject = null;
     $scope.bottomImageObject = null;
     $scope.recognizeds = [];
@@ -64,7 +66,8 @@ angular.module('starter.controllers')
     });
 })
 
-.controller('ObjectRecognitionCtrl', function($scope, $stateParams, $log, Settings, LumenStomp) {
+.controller('ObjectRecognitionCtrl', function($scope, $stateParams: ng.ui.IStateParamsService, 
+        $log: ng.ILogService, Settings: Services.Settings, LumenStomp: Services.LumenStomp) {
     $scope.imageObject = null;
     $scope.bottomImageObject = null;
     $scope.recognizeds = [];
@@ -139,7 +142,8 @@ angular.module('starter.controllers')
 	};
 })
 
-.controller('FaceRecognitionImgCtrl', function($scope, $stateParams, $log, LumenStomp, Settings) {
+.controller('FaceRecognitionImgCtrl', function($scope, $stateParams: ng.ui.IStateParamsService, 
+        $log: ng.ILogService, LumenStomp: Services.LumenStomp, Settings: Services.Settings) {
     $scope.imageObject = null;
     $scope.recognizeds = [];
 
@@ -209,9 +213,9 @@ angular.module('starter.controllers')
         $scope.client.send('/topic/avatar.nao1.camera.main', {}, JSON.stringify($scope.imageObject));
     };
 })
-.controller('FaceRecognitionCamCtrl', function($scope, $stateParams, $log, $interval, LumenStomp, Settings) {
-    'use strict';
-
+.controller('FaceRecognitionCamCtrl', function($scope, $stateParams: ng.ui.IStateParamsService, 
+        $log: ng.ILogService, $interval: ng.IIntervalService, 
+        LumenStomp: Services.LumenStomp, Settings: Services.Settings) {
     $scope.imageObject = null;
     $scope.recognizeds = [];
     $scope.humanPos = {x: null, y: null, z: null};

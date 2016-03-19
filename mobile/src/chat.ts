@@ -1,4 +1,5 @@
 /// <reference path="../typings/main.d.ts"/>
+/// <reference path="services.ts"/>
 /* ----------- Ionic Elastichat: http://codepen.io/rossmartin/pen/XJmpQr ----------
 Requires bower packages:
 1. moment
@@ -58,7 +59,8 @@ class SocialChatCtrl {
     
     constructor(public $scope: ng.IScope, public $stateParams: ng.ui.IStateParamsService, 
         public $log: ng.ILogService, 
-        public LumenStomp, public $window: ng.IWindowService, public Settings,
+        public LumenStomp: Services.LumenStomp, public Settings: Services.Settings, 
+        public $window: ng.IWindowService,
         public $rootScope: ng.IRootScopeService, public $state: ng.ui.IState, public MockService,
         public $ionicActionSheet: ionic.actionSheet.IonicActionSheetService,
         public $ionicPopup: ionic.popup.IonicPopupService,
