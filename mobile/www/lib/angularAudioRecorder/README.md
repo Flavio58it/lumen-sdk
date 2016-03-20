@@ -30,9 +30,7 @@ The general structure is :
 
 ```html
 <!-- Somewhere on your page -->
-<script src="/path/to/audio-recorder/lib/html5-recorder.js"></script>
-<script src="/path/to/audio-recorder/lib/flash-recorder.js"></script>
-<script src="/path/to/audio-recorder/audio-recorder.js"></script>
+<script src="/path/to/angular-recorder/dist/angular-audio-recorder.min.js"></script>
 <!--- use if you want wave display !-->
 <script src="/path/to/wavesurfer/wavesurfer.min.js"></script>
 ```
@@ -183,13 +181,20 @@ The controller exposes the following :
 ```
 This directive displays audio input analysis during recording, [see here](http://webaudiodemos.appspot.com/AudioRecorder/index.html) for example of what an analyzer looks like.  
 
-Please note this directive is only available in HTML5 mode.
+*Please note this directive is only available in HTML5 mode.*
+
+This directive can take in any of the following attributes:
+
+- `width`: A number specifying the width of the analyzer graph in pixels, defaults to `1200`.
+- `height`: A number specifying the height of the analyzer graph in pixels, defaults to `400`
+- `wave-color`: color of the analyzer graph. Leave this as blank if you want colors to vary with pitch.
 
 ### Directive `ngAudioRecorderWaveView`
 
 ```html
 <ng-audio-recorder-wave-view attributes></ng-audio-recorder-wave-view>
 ```
+
 This directive displays the waveform of the recorded audio, using [wavesurfer.js](https://github.com/katspaugh/wavesurfer.js)
 
 The options for initializing the WaveSurfer object can be passed in as attributes of the `ng-audio-recorder-wave-view`.
