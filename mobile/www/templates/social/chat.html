@@ -22,6 +22,21 @@
     <ion-content has-bouncing="true" class="has-header has-footer"
                  delegate-handle="userMessageScroll">
 
+<ng-audio-recorder id="audioInput" audio-model="recordedInput">
+    <div ng-if="recorder.isAvailable">
+        <button ng-click="recorder.startRecord()" type="button" ng-disabled="recorder.status.isRecording">
+            Start</button>
+        <button ng-click="recorder.stopRecord()" type="button" ng-disabled="recorder.status.isRecording === false">
+            Stop</button>
+        <button ng-click="recorder.playbackRecording()" type="button"
+            ng-disabled="recorder.status.isRecording || !recorder.audioModel">
+            Play</button>
+    </div>
+    <div ng-if="!recorder.isAvailable">
+        No recorder available.
+    </div>
+</ng-audio-recorder>
+
         <div ng-repeat="message in vm.messages" class="message-wrapper"
              on-hold="vm.onMessageHold($event, $index, message)">
 
