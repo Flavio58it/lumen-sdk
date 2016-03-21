@@ -3,11 +3,14 @@
 1. Install [NodeJS](http://nodejs.org/download/).
 
     **Windows:** Download and install [NodeJS](http://nodejs.org/download/).
-    Post-installation: set [NPM proxy settings](http://jjasonclark.com/how-to-setup-node-behind-web-proxy)
-    as follows. Create file `C:\Users\<username>\.npmrc` : (change with your own username and password below)
 
-        proxy=http://username:password@cache.itb.ac.id:8080/
-        https-proxy=http://username:password@cache.itb.ac.id:8080
+    Post-installation: set [NPM proxy settings](http://jjasonclark.com/how-to-setup-node-behind-web-proxy) as follows.
+    (**Important:** change with your own username and password below)
+
+    Run **Node.js Command Prompt**, then:
+
+        npm config set proxy http://username:password@cache.itb.ac.id:8080/
+        npm config set https-proxy http://username:password@cache.itb.ac.id:8080/
 
     **Linux:**
 
@@ -19,8 +22,9 @@
         npm config set proxy http://username:password@cache.itb.ac.id:8080/
         npm config set https-proxy http://username:password@cache.itb.ac.id:8080/
 
-2. Install [Ionic](http://ionicframework.com/) and [Bower](http://bower.io/).
+2. Install [Ionic] if you want to know more about `Ionic` click here (http://ionicframework.com/) and [Bower] if you want to know more about `Bower` click here(http://bower.io/).
 
+    How to instal Ionic and Bower :
     **Windows:** Run _Node.js command prompt_:
 
         npm -V -g install ionic bower
@@ -63,16 +67,26 @@
         npm install -V -g typings
         typings install
 
-## Serve the App
+## Serve the App from localhost
 
-**Windows:** Use _Node.js command prompt_, to `mobile` directory, and run: `ionic serve`, e.g.
+1. run Ionic serve 
 
-    # go to directory git/lumen-sdk/mobile
-    cd git\lumen-sdk\mobile
-    ionic serve -a
+    **Windows:** Use _Node.js command prompt_, to `mobile` directory, and run: `ionic serve`, e.g.
+    
+        # go to directory git/lumen-sdk/mobile
+        cd git\lumen-sdk\mobile
+        ionic serve -a
+    
+    **Linux:** Use command prompt, to `mobile` directory, and run: `ionic serve`, e.g.
+    
+        # go to directory git/lumen-sdk/mobile
+        cd git/lumen-sdk/mobile
+        ionic serve -a
+        
+2. open browser http://localhost:8100/
 
-**Linux:** Use command prompt, to `mobile` directory, and run: `ionic serve`, e.g.
+## Serve the app from LSKK server
 
-    # go to directory git/lumen-sdk/mobile
-    cd git/lumen-sdk/mobile
-    ionic serve -a
+1. open browser http://167.205.66.35:8100/
+
+2. klik setting "use localhost", save
