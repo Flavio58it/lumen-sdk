@@ -1,0 +1,14 @@
+{
+  "name": "audioRecord.js",
+  "homepage": "https://github.com/sb2702/audioRecord.js",
+  "_release": "21f67b4371",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "21f67b4371dc9302c039442ec37d26c2e07b88b6"
+  },
+  "_source": "https://github.com/sb2702/audioRecord.js.git",
+  "_target": "*",
+  "_originalSource": "https://github.com/sb2702/audioRecord.js.git",
+  "_direct": true
+}

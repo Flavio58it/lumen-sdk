@@ -7,6 +7,11 @@ Requires bower packages:
 3. angular-elastic
 4. Autolinker.js
 */
+var AudioObject = (function () {
+    function AudioObject() {
+    }
+    return AudioObject;
+}());
 var MockService = (function () {
     function MockService() {
     }
@@ -23,7 +28,7 @@ var Locale = (function () {
     return Locale;
 }());
 var SocialChatCtrl = (function () {
-    function SocialChatCtrl($scope, $stateParams, $log, LumenStomp, Settings, $window, $rootScope, $state, MockService, $ionicActionSheet, $ionicPopup, $ionicScrollDelegate, $timeout, $interval, recorderService) {
+    function SocialChatCtrl($scope, $stateParams, $log, LumenStomp, Settings, $window, $rootScope, $state, MockService, $ionicActionSheet, $ionicPopup, $ionicScrollDelegate, $timeout, $interval) {
         var _this = this;
         this.$scope = $scope;
         this.$stateParams = $stateParams;
@@ -39,12 +44,11 @@ var SocialChatCtrl = (function () {
         this.$ionicScrollDelegate = $ionicScrollDelegate;
         this.$timeout = $timeout;
         this.$interval = $interval;
-        this.recorderService = recorderService;
         this.$inject = ['$scope', '$stateParams', '$log',
             'LumenStomp', '$window', 'Settings',
             '$rootScope', '$state', 'MockService',
             '$ionicActionSheet',
-            '$ionicPopup', '$ionicScrollDelegate', '$timeout', '$interval', 'recorderService'];
+            '$ionicPopup', '$ionicScrollDelegate', '$timeout', '$interval'];
         var vm = this;
         this.messages = [];
         this.toUser = {
@@ -104,12 +108,20 @@ var SocialChatCtrl = (function () {
                 if (current.paused && !current.ended) {
                     _this.$log.debug('Playing ', current, '...');
                     current.play();
+                    if (current.paused) {
+                        _this.$log.warn('Cannot play', current, ', skipping...');
+                        _this.audioQueue.shift();
+                    }
                 }
                 else if (current.ended) {
                     _this.$log.debug('Finished playing', current);
                     _this.audioQueue.shift();
                 }
             }, 250);
+            audioRecorder.requestDevice(function (recorder) {
+                _this.$log.info('Recorder ready: ', recorder);
+                _this.recorder = recorder;
+            }, { workerPath: 'lib/audioRecord.js/src/recorderWorker.js' });
         });
         $scope.$on('$ionicView.beforeLeave', function () {
             _this.$log.debug('leaving UserMessages view, destroying interval');
@@ -167,7 +179,7 @@ var SocialChatCtrl = (function () {
         this.LumenStomp.subscribe('/topic/avatar.' + this.form.avatarId + '.chat.inbox', function (exchange) {
             var communicateAction = JSON.parse(exchange.body);
             _this.$log.info("Received inbox", communicateAction.object, communicateAction);
-            _this.$log.debug('map', _.map(_this.messages, function (m) { return m._id; }));
+            _this.$log.debug('map', _this.messages.map(function (m) { return m._id; }));
             var already = _.find(_this.messages, function (m) { return m._id == communicateAction['@id']; }) || false;
             _this.$log.debug('contains', typeof communicateAction['@id'] === 'undefined', communicateAction['@id'], already);
             if ((typeof communicateAction['@id'] === 'undefined') || !already) {
@@ -324,20 +336,18 @@ var SocialChatCtrl = (function () {
         this.$log.debug('Reading...', recordedFileEl, recordedFileEl.files, recordedFile, JSON.stringify(recordedFile));
         var reader = new FileReader();
         reader.onloadend = function () {
-            this.$scope.$apply(function () {
-                var audioObject = {
-                    '@type': 'AudioObject',
-                    inLanguage: this.form.audio.inLanguage.id,
-                    name: recordedFile.name,
-                    contentType: recordedFile.type,
-                    contentSize: recordedFile.size,
-                    dateModified: recordedFile.lastModifiedDate,
-                    contentUrl: reader.result,
-                    usedForChat: this.form.audio.usedForChat
-                };
-                this.$log.info('AudioObject', audioObject, JSON.stringify(audioObject));
-                this.client.send('/topic/avatar.' + this.form.avatarId + '.audio.in', { "reply-to": '/temp-queue/avatar.' + this.form.avatarId + '.audio.in' }, JSON.stringify(audioObject));
-            });
+            var audioObject = {
+                '@type': 'AudioObject',
+                inLanguage: this.form.audio.inLanguage.id,
+                name: recordedFile.name,
+                contentType: recordedFile.type,
+                contentSize: recordedFile.size,
+                dateModified: recordedFile.lastModifiedDate,
+                contentUrl: reader.result,
+                usedForChat: this.form.audio.usedForChat
+            };
+            this.$log.info('AudioObject', audioObject, JSON.stringify(audioObject).substr(0, 100) + '…');
+            this.client.send('/topic/avatar.' + this.form.avatarId + '.audio.in', { "reply-to": '/temp-queue/avatar.' + this.form.avatarId + '.audio.in' }, JSON.stringify(audioObject));
         };
         reader.readAsDataURL(recordedFile);
     };
@@ -346,12 +356,33 @@ var SocialChatCtrl = (function () {
         this.form.audio.muted = !this.form.audio.muted;
     };
     SocialChatCtrl.prototype.startRecord = function () {
-        this.$log.debug('start...');
-        this.recorderService.startRecord();
+        this.$log.debug('start recording...');
+        this.recorder.record();
     };
     SocialChatCtrl.prototype.stopRecord = function () {
-        this.$log.debug('stop...');
-        this.recorderService.stopRecord();
+        var _this = this;
+        this.$log.debug('stop recording');
+        this.recorder.stop();
+        this.recorder.exportOGG(function (oggBlob) {
+            _this.$log.debug('OGG:', oggBlob);
+            var reader = new FileReader();
+            reader.readAsDataURL(oggBlob);
+            reader.onloadend = function () {
+                _this.recorder.clear();
+                var audioObject = {
+                    '@type': 'AudioObject',
+                    inLanguage: _this.form.audio.inLanguage.id,
+                    name: 'recorded.ogg',
+                    contentType: 'audio/ogg',
+                    contentSize: oggBlob.size,
+                    dateModified: new Date().toISOString(),
+                    contentUrl: reader.result,
+                    usedForChat: _this.form.audio.usedForChat
+                };
+                _this.$log.info('AudioObject', audioObject, JSON.stringify(audioObject).substring(0, 100) + '…');
+                _this.client.send('/topic/avatar.' + _this.form.avatarId + '.audio.in', { "reply-to": '/temp-queue/avatar.' + _this.form.avatarId + '.audio.in' }, JSON.stringify(audioObject));
+            };
+        });
     };
     return SocialChatCtrl;
 }());

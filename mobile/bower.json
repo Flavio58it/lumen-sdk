@@ -14,6 +14,6 @@
     "angular-moment": "~0.10.3",
     "moment": "~2.10.6",
     "Autolinker.js": "~0.22.0",
-    "angularAudioRecorder": "^1.4.1"
+    "audioRecord.js": "https://github.com/sb2702/audioRecord.js.git"
   }
 }
