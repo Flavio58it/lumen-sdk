@@ -23,7 +23,7 @@ var Locale = (function () {
     return Locale;
 }());
 var SocialChatCtrl = (function () {
-    function SocialChatCtrl($scope, $stateParams, $log, LumenStomp, Settings, $window, $rootScope, $state, MockService, $ionicActionSheet, $ionicPopup, $ionicScrollDelegate, $timeout, $interval) {
+    function SocialChatCtrl($scope, $stateParams, $log, LumenStomp, Settings, $window, $rootScope, $state, MockService, $ionicActionSheet, $ionicPopup, $ionicScrollDelegate, $timeout, $interval, recorderService) {
         var _this = this;
         this.$scope = $scope;
         this.$stateParams = $stateParams;
@@ -39,11 +39,12 @@ var SocialChatCtrl = (function () {
         this.$ionicScrollDelegate = $ionicScrollDelegate;
         this.$timeout = $timeout;
         this.$interval = $interval;
+        this.recorderService = recorderService;
         this.$inject = ['$scope', '$stateParams', '$log',
             'LumenStomp', '$window', 'Settings',
             '$rootScope', '$state', 'MockService',
             '$ionicActionSheet',
-            '$ionicPopup', '$ionicScrollDelegate', '$timeout', '$interval'];
+            '$ionicPopup', '$ionicScrollDelegate', '$timeout', '$interval', 'recorderService'];
         var vm = this;
         this.messages = [];
         this.toUser = {
@@ -343,6 +344,14 @@ var SocialChatCtrl = (function () {
     ;
     SocialChatCtrl.prototype.toggleMuted = function () {
         this.form.audio.muted = !this.form.audio.muted;
+    };
+    SocialChatCtrl.prototype.startRecord = function () {
+        this.$log.debug('start...');
+        this.recorderService.startRecord();
+    };
+    SocialChatCtrl.prototype.stopRecord = function () {
+        this.$log.debug('stop...');
+        this.recorderService.stopRecord();
     };
     return SocialChatCtrl;
 }());

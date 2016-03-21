@@ -31,6 +31,9 @@
         <button ng-click="recorder.playbackRecording()" type="button"
             ng-disabled="recorder.status.isRecording || !recorder.audioModel">
             Play</button>
+        <button ng-click="recorder.save()" type="button"
+            ng-disabled="recorder.status.isRecording || !recorder.audioModel">
+            Save</button>
     </div>
     <div ng-if="!recorder.isAvailable">
         No recorder available.
@@ -122,11 +125,17 @@
                     <i class="icon" ng-class="{'ion-volume-high': !vm.form.audio.muted, 'ion-volume-mute': vm.form.audio.muted}"></i>
                 </a>
             </div>
-            <div class="voicenote-btn-wrap">
+            <!--div class="voicenote-btn-wrap">
                 <input id="recordedMic" type="file" accept="audio/*;capture=microphone"
                        onchange="angular.element(this).scope().vm.sendRecordedMic()"
                         class="voicenote-btn voicenote-input"/>
-            </div>
+            </div-->
+            <!--ng-audio-recorder id="audioInput2" audio-model="recordedInput"-->
+                <div class="voicenote2-btn-wrap">
+                    <button class="button-link" ng-mousedown="vm.startRecord()" ng-mouseup="vm.stopRecord()" type="button" ng-disabled="recorder.status.isRecording">
+                        <i class="icon ion-volume-high"></i></button>
+                </div>
+            <!--/ng-audio-recorder-->
             <div class="footer-btn-wrap">
                 <button class="button button-icon icon ion-android-send footer-btn" type="submit"
                         ng-disabled="!vm.form.message || vm.form.message === ''">

@@ -40,7 +40,7 @@ class SocialChatCtrl {
         'LumenStomp', '$window', 'Settings',
         '$rootScope', '$state', 'MockService',
         '$ionicActionSheet',
-        '$ionicPopup', '$ionicScrollDelegate', '$timeout', '$interval'];
+        '$ionicPopup', '$ionicScrollDelegate', '$timeout', '$interval', 'recorderService'];
         
     messages: ChatMessage[];
     form: any;
@@ -57,7 +57,7 @@ class SocialChatCtrl {
     txtInput: JQuery;
     viewScroll: ionic.scroll.IonicScrollDelegate;
     
-    constructor(public $scope: ng.IScope, public $stateParams: ng.ui.IStateParamsService, 
+    constructor(public $scope: any, public $stateParams: ng.ui.IStateParamsService, 
         public $log: ng.ILogService, 
         public LumenStomp: Services.LumenStomp, public Settings: Services.Settings, 
         public $window: ng.IWindowService,
@@ -65,7 +65,8 @@ class SocialChatCtrl {
         public $ionicActionSheet: ionic.actionSheet.IonicActionSheetService,
         public $ionicPopup: ionic.popup.IonicPopupService,
         public $ionicScrollDelegate: ionic.scroll.IonicScrollDelegate, 
-        public $timeout: ng.ITimeoutService, public $interval: ng.IIntervalService) {
+        public $timeout: ng.ITimeoutService, public $interval: ng.IIntervalService,
+        public recorderService) {
     var vm = this;
     this.messages = [];
     this.toUser = {
@@ -409,6 +410,19 @@ class SocialChatCtrl {
   toggleMuted() {
       this.form.audio.muted = !this.form.audio.muted;
   }
+  
+    startRecord() {
+        this.$log.debug('start...');
+        this.recorderService.startRecord();
+      
+      
+    }
+  
+    stopRecord() {
+        this.$log.debug('stop...');
+        this.recorderService.stopRecord();
+      
+    }
 }
 
 angular.module('starter.controllers')
