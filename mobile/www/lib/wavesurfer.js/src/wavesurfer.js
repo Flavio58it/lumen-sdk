@@ -17,7 +17,7 @@ var WaveSurfer = {
         cursorWidth   : 1,
         skipLength    : 2,
         minPxPerSec   : 20,
-        pixelRatio    : window.devicePixelRatio,
+        pixelRatio    : window.devicePixelRatio || screen.deviceXDPI / screen.logicalXDPI,
         fillParent    : true,
         scrollParent  : false,
         hideScrollbar : false,
@@ -33,7 +33,8 @@ var WaveSurfer = {
         mediaControls : false,
         renderer      : 'Canvas',
         backend       : 'WebAudio',
-        mediaType     : 'audio'
+        mediaType     : 'audio',
+        autoCenter    : true
     },
 
     init: function (params) {
@@ -121,10 +122,25 @@ var WaveSurfer = {
         this.backend.on('pause', function () { my.fireEvent('pause'); });
 
         this.backend.on('audioprocess', function (time) {
-            my.drawer.progress(my.backend.getPlayedPercents());
             my.fireEvent('audioprocess', time);
         });
     },
+
+    startAnimationLoop: function () {
+        var my = this;
+        var requestFrame = window.requestAnimationFrame ||
+                           window.webkitRequestAnimationFrame ||
+                           window.mozRequestAnimationFrame;
+        var frame = function () {
+            if (!my.backend.isPaused()) {
+                var percent = my.backend.getPlayedPercents();
+                my.drawer.progress(percent);
+                my.fireEvent('audioprocess', my.getCurrentTime());
+                requestFrame(frame);
+            }
+        };
+        frame();
+     },
 
     getDuration: function () {
         return this.backend.getDuration();
@@ -136,6 +152,7 @@ var WaveSurfer = {
 
     play: function (start, end) {
         this.backend.play(start, end);
+        this.startAnimationLoop();
     },
 
     pause: function () {
@@ -347,7 +364,6 @@ var WaveSurfer = {
                 this.fireEvent('error', err);
             }).bind(this))
         );
-
 
         // If no pre-decoded peaks provided, attempt to download the
         // audio file and decode it with Web Audio.

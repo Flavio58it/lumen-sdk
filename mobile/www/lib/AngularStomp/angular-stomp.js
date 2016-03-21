@@ -9,11 +9,12 @@ angular.module('AngularStomp', []).
 
         function NGStomp(url) {
             //this.stompClient = Stomp.client(url);
+            this.stompClient = Stomp.over( new WebSocket(url) );
             // use SockJS
-            this.stompClient = Stomp.over( new SockJS(url) );
+            //this.stompClient = Stomp.over( new SockJS(url) );
             // STOMP heartbeats won't work with SockJS.
-            this.stompClient.heartbeat.outgoing = 0;
-            this.stompClient.heartbeat.incoming = 0;
+            //this.stompClient.heartbeat.outgoing = 0;
+            //this.stompClient.heartbeat.incoming = 0;
             // Lumen needs big message for images & audio data URIs - maxWebSocketFrameSize doesn't work
             //this.stompClient.maxWebSocketFrameSize = 128 * 1024;
             // what should work is: -- and still doesn't work even with 3dec2014 master

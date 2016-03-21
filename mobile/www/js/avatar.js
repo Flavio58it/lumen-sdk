@@ -1,90 +1,90 @@
+/// <reference path="../typings/main.d.ts"/>
+/// <reference path="services.ts"/>
 angular.module('starter.controllers')
-
-.controller('AvatarRemoteControlCtrl', function($scope, $stateParams, $log, $window, Settings,
-        LumenStomp) {
+    .controller('AvatarRemoteControlCtrl', function ($scope, $stateParams, $log, $window, Settings, LumenStomp) {
+    var vm = this;
     var settings = Settings.getSettings();
-
-    $scope.client = null;
-    $scope.avatarIds = ['nao1', 'nao2',
+    this.client = null;
+    this.avatarIds = ['nao1', 'nao2',
         'anime1', 'anime2', 'anime3', 'anime4', 'anime5', 'anime6', 'anime7', 'anime8', 'anime9', 'anime10'];
-    $scope.motionAllowed = settings.motionAllowed || false;
-    $scope.joints = [
+    this.motionAllowed = settings.motionAllowed || false;
+    this.joints = [
         // Head
-        {id: 'HeadYaw'},
-        {id: 'HeadPitch'},
+        { id: 'HeadYaw' },
+        { id: 'HeadPitch' },
         // RArm
-        {id: 'RShoulderRoll'},
-        {id: 'RShoulderPitch'},
-        {id: 'RElbowYaw'},
-        {id: 'RElbowRoll'},
-        {id: 'RWristYaw'},
-        {id: 'RHand'},
+        { id: 'RShoulderRoll' },
+        { id: 'RShoulderPitch' },
+        { id: 'RElbowYaw' },
+        { id: 'RElbowRoll' },
+        { id: 'RWristYaw' },
+        { id: 'RHand' },
         // LArm
-        {id: 'LShoulderRoll'},
-        {id: 'LShoulderPitch'},
-        {id: 'LElbowYaw'},
-        {id: 'LElbowRoll'},
-        {id: 'LWristYaw'},
-        {id: 'LHand'},
+        { id: 'LShoulderRoll' },
+        { id: 'LShoulderPitch' },
+        { id: 'LElbowYaw' },
+        { id: 'LElbowRoll' },
+        { id: 'LWristYaw' },
+        { id: 'LHand' },
         // RLeg
-        {id: 'RHipPitch'},
-        {id: 'RHipRoll'},
-        {id: 'RKneePitch'},
-        {id: 'RAnklePitch'},
-        {id: 'RAnkleRoll'},
+        { id: 'RHipPitch' },
+        { id: 'RHipRoll' },
+        { id: 'RKneePitch' },
+        { id: 'RAnklePitch' },
+        { id: 'RAnkleRoll' },
         // LLeg
-        {id: 'LHipYawPitch'},
-        {id: 'LHipPitch'},
-        {id: 'LHipRoll'},
-        {id: 'LKneePitch'},
-        {id: 'LAnklePitch'},
-        {id: 'LAnkleRoll'}
+        { id: 'LHipYawPitch' },
+        { id: 'LHipPitch' },
+        { id: 'LHipRoll' },
+        { id: 'LKneePitch' },
+        { id: 'LAnklePitch' },
+        { id: 'LAnkleRoll' }
     ];
-    $scope.leds = [
-        {id: 'FaceLeds'},
-        {id: 'AllLeds'},
+    this.leds = [
+        { id: 'FaceLeds' },
+        { id: 'AllLeds' },
     ];
-    $scope.actingScripts = [
-        {id: 'GOOD_BYE'},
-        {id: 'PHOTO_POSE'},
-        {id: 'DANCE_GANGNAM'},
-        {id: 'SING_MANUK'},
-        {id: 'SING_UPTOWN'},
+    this.actingScripts = [
+        { id: 'GOOD_BYE' },
+        { id: 'PHOTO_POSE' },
+        { id: 'DANCE_GANGNAM' },
+        { id: 'SING_MANUK' },
+        { id: 'SING_UPTOWN' },
     ];
-    $scope.locales = [
-        {id: 'en-US', name: 'English (US)'},
-        {id: 'en-UK', name: 'English (UK)'},
-        {id: 'en-AU', name: 'English (Australia)'},
-        {id: 'id-ID', name: 'Indonesian'},
-        {id: 'ar-SA', name: 'Arabic'}
+    this.locales = [
+        { id: 'en-US', name: 'English (US)' },
+        { id: 'en-UK', name: 'English (UK)' },
+        { id: 'en-AU', name: 'English (Australia)' },
+        { id: 'id-ID', name: 'Indonesian' },
+        { id: 'ar-SA', name: 'Arabic' }
     ];
-    $scope.emotionKinds = [
-        {id: 'NEUTRAL', name: 'Neutral'},
-        {id: 'JOY', name: 'Joy'},
-        {id: 'ANGER', name: 'Anger'},
-        {id: 'SADNESS', name: 'Sadness'}
+    this.emotionKinds = [
+        { id: 'NEUTRAL', name: 'Neutral' },
+        { id: 'JOY', name: 'Joy' },
+        { id: 'ANGER', name: 'Anger' },
+        { id: 'SADNESS', name: 'Sadness' }
     ];
-    $scope.form = {
+    this.form = {
         avatarId: 'nao1',
         audioVolume: 0.8,
         // Speech
         speech: {
             synthesis: {
-                inLanguage: $scope.locales[0],
-                emotionKind: $scope.emotionKinds[0],
-                object: "Hello I am Arkan Lumen from Bandung Institute of Technology. What can I help you?",
+                inLanguage: this.locales[0],
+                emotionKind: this.emotionKinds[0],
+                object: "Hello I am Arkan Lumen from Bandung Institute of Technology. What can I help you?"
             }
         },
         // Audio
         audio: {
-            inLanguage: $scope.locales[3],
+            inLanguage: this.locales[3],
             contentUrl: 'file:///home/nao/gangnam.mp3',
             recordDuration: 5.0,
             usedForChat: true
         },
         // Actor
         actor: {
-            actingScript: $scope.actingScripts[2]
+            actingScript: this.actingScripts[2]
         },
         // Motion
         speed: 0.7,
@@ -94,107 +94,97 @@ angular.module('starter.controllers')
             turnCcwDeg: 0
         },
         interpolateAngle: {
-            joint: $scope.joints[0],
-            targetCcwDeg: 0, // HeadYaw Range: -85 (right)..85 (left) degrees
-            duration: 3, // seconds
+            joint: this.joints[0],
+            targetCcwDeg: 0,
+            duration: 3
         },
         leds: {
-            led: $scope.leds[0],
+            led: this.leds[0],
             color: '#ff0000',
             intensity: 1.0,
-            duration: 3.0, // seconds
+            duration: 3.0
         }
     };
-
     // Avatar
-    $scope.switchAvatar = function() {
+    this.switchAvatar = function () {
         LumenStomp.unsubscribeAll();
         // RecordAudio
-        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.audio.in', function(exchange) {
+        LumenStomp.subscribe('/topic/avatar.' + vm.form.avatarId + '.audio.in', function (exchange) {
             var msg = JSON.parse(exchange.body);
             $log.info("Received audio", msg.name, msg.contentType, msg.contentSize, 'bytes');
             document.getElementById('recorded').src = msg.contentUrl;
-            $scope.replayRecorded();
+            vm.replayRecorded();
         });
         // Speech Recognition
-        LumenStomp.subscribe('/topic/lumen.speech.recognition', function(exchange) {
+        LumenStomp.subscribe('/topic/lumen.speech.recognition', function (exchange) {
             var msg = JSON.parse(exchange.body);
             $log.info("Received recognized speech", msg);
-            $scope.recognizedSpeech = msg;
+            vm.recognizedSpeech = msg;
         });
         // audio.out: AudioObject
-        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.audio.out', function(exchange) {
+        LumenStomp.subscribe('/topic/avatar.' + vm.form.avatarId + '.audio.out', function (exchange) {
             var msg = JSON.parse(exchange.body);
             $log.info("Received audio", msg.name, msg.contentType, msg.contentSize, 'bytes');
             document.getElementById('played').src = msg.contentUrl;
-            $scope.replayPlayed();
+            vm.replayPlayed();
         });
         $log.info('Subscriptions:', LumenStomp.getSubscriptions());
     };
-
-    $scope.$on('$ionicView.enter', function() {
-        LumenStomp.connect(function() {
-            $scope.client = LumenStomp.getClient();
-            $scope.switchAvatar();
+    $scope.$on('$ionicView.enter', function () {
+        LumenStomp.connect(function () {
+            vm.client = LumenStomp.getClient();
+            vm.switchAvatar();
         });
     });
-    $scope.$on('$ionicView.leave', function() {
+    $scope.$on('$ionicView.beforeLeave', function () {
         LumenStomp.disconnect();
     });
-
     // Speech Synthesis
-    $scope.communicateSynthesis = function() {
-        var msg = {'@type': 'CommunicateAction', avatarId: $scope.form.avatarId,
-            inLanguage: $scope.form.speech.synthesis.inLanguage.id,
-            emotionKind: $scope.form.speech.synthesis.emotionKind.id,
-            object: $scope.form.speech.synthesis.object,
-            usedForSynthesis: true};
+    this.communicateSynthesis = function () {
+        var msg = { '@type': 'CommunicateAction', avatarId: vm.form.avatarId,
+            inLanguage: vm.form.speech.synthesis.inLanguage.id,
+            emotionKind: vm.form.speech.synthesis.emotionKind.id,
+            object: vm.form.speech.synthesis.object,
+            usedForSynthesis: true };
         $log.info('Speech Synthesis', msg, JSON.stringify(msg));
-        $scope.client.send('/topic/lumen.speech.synthesis',
-            {"reply-to": '/temp-queue/lumen.speech.synthesis'}, JSON.stringify(msg));
+        vm.client.send('/topic/lumen.speech.synthesis', { "reply-to": '/temp-queue/lumen.speech.synthesis' }, JSON.stringify(msg));
     };
-    $scope.communicateChat = function() {
-        var msg = {'@type': 'CommunicateAction', avatarId: $scope.form.avatarId,
-            inLanguage: $scope.form.speech.synthesis.inLanguage.id,
-            emotionKind: $scope.form.speech.synthesis.emotionKind.id,
-            object: $scope.form.speech.synthesis.object,
-            usedForSynthesis: true};
+    this.communicateChat = function () {
+        var msg = { '@type': 'CommunicateAction', avatarId: vm.form.avatarId,
+            inLanguage: vm.form.speech.synthesis.inLanguage.id,
+            emotionKind: vm.form.speech.synthesis.emotionKind.id,
+            object: vm.form.speech.synthesis.object,
+            usedForSynthesis: true };
         $log.info('chat.outbox+synthesis', msg, JSON.stringify(msg));
-        $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.chat.outbox',
-            {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.chat.outbox'},
-            JSON.stringify(msg));
+        vm.client.send('/topic/avatar.' + vm.form.avatarId + '.chat.outbox', { "reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.chat.outbox' }, JSON.stringify(msg));
     };
-
     // Audio
-    $scope.changeVolume = function() {
-        var msg = {'@type': 'AudioVolume', volume: $scope.form.audioVolume};
+    this.changeVolume = function () {
+        var msg = { '@type': 'AudioVolume', volume: vm.form.audioVolume };
         $log.info('Remote Control', msg, JSON.stringify(msg));
-        $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.command',
-            {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.command'}, JSON.stringify(msg));
+        vm.client.send('/topic/avatar.' + vm.form.avatarId + '.command', { "reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.command' }, JSON.stringify(msg));
     };
-    $scope.playAudio = function() {
+    this.playAudio = function () {
         var msg = {
             '@type': 'AudioObject',
-            contentUrl: $scope.form.audio.contentUrl
+            contentUrl: vm.form.audio.contentUrl
         };
-        $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.audio.out',
-            {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.audio.out'}, JSON.stringify(msg));
+        vm.client.send('/topic/avatar.' + vm.form.avatarId + '.audio.out', { "reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.audio.out' }, JSON.stringify(msg));
     };
-    $scope.stopAudio = function() {
+    this.stopAudio = function () {
         var msg = {
-            '@type': 'StopAudio',
+            '@type': 'StopAudio'
         };
-        $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.audio',
-            {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.audio'}, JSON.stringify(msg));
+        vm.client.send('/topic/avatar.' + vm.form.avatarId + '.audio', { "reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.audio' }, JSON.stringify(msg));
     };
-    $scope.playAudioData = function() {
+    this.playAudioData = function () {
         var audioFileEl = document.getElementById('audioFile');
         // {"webkitRelativePath":"","lastModified":1373040168000,"lastModifiedDate":"2013-07-05T16:02:48.000Z","name":"Sate Tegal Balibul3.jpg","type":"image/jpeg","size":42082}
         var audioFile = audioFileEl.files[0];
         $log.debug('Reading...', audioFileEl, audioFileEl.files, audioFile, JSON.stringify(audioFile));
         // ImageObject: name, contentType, contentUrl, contentSize, width, height, uploadDate, dateCreated, dateModified, datePublished
         var reader = new FileReader();
-        reader.onloadend = function() {
+        reader.onloadend = function () {
             var msg = {
                 '@type': 'AudioObject',
                 name: audioFile.name,
@@ -204,280 +194,254 @@ angular.module('starter.controllers')
                 contentUrl: reader.result
             };
             $log.info('Playing audio', msg.name, '(', msg.contentSize, 'bytes)');
-            $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.audio.out',
-                {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.audio.out'}, JSON.stringify(msg));
+            vm.client.send('/topic/avatar.' + vm.form.avatarId + '.audio.out', { "reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.audio.out' }, JSON.stringify(msg));
         };
         reader.readAsDataURL(audioFile);
     };
-    $scope.recordAudioFromAvatar = function() {
+    this.recordAudioFromAvatar = function () {
         var msg = {
             '@type': 'RecordAudio',
-            duration: $scope.form.audio.recordDuration,
-            inLanguage: $scope.form.audio.inLanguage.id,
-            usedForChat: $scope.form.audio.usedForChat
+            duration: vm.form.audio.recordDuration,
+            inLanguage: vm.form.audio.inLanguage.id,
+            usedForChat: vm.form.audio.usedForChat
         };
-        $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.audio',
-            {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.audio'}, JSON.stringify(msg));
+        vm.client.send('/topic/avatar.' + vm.form.avatarId + '.audio', { "reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.audio' }, JSON.stringify(msg));
     };
-    $scope.sendRecordedMic = function() {
+    this.sendRecordedMic = function () {
         var recordedFileEl = document.getElementById('recordedMic');
         var recordedFile = recordedFileEl.files[0];
         $log.debug('Reading...', recordedFileEl, recordedFileEl.files, recordedFile, JSON.stringify(recordedFile));
         var reader = new FileReader();
-        reader.onloadend = function() {
-            $scope.$apply(function() {
+        reader.onloadend = function () {
+            $scope.$apply(function () {
                 var audioObject = {
                     '@type': 'AudioObject',
-                    inLanguage: $scope.form.audio.inLanguage.id,
+                    inLanguage: vm.form.audio.inLanguage.id,
                     name: recordedFile.name,
                     contentType: recordedFile.type,
                     contentSize: recordedFile.size,
                     dateModified: recordedFile.lastModifiedDate,
                     contentUrl: reader.result,
-                    usedForChat: $scope.form.audio.usedForChat
+                    usedForChat: vm.form.audio.usedForChat
                 };
                 $log.info('AudioObject', audioObject, JSON.stringify(audioObject));
-                $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.audio.in',
-                    {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.audio.in'},
-                    JSON.stringify(audioObject));
+                vm.client.send('/topic/avatar.' + vm.form.avatarId + '.audio.in', { "reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.audio.in' }, JSON.stringify(audioObject));
             });
         };
         reader.readAsDataURL(recordedFile);
     };
-    $scope.replayRecorded = function() {
+    this.replayRecorded = function () {
         var recordedEl = document.getElementById('recorded');
         $log.info('Playing recorded ', recordedEl, 'seconds ...');
         recordedEl.play();
     };
-    $scope.replayPlayed = function() {
+    this.replayPlayed = function () {
         var playedEl = document.getElementById('played');
         $log.info('Playing played ', playedEl, 'seconds ...');
         playedEl.play();
     };
-
     // Actor
-    $scope.act = function() {
+    this.act = function () {
         var msg = {
             '@type': 'ActingPerformance',
-            script: $scope.form.actor.actingScript.id
+            script: vm.form.actor.actingScript.id
         };
-        $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.acting',
-            {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.acting'}, JSON.stringify(msg));
+        vm.client.send('/topic/avatar.' + vm.form.avatarId + '.acting', { "reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.acting' }, JSON.stringify(msg));
     };
-
     // Motion
-    $scope.wakeUp = function() {
-        var wakeMsg = {'@type': 'WakeUp'};
+    this.wakeUp = function () {
+        var wakeMsg = { '@type': 'WakeUp' };
         $log.info('Remote Control', wakeMsg, JSON.stringify(wakeMsg));
-        $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.command',
-            {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.command'}, JSON.stringify(wakeMsg));
+        vm.client.send('/topic/avatar.' + vm.form.avatarId + '.command', { "reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.command' }, JSON.stringify(wakeMsg));
     };
-    $scope.rest = function() {
-        var restMsg = {'@type': 'Rest'};
+    this.rest = function () {
+        var restMsg = { '@type': 'Rest' };
         $log.info('Remote Control', restMsg, JSON.stringify(restMsg));
-        $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.command',
-            {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.command'}, JSON.stringify(restMsg));
+        vm.client.send('/topic/avatar.' + vm.form.avatarId + '.command', { "reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.command' }, JSON.stringify(restMsg));
     };
-    $scope.changePosture = function(postureId) {
-        var msg = {'@type': 'PostureChange', postureId: postureId, speed: $scope.form.speed};
+    this.changePosture = function (postureId) {
+        var msg = { '@type': 'PostureChange', postureId: postureId, speed: vm.form.speed };
         $log.info('Remote Control', msg, JSON.stringify(msg));
-        $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.command',
-            {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.command'}, JSON.stringify(msg));
+        vm.client.send('/topic/avatar.' + vm.form.avatarId + '.command', { "reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.command' }, JSON.stringify(msg));
     };
-
-    $scope.moveTo = function() {
+    this.moveTo = function () {
         var msg = {
             '@type': "MoveTo",
-            'backDistance': $scope.form.moveTo.backDistance,
-            'rightDistance': $scope.form.moveTo.rightDistance,
-            'turnCcwDeg': $scope.form.moveTo.turnCcwDeg
+            'backDistance': vm.form.moveTo.backDistance,
+            'rightDistance': vm.form.moveTo.rightDistance,
+            'turnCcwDeg': vm.form.moveTo.turnCcwDeg
         };
         $log.info('Remote Control', msg, JSON.stringify(msg));
-        $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.command',
-            {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.command'}, JSON.stringify(msg));
+        vm.client.send('/topic/avatar.' + vm.form.avatarId + '.command', { "reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.command' }, JSON.stringify(msg));
     };
-
-    $scope.jointInterpolateAngle = function() {
+    this.jointInterpolateAngle = function () {
         var msg = {
             '@type': "JointInterpolateAngle",
-            jointId: $scope.form.interpolateAngle.joint.id,
-            targetCcwDeg: $scope.form.interpolateAngle.targetCcwDeg,
-            duration: $scope.form.interpolateAngle.duration
+            jointId: vm.form.interpolateAngle.joint.id,
+            targetCcwDeg: vm.form.interpolateAngle.targetCcwDeg,
+            duration: vm.form.interpolateAngle.duration
         };
         $log.info('Remote Control', msg, JSON.stringify(msg));
-        $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.command',
-            {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.command'}, JSON.stringify(msg));
+        vm.client.send('/topic/avatar.' + vm.form.avatarId + '.command', { "reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.command' }, JSON.stringify(msg));
     };
-
     // LEDs
-    $scope.ledsOn = function() {
+    this.ledsOn = function () {
         var msg = {
             '@type': 'LedOperation',
             kind: 'ON',
-            names: [$scope.form.leds.led.id],
-            duration: $scope.form.leds.duration,
-            intensity: $scope.form.leds.intensity,
-            color: $scope.form.leds.color,
+            names: [vm.form.leds.led.id],
+            duration: vm.form.leds.duration,
+            intensity: vm.form.leds.intensity,
+            color: vm.form.leds.color
         };
         $log.info('LED', msg, JSON.stringify(msg));
-        $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.leds',
-            {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.leds'}, JSON.stringify(msg));
+        vm.client.send('/topic/avatar.' + vm.form.avatarId + '.leds', { "reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.leds' }, JSON.stringify(msg));
     };
-    $scope.ledsOff = function() {
+    this.ledsOff = function () {
         var msg = {
             '@type': 'LedOperation',
             kind: 'OFF',
-            names: [$scope.form.leds.led.id],
-            duration: $scope.form.leds.duration,
-            intensity: $scope.form.leds.intensity,
-            color: $scope.form.leds.color,
+            names: [vm.form.leds.led.id],
+            duration: vm.form.leds.duration,
+            intensity: vm.form.leds.intensity,
+            color: vm.form.leds.color
         };
         $log.info('LED', msg, JSON.stringify(msg));
-        $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.leds',
-            {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.leds'}, JSON.stringify(msg));
+        vm.client.send('/topic/avatar.' + vm.form.avatarId + '.leds', { "reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.leds' }, JSON.stringify(msg));
     };
-    $scope.ledsFade = function() {
+    this.ledsFade = function () {
         var msg = {
             '@type': 'LedOperation',
             kind: 'FADE',
-            names: [$scope.form.leds.led.id],
-            duration: $scope.form.leds.duration,
-            intensity: $scope.form.leds.intensity,
-            color: $scope.form.leds.color,
+            names: [vm.form.leds.led.id],
+            duration: vm.form.leds.duration,
+            intensity: vm.form.leds.intensity,
+            color: vm.form.leds.color
         };
         $log.info('LED', msg, JSON.stringify(msg));
-        $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.leds',
-            {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.leds'}, JSON.stringify(msg));
+        vm.client.send('/topic/avatar.' + vm.form.avatarId + '.leds', { "reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.leds' }, JSON.stringify(msg));
     };
-    $scope.ledsFadeRgb = function() {
+    this.ledsFadeRgb = function () {
         var msg = {
             '@type': 'LedOperation',
             kind: 'FADE_RGB',
-            names: [$scope.form.leds.led.id],
-            duration: $scope.form.leds.duration,
-            intensity: $scope.form.leds.intensity,
-            color: $scope.form.leds.color,
+            names: [vm.form.leds.led.id],
+            duration: vm.form.leds.duration,
+            intensity: vm.form.leds.intensity,
+            color: vm.form.leds.color
         };
         $log.info('LED', msg, JSON.stringify(msg));
-        $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.leds',
-            {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.leds'}, JSON.stringify(msg));
+        vm.client.send('/topic/avatar.' + vm.form.avatarId + '.leds', { "reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.leds' }, JSON.stringify(msg));
     };
-    $scope.ledsRandomEyes = function() {
+    this.ledsRandomEyes = function () {
         var msg = {
             '@type': 'LedOperation',
             kind: 'RANDOM_EYES',
-            names: [$scope.form.leds.led.id],
-            duration: $scope.form.leds.duration,
-            intensity: $scope.form.leds.intensity,
-            color: $scope.form.leds.color,
+            names: [vm.form.leds.led.id],
+            duration: vm.form.leds.duration,
+            intensity: vm.form.leds.intensity,
+            color: vm.form.leds.color
         };
         $log.info('LED', msg, JSON.stringify(msg));
-        $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.leds',
-            {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.leds'}, JSON.stringify(msg));
+        vm.client.send('/topic/avatar.' + vm.form.avatarId + '.leds', { "reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.leds' }, JSON.stringify(msg));
     };
-    $scope.ledsRasta = function() {
+    this.ledsRasta = function () {
         var msg = {
             '@type': 'LedOperation',
             kind: 'RASTA',
-            names: [$scope.form.leds.led.id],
-            duration: $scope.form.leds.duration,
-            intensity: $scope.form.leds.intensity,
-            color: $scope.form.leds.color,
+            names: [vm.form.leds.led.id],
+            duration: vm.form.leds.duration,
+            intensity: vm.form.leds.intensity,
+            color: vm.form.leds.color
         };
         $log.info('LED', msg, JSON.stringify(msg));
-        $scope.client.send('/topic/avatar.' + $scope.form.avatarId + '.leds',
-            {"reply-to": '/temp-queue/avatar.' + $scope.form.avatarId + '.leds'}, JSON.stringify(msg));
+        vm.client.send('/topic/avatar.' + vm.form.avatarId + '.leds', { "reply-to": '/temp-queue/avatar.' + vm.form.avatarId + '.leds' }, JSON.stringify(msg));
     };
-
 })
-.controller('AvatarInstrumentsCtrl', function($scope, $stateParams, $log, LumenStomp, Settings) {
-    $scope.avatarIds = ['nao1', 'nao2',
+    .controller('AvatarInstrumentsCtrl', function ($scope, $stateParams, $log, LumenStomp, Settings) {
+    var vm = this;
+    this.avatarIds = ['nao1', 'nao2',
         'anime1', 'anime2', 'anime3', 'anime4', 'anime5', 'anime6', 'anime7', 'anime8', 'anime9', 'anime10'];
-    $scope.form = {
+    this.form = {
         avatarId: 'nao1'
     };
-    $scope.client = null;
-
+    this.client = null;
     // Avatar
-    $scope.switchAvatar = function() {
+    this.switchAvatar = function () {
         LumenStomp.unsubscribeAll();
         // reset all previous values
-        $scope.joint = {};
-        $scope.sonar = {};
-        $scope.motion = {};
-        $scope.robotpose = {};
-        $scope.tactile = {};
-        $scope.battery = {};
-
-        /*LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.camera.main', function(exchange) {
+        this.joint = {};
+        this.sonar = {};
+        this.motion = {};
+        this.robotpose = {};
+        this.tactile = {};
+        this.battery = {};
+        /*LumenStomp.subscribe('/topic/avatar.' + this.form.avatarId + '.camera.main', function(exchange) {
             var msg = JSON.parse(exchange.body);
             //$log.debug('joint ', msg, JSON.stringify(msg));
-//            $scope.messages.push(msg);
+//            this.messages.push(msg);
             exchange.body = msg;
-//            $scope.messages.push(exchange);
-            $scope.image = exchange;
+//            this.messages.push(exchange);
+            this.image = exchange;
         });*/
-        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.joint', function(exchange) {
+        LumenStomp.subscribe('/topic/avatar.' + this.form.avatarId + '.data.joint', function (exchange) {
             var msg = JSON.parse(exchange.body);
             //$log.debug('joint ', msg, JSON.stringify(msg));
-//            $scope.messages.push(msg);
+            //            this.messages.push(msg);
             exchange.body = msg;
-//            $scope.messages.push(exchange);
-            $scope.joint = exchange;
+            //            this.messages.push(exchange);
+            this.joint = exchange;
         });
-        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.sonar', function(exchange) {
+        LumenStomp.subscribe('/topic/avatar.' + this.form.avatarId + '.data.sonar', function (exchange) {
             var msg = JSON.parse(exchange.body);
             //$log.debug('sonar ', msg, JSON.stringify(msg));
-//            $scope.messages.push(msg);
+            //            this.messages.push(msg);
             exchange.body = msg;
-//            $scope.messages.push(exchange);
-            $scope.sonar = exchange;
+            //            this.messages.push(exchange);
+            this.sonar = exchange;
         });
-
-        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.motion', function(exchange) {
-                    var msg = JSON.parse(exchange.body);
-                    //$log.debug('motion ', msg, JSON.stringify(msg));
-        //            $scope.messages.push(msg);
-                    exchange.body = msg;
-        //            $scope.messages.push(exchange);
-                    $scope.motion = exchange;
-                });
-
-        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.robotpose', function(exchange) {
-                    var msg = JSON.parse(exchange.body);
-                    //$log.debug('robotpose ', msg, JSON.stringify(msg));
-        //            $scope.messages.push(msg);
-                    exchange.body = msg;
-        //            $scope.messages.push(exchange);
-                    $scope.robotpose = exchange;
-                });
-
-        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.tactile', function(exchange) {
+        LumenStomp.subscribe('/topic/avatar.' + this.form.avatarId + '.data.motion', function (exchange) {
+            var msg = JSON.parse(exchange.body);
+            //$log.debug('motion ', msg, JSON.stringify(msg));
+            //            this.messages.push(msg);
+            exchange.body = msg;
+            //            this.messages.push(exchange);
+            this.motion = exchange;
+        });
+        LumenStomp.subscribe('/topic/avatar.' + this.form.avatarId + '.data.robotpose', function (exchange) {
+            var msg = JSON.parse(exchange.body);
+            //$log.debug('robotpose ', msg, JSON.stringify(msg));
+            //            this.messages.push(msg);
+            exchange.body = msg;
+            //            this.messages.push(exchange);
+            this.robotpose = exchange;
+        });
+        LumenStomp.subscribe('/topic/avatar.' + this.form.avatarId + '.data.tactile', function (exchange) {
             var msg = JSON.parse(exchange.body);
             //$log.debug('tactile ', msg, JSON.stringify(msg));
-//            $scope.messages.push(msg);
+            //            this.messages.push(msg);
             exchange.body = msg;
-//            $scope.messages.push(exchange);
-            $scope.tactile = exchange;
+            //            this.messages.push(exchange);
+            this.tactile = exchange;
         });
-        LumenStomp.subscribe('/topic/avatar.' + $scope.form.avatarId + '.data.battery', function(exchange) {
+        LumenStomp.subscribe('/topic/avatar.' + this.form.avatarId + '.data.battery', function (exchange) {
             var msg = JSON.parse(exchange.body);
             //$log.debug('battery ', msg, JSON.stringify(msg));
-//            $scope.messages.push(msg);
+            //            this.messages.push(msg);
             exchange.body = msg;
-//            $scope.messages.push(exchange);
-            $scope.battery = exchange;
+            //            this.messages.push(exchange);
+            this.battery = exchange;
         });
     };
-
-    $scope.$on('$ionicView.enter', function() {
-        LumenStomp.connect(function() {
-            $scope.client = LumenStomp.getClient();
-            $scope.switchAvatar();
+    $scope.$on('$ionicView.enter', function (ev) {
+        LumenStomp.connect(function () {
+            vm.client = LumenStomp.getClient();
+            vm.switchAvatar();
         });
     });
-    $scope.$on('$ionicView.leave', function() {
+    $scope.$on('$ionicView.beforeLeave', function () {
         LumenStomp.disconnect();
     });
-
 });
+
+//# sourceMappingURL=avatar.js.map

@@ -2,7 +2,7 @@
 
 Interactive navigable audio visualization using [Web Audio](https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html) and Canvas.
 
-![Screenshot](example/screenshot.png?raw=true "Screenshot")
+![Screenshot](https://raw.githubusercontent.com/katspaugh/wavesurfer.js/gh-pages/example/screenshot.png "Screenshot")
 
 ## Browser support
 wavesurfer.js works only in [modern browsers supporting Web Audio](http://caniuse.com/audio-api).
@@ -48,8 +48,6 @@ Load an audio file from a URL:
 wavesurfer.load('example/media/demo.wav');
 ```
 
-See the example code [here](/example/main.js).
-
 For a list of other projects using wavesurfer.js, check out
 [the wiki](https://github.com/katspaugh/wavesurfer.js/wiki/Projects)
 where you can also add your own project.
@@ -76,7 +74,7 @@ where you can also add your own project.
 | `scrollParent` | boolean | `false` | Whether to scroll the container with a lengthy waveform. Otherwise the waveform is shrunk to the container width (see `fillParent`). |
 | `skipLength` | float | `2` | Number of seconds to skip with the `skipForward()` and `skipBackward()` methods. |
 | `waveColor` | string | `#999` | The fill color of the waveform after the cursor. |
-
+| `autoCenter` | boolean | true | If a scrollbar is present, center the waveform around the progress |
 ## WaveSurfer Methods
 
 All methods are intentionally public, but the most readily available are the following:
@@ -129,7 +127,6 @@ General events:
  * `error` – Occurs on error.  Callback will receive (string) error message.
  * `finish` – When it finishes playing.
  * `loading` – Fires continuously when loading via XHR or drag'n'drop. Callback will receive (integer) loading progress in percents [0..100] and (object) event target.
- * `mouseup` - When a mouse button goes up.  Callback will receive `MouseEvent` object.
  * `pause` – When audio is paused.
  * `play` – When play starts.
  * `ready` – When audio is loaded, decoded and the waveform drawn.

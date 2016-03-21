@@ -1,6 +1,6 @@
 {
   "name": "wavesurfer.js",
-  "version": "1.0.47",
+  "version": "1.0.58",
   "homepage": "http://wavesurfer-js.org",
   "authors": [
     "katspaugh <katspaugh@gmail.com>"
@@ -14,11 +14,11 @@
     "player"
   ],
   "license": "CC BY 3.0",
-  "_release": "1.0.47",
+  "_release": "1.0.58",
   "_resolution": {
     "type": "version",
-    "tag": "v1.0.47",
-    "commit": "6a930d84ad49d85d614dde7bacf76ef1a17716b8"
+    "tag": "1.0.58",
+    "commit": "28a8143aa00cb73818f465a70d31e12e2a495c25"
   },
   "_source": "git://github.com/katspaugh/wavesurfer.js.git",
   "_target": "~1.0.45",
