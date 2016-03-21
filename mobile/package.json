@@ -1,7 +1,7 @@
 {
   "name": "lumen",
   "version": "1.0.0",
-  "description": "lumen: An Ionic project",
+  "description": "Lumen Mobile",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-concat": "^2.2.0",
