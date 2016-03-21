@@ -22,18 +22,19 @@
         npm config set proxy http://username:password@cache.itb.ac.id:8080/
         npm config set https-proxy http://username:password@cache.itb.ac.id:8080/
 
-2. Install [Ionic] if you want to know more about `Ionic` click here (http://ionicframework.com/) and [Bower] if you want to know more about `Bower` click here(http://bower.io/).
+2. Install Ionic if you want to know more about `Ionic` click here (http://ionicframework.com/).
 
-    How to instal Ionic and Bower :
+    How to install Ionic and Bower :
+    
     **Windows:** Run _Node.js command prompt_:
 
-        npm -V -g install ionic bower
+        npm -V -g install ionic gulp
 
     Note: If you don't install NodeJS modules globally (i.e. user-specific), you'll need to add `~/node_modules/.bin` to `PATH`.
 
     **Linux:**
 
-        sudo npm -V -g install ionic bower
+        sudo npm -V -g install ionic gulp
 
 3. (If you want to deploy to Android/iOS/Windows Phone) Install Cordova: `npm -V -g install cordova`
 
@@ -56,11 +57,14 @@
         sudo rabbitmq-plugins enable rabbitmq_web_stomp
         sudo service rabbitmq-server restart
 
-6. TypeScript, gulp, gulp-tsc, gulp-minify-css, gulp-concat, are required:
+6. Install TypeScript, gulp, gulp-tsc, gulp-minify-css, gulp-concat, by typing :
 
+        cd git\lumen-sdk\mobile
         npm install -V
 
-7. You will want [typings](https://www.npmjs.com/package/typings) package,
+## Optional
+
+1. You will want [typings](https://www.npmjs.com/package/typings) package,
    then install the used typings so you can use it in supported TypeScript IDE
    such as [Visual Studio Code](https://code.visualstudio.com/).
 
@@ -73,7 +77,7 @@
 
     **Windows:** Use _Node.js command prompt_, to `mobile` directory, and run: `ionic serve`, e.g.
     
-        # go to directory git/lumen-sdk/mobile
+        ; go to directory git/lumen-sdk/mobile
         cd git\lumen-sdk\mobile
         ionic serve -a
     
