@@ -25,6 +25,7 @@ public class AudioObject implements LumenThing {
     private DateTime dateModified;
     private DateTime datePublished;
     private String contentUrl;
+    private String contentUrlMp3;
     private String url;
     private String transcript;
     private Locale inLanguage;
@@ -51,6 +52,20 @@ public class AudioObject implements LumenThing {
 
     public void setContentUrl(String contentUrl) {
         this.contentUrl = contentUrl;
+    }
+
+    /**
+     * Workaround for technical limitation in Anime Avatar Android app which cannot process
+     * OGG files. Senders will have to send both OGG format (in contentUrl) and MP3 format (in contentUrlMp3)
+     * in order for Anime Avatar app to work properly.
+     * @return
+     */
+    public String getContentUrlMp3() {
+        return contentUrlMp3;
+    }
+
+    public void setContentUrlMp3(String contentUrlMp3) {
+        this.contentUrlMp3 = contentUrlMp3;
     }
 
     @XmlAttribute
